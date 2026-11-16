@@ -1,0 +1,32 @@
+name: linked-issue
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  issues: read
+  pull-requests: read
+
+jobs:
+  linked-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require a linked, open issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BODY: ${{ github.event.pull_request.body }}
+          REPO: ${{ github.repository }}
+        run: |
+          nums=$(printf '%s' "$BODY" | grep -oiE '(close[sd]?|fix(e[sd])?|resolve[sd]?) +#[0-9]+' | grep -oE '[0-9]+' | sort -u)
+          if [ -z "$nums" ]; then
+            echo "::error::The PR body must link an issue, for example 'Closes #12'."
+            exit 1
+          fi
+          for n in $nums; do
+            info=$(gh api "repos/$REPO/issues/$n" --jq '[.state, (.pull_request != null)] | @tsv' 2>/dev/null) || { echo "::error::Issue #$n does not exist."; exit 1; }
+            state=$(echo "$info" | cut -f1); is_pr=$(echo "$info" | cut -f2)
+            [ "$is_pr" = "true" ] && { echo "::error::#$n is a PR, not an issue."; exit 1; }
+            [ "$state" != "open" ] && { echo "::error::Issue #$n is not open."; exit 1; }
+            echo "Linked issue #$n is open."
+          done

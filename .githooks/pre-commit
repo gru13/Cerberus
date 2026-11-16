@@ -1,0 +1,20 @@
+#!/bin/sh
+# Block commits on main and commits that contain likely secrets.
+branch=$(git symbolic-ref --short HEAD 2>/dev/null)
+if [ "$branch" = "main" ] || [ "$branch" = "master" ]; then
+  echo "pre-commit: commits on $branch are blocked. Create a branch first." >&2
+  exit 1
+fi
+
+pattern='(sk-ant-[A-Za-z0-9_-]{20,}|sk-(proj-)?[A-Za-z0-9_-]{20,}|sk-or-v1-[A-Za-z0-9]{20,}|gsk_[A-Za-z0-9]{20,}|AIza[0-9A-Za-z_-]{35}|gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,}|AKIA[0-9A-Z]{16}|-----BEGIN [A-Z ]*PRIVATE KEY-----)'
+if git diff --cached -U0 --no-color | grep '^+' | grep -Eq "$pattern"; then
+  echo "pre-commit: a staged change looks like a secret (API key, token, or private key). Remove it." >&2
+  exit 1
+fi
+for f in $(git diff --cached --name-only --diff-filter=A); do
+  case "$f" in
+    *.env|.env.*|*.pem|*.key|*id_rsa*|*.p12)
+      case "$f" in *.example) ;; *) echo "pre-commit: $f looks like a secret file. Do not commit it." >&2; exit 1 ;; esac ;;
+  esac
+done
+exit 0
