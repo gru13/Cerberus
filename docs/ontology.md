@@ -19,6 +19,10 @@ Fixed vocabulary for logs and the knowledge graph. Add a term here before you us
 | Decision | One agreed design decision |
 | Document | One file in this repository |
 | Repository | A git repository |
+| Board | The GitHub project workboard |
+| Initiative | Work item larger than an epic |
+| Epic | Work item split into stories |
+| Story | Buildable work item |
 
 ## Verbs (predicates)
 

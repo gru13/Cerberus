@@ -23,8 +23,18 @@ Status: design phase. Agree each design topic with the user before writing code.
 
 ## Build log (mandatory for every session)
 
-- Append one JSON line to `logs/build.jsonl` for each decision, file change, failure, or push. Use the same fields as above.
-- Use event names: `decision.record`, `doc.create`, `doc.update`, `code.add`, `code.change`, `test.run`, `repo.push`, `repo.push.fail`.
+- Keep the log small and useful. Append one JSON line to `logs/build.jsonl` **only** for:
+  - a design decision (`decision.record`)
+  - a milestone: an initiative, epic, or story moves status (`work.status`)
+  - a failure that changes the approach (`*.fail`)
+- Do not log routine file edits, commits, or pushes. Git history holds them.
 - Add the commit hash in a `commit` field when known. Use `trace_id` = `session-<date>`.
 - Commit the build log with the change it describes, then push.
+
+## Work tracking
+
+- Board: GitHub Project "Cerberus Workboard" (https://github.com/users/gru13/projects/4).
+- Hierarchy: Initiative → Epic → Story (labels `initiative`, `epic`, `story`; epics are sub-issues of initiatives, stories of epics).
+- Status columns: Backlog → Designing → Designed → Building → Done.
+- Initiative details live in `docs/initiatives/` and in the issue body. Keep both in sync.
 - Remote is HTTPS. On this machine, run git with `-c safe.directory=<repo path>` (NTFS mount).
