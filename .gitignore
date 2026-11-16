@@ -1,5 +1,14 @@
 node_modules/
 .venv/
-.env
 __pycache__/
 .claude/settings.local.json
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+id_rsa*
+secrets/

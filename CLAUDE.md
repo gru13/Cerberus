@@ -38,3 +38,15 @@ Status: design phase. Agree each design topic with the user before writing code.
 - Status columns: Backlog → Designing → Designed → Building → Done.
 - Initiative details live in `docs/initiatives/` and in the issue body. Keep both in sync.
 - Remote is HTTPS. On this machine, run git with `-c safe.directory=<repo path>` (NTFS mount).
+
+## Git safety (mandatory)
+
+- Never commit or push to `main`. Work on a branch (`feat/…`, `fix/…`, `chore/…`, `docs/…`), push it, open a PR, merge the PR.
+- GitHub ruleset `protect-main` enforces: PR required, no force push, no branch deletion, review threads resolved. No bypass.
+- Local hooks in `.githooks/` (enable once per clone: `git config core.hooksPath .githooks`):
+  - `pre-commit`: blocks commits on main and staged secrets (API keys, tokens, private keys, `.env` files).
+  - `pre-push`: blocks pushes to main.
+- Never use `--no-verify`, `--force`, or `git push origin main`.
+- Never commit secrets. Use `.env` (ignored) and `.env.example` (placeholders only).
+- Every PR must link an open issue with `Closes #<n>` in the body. The required check `linked-issue` fails otherwise. Create the issue first.
+- Only the owner (gru13) has write access. Others contribute from a fork through a PR; the owner reviews (CODEOWNERS) and merges.
