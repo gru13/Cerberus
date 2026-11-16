@@ -20,3 +20,11 @@ Status: design phase. Agree each design topic with the user before writing code.
    `issue.propose → issue.apply → issue.validate (fail-before / pass-after) → issue.verify → run.start → run.edit → run.test → run.hint → run.submit → run.score → issue.retire`
 4. Use a fixed vocabulary of entity types (Project, ProjectVersion, Issue, IssueVersion, Run, User, Test, Hint, File) and verbs. Add new terms to `docs/ontology.md` before use.
 5. Never log secrets: no API keys, tokens, passwords, or full user code. Log hashes or ids.
+
+## Build log (mandatory for every session)
+
+- Append one JSON line to `logs/build.jsonl` for each decision, file change, failure, or push. Use the same fields as above.
+- Use event names: `decision.record`, `doc.create`, `doc.update`, `code.add`, `code.change`, `test.run`, `repo.push`, `repo.push.fail`.
+- Add the commit hash in a `commit` field when known. Use `trace_id` = `session-<date>`.
+- Commit the build log with the change it describes, then push.
+- Remote is HTTPS. On this machine, run git with `-c safe.directory=<repo path>` (NTFS mount).

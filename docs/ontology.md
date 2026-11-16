@@ -15,6 +15,10 @@ Fixed vocabulary for logs and the knowledge graph. Add a term here before you us
 | Test | One test case |
 | Hint | One tutor answer |
 | File | One file in a workspace |
+| Agent | An AI coding session |
+| Decision | One agreed design decision |
+| Document | One file in this repository |
+| Repository | A git repository |
 
 ## Verbs (predicates)
 
@@ -31,3 +35,6 @@ Fixed vocabulary for logs and the knowledge graph. Add a term here before you us
 | submits | User submits Run |
 | scores | Grader scores Run |
 | retires | Admin retires IssueVersion |
+| decides | User decides Decision |
+| creates | Agent creates Document |
+| pushes | Agent pushes Repository |
