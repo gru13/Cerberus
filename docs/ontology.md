@@ -42,3 +42,4 @@ Fixed vocabulary for logs and the knowledge graph. Add a term here before you us
 | decides | User decides Decision |
 | creates | Agent creates Document |
 | pushes | Agent pushes Repository |
+| moves | User moves Initiative to a status |
