@@ -10,7 +10,8 @@ Design phase. No application code yet.
 
 ## Key decisions
 
-- First language: **Python**. Frontend: **Next.js + Monaco**.
+- First language: **Python**. Frontend: **Next.js + Monaco**. Backend: **FastAPI**. Sandbox agent: **Rust**.
+- Local install: **`docker compose up`**.
 - Accounts: **per user**.
 - LLM: **user brings their own API key**. The user pays for LLM use.
 - Projects: each base project is correct and versioned.
@@ -28,6 +29,8 @@ Design phase. No application code yet.
 | `docs/decisions/` | One file per agreed design decision |
 | `docs/ontology.md` | Entity types and verbs for logs and the knowledge graph |
 | `logs/` | Structured JSON-lines logs (issue lifecycle, runs) |
+| `docs/architecture.md` | Planned layout: `web/` (Next.js), `api/` (FastAPI), `agent/` (Rust), `protocol/` |
+| `docs/initiatives/` | Initiative designs (1–8; initiative 8 is issue #190) |
 
 ## Logging
 

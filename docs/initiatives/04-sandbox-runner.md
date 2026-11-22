@@ -13,6 +13,7 @@
 2. **No internet, but previews work.** Each dev box joins its own Docker `--internal` network: the backend can reach it; it cannot reach the internet. Throwaway runs use `--network none`.
 3. **Real read-only files.** Editable files belong to `runner`; others are root-owned `444`; directories have the sticky bit. The agent API also rejects writes. Grading from a clean copy is the final guard.
 4. **Trace removal.** Patch applied as root in the running container (not in an image layer). Then delete `.orig` / `.rej` / patch, set one fixed mtime, clear caches and shell history, and assert no `.git`.
+5. **Work survives crashes.** The workspace lives on a named volume per run, so a new container reattaches it. The backend host store (#190) holds a write-through copy of learner files and is the source of truth.
 
 
 ## Epic 4.1 — SandboxExecutor and container lifecycle
@@ -22,10 +23,10 @@ Start, harden, track, and clean up dev box containers.
 | Story | Description | Done when |
 |---|---|---|
 | 4.1.1 SandboxExecutor interface | `create(run_package) -> session`, `exec`, `stop`, `snapshot`, `destroy`. `LocalDocker` now; `WorkerPool` parked. | Interface and LocalDocker work. |
-| 4.1.2 Container hardening | Non-root user, `--cap-drop ALL`, `no-new-privileges`, default seccomp, read-only root FS + writable workspace and tmpfs `/tmp`, limits: PIDs, 2 CPU, 4 GB RAM, 5 GB disk (configurable). | Hardening checklist passes. |
+| 4.1.2 Container hardening | Non-root user, `--cap-drop ALL`, `no-new-privileges`, default seccomp, read-only root FS, workspace on a named volume per run (`cerberus-run-<id>`), tmpfs `/tmp`, limits: PIDs, 2 CPU, 4 GB RAM, 5 GB disk (configurable). | Hardening checklist passes. |
 | 4.1.3 Session lifecycle | starting -> patching -> ready -> idle -> stopped -> destroyed. Idle timeout 30 min (snapshot then stop). One active session per user in local mode. | States are logged (`sandbox.session.*`). |
 | 4.1.4 Startup and health checks | Docker present and running; image present (or built by #2); clear errors. Startup target < 5 s. | Clear message when Docker is missing. |
-| 4.1.5 Sandbox cleanup | Destroy stopped sessions; remove orphan containers and networks on app start. | No leftovers after a crash. |
+| 4.1.5 Sandbox cleanup | Destroy stopped sessions. Remove a run volume when the run is submitted or deleted. Remove orphan containers, networks, and volumes on app start. | No leftovers after a crash. |
 
 ## Epic 4.2 — Workspace preparation
 
@@ -69,9 +70,9 @@ Save and restore the learner workspace.
 
 | Story | Description | Done when |
 |---|---|---|
-| 4.5.1 Workspace snapshots | Tar of changed files (editable + new) on submit, on idle stop, and every N minutes. | Snapshot saved and listed per run. |
-| 4.5.2 Resume a session | Fresh container -> apply patch -> remove traces -> restore snapshot -> lock again. | Learner continues where they stopped. |
-| 4.5.3 SnapshotStore interface | Local folder (local mode) or object storage (hosted). | Same code in both modes. |
+| 4.5.1 Host store and snapshots | The backend keeps a write-through copy of every editable and new file in the host store (`~/.cerberus/runs/<run>/files/`, content-addressed). Editor saves are copied on write; terminal changes arrive through agent file-watch events. Full snapshot on submit. | After the run volume is deleted, no saved edit is lost. |
+| 4.5.2 Resume a session | Fast path: new container on the same run volume. Slow path (volume lost): fresh container -> apply patch -> remove traces -> restore from the host store -> lock again. | Both paths work; the learner continues where they stopped. |
+| 4.5.3 SnapshotStore interface | Uses the #190 store interface: local folder (local mode) or object storage (hosted). | Same code in both modes. |
 
 ## Epic 4.6 — Throwaway test runs
 
@@ -79,7 +80,7 @@ Clean-copy test execution for the #3 validator and #6 grading.
 
 | Story | Description | Done when |
 |---|---|---|
-| 4.6.1 Clean-copy runner | Fresh container, `--network none` -> apply patches -> copy in only allowed editable files from a snapshot -> `run-tests` -> collect JUnit -> destroy. | Returns JUnit report, exit code, runtime. |
+| 4.6.1 Clean-copy runner | Fresh container, `--network none` -> apply patches -> copy in only allowed editable files from the host store -> `run-tests` -> collect JUnit -> destroy. | Returns JUnit report, exit code, runtime. |
 | 4.6.2 Test run modes | `baseline` (no patch), `patched`, `reversed`, `learner` (patch + learner edits). | All four modes work. |
 | 4.6.3 Test run limits and queue | One at a time locally; timeout (`run-tests` <= 120 s + overhead). | Queue and timeout are enforced. |
 
@@ -108,6 +109,7 @@ Placeholders for hosted mode.
 - Preview URL: `https://<port>-<run>.localhost`.
 - Default limits: 2 CPU, 4 GB RAM, 5 GB disk (configurable). Idle timeout 30 min.
 - Learners can create new files; grading ignores them.
+- Workspace on a named volume per run; the host store is the source of truth for learner work.
 - Local mode trusts the user; exam integrity checks belong to hosted mode (#7).
 - WorkerPool and stronger isolation are parked.
 
