@@ -25,6 +25,9 @@ Fixed vocabulary for logs and the knowledge graph. Add a term here before you us
 | Story | Buildable work item |
 | AuthoringSession | A session where an author creates an issue |
 | Review | A decision on an issue draft |
+| Session | One running dev box container |
+| Snapshot | A saved copy of changed workspace files |
+| Port | A listening port in a dev box |
 
 ## Verbs (predicates)
 
