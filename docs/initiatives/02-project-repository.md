@@ -23,6 +23,7 @@ projects/<name>/
 - **Servers bind to `0.0.0.0`**, not `127.0.0.1`. The preview proxy reaches the container over the network.
 - **Frontends call backends by a relative path** (`/api/...`) through the dev-server proxy (for example Vite `server.proxy`). Never `http://localhost:<port>`: in the browser, `localhost` is the user's machine, not the container.
 - `project.yaml` `preview_port` (optional) names the main app port. The preview opens it automatically.
+- `project.yaml` `grading_tests` (optional) lists held-out tests. The dev box does not have them; only grading runs them (#6).
 
 ---
 
@@ -38,11 +39,11 @@ projects/<name>/
 
 | Story | Description | Done when |
 |---|---|---|
-| 2.2.1 `project.yaml` schema | name, title, description, languages, **editable allow-list**, `readonly_extra` (optional), `test_report` glob, workdir, difficulty, tags, `preview_port` (optional) | JSON Schema in `tools/schema/` |
+| 2.2.1 `project.yaml` schema | name, title, description, languages, **editable allow-list**, `readonly_extra` (optional), `test_report` glob, workdir, difficulty, tags, `preview_port` (optional), `grading_tests` (optional held-out test patterns, #6.1.2) | JSON Schema in `tools/schema/` |
 | 2.2.2 `tasks.json` contract | Required labels **`run-project`** (compound allowed; no-op for libraries) and **`run-tests`** (JUnit XML, no network, ≤ 120 s, non-zero exit on failure). Prefix `cerberus-` is reserved. Other tasks are optional. Servers bind to `0.0.0.0`; frontends reach backends by relative path through the dev-server proxy | Validator enforces exact labels and the bind rule |
 | 2.2.3 Dockerfile rules | Project-owned; deps installed at build time (offline run); non-root user; `patch`, `ls`, `grep`, `find`, `cat` present; `.dockerignore` excludes `.git`; base pinned by digest; image ≤ 2 GB (warn > 1 GB); no secrets | Validator checks each rule |
 | 2.2.4 Default read-only patterns | Test files, test/build config, lock files, `Dockerfile`, `.vscode/**`, `project.yaml`, README. Editable = in `editable` and not read-only | List in `docs/project-contract.md` |
-| 2.2.5 Validator CLI | Static: files, schema, tasks, Dockerfile rules, secrets. Dynamic: build; `run-tests` passes 100 % with `--network none`, same result 3 times; `run-project` opens a port in 30 s **on `0.0.0.0`** (skip for libraries); tools present; non-root. Warning on `localhost:<port>` or `127.0.0.1:<port>` URLs in frontend source | `tools/validate projects/<name>` gives a pass/fail report with STE100 log lines |
+| 2.2.5 Validator CLI | Static: files, schema, tasks, Dockerfile rules, secrets. Dynamic: build; `run-tests` passes 100 % with `--network none`, same result 3 times; `run-project` opens a port in 30 s **on `0.0.0.0`** (skip for libraries); tools present; non-root. Warning on `localhost:<port>` or `127.0.0.1:<port>` URLs in frontend source. With `grading_tests`: `run-tests` passes with and without them, and its JUnit report includes them | `tools/validate projects/<name>` gives a pass/fail report with STE100 log lines |
 | 2.2.6 PR validation in CI | `validate.yml` runs the validator on PRs that touch `projects/**` | A broken project cannot merge |
 
 ## Epic 2.3 — Sync, build, and register (`ImageProvider`)

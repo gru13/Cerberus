@@ -35,7 +35,7 @@ Apply the patch, remove all traces, and lock read-only files.
 | Story | Description | Done when |
 |---|---|---|
 | 4.2.1 Apply patches | Apply run-package patches as root, in order. Fail the session with a clear error on reject. | Patched workspace ready. |
-| 4.2.2 Trace removal | Delete `.orig` / `.rej` / patch files; set one fixed mtime on all files; clear `__pycache__`, `*.pyc`, `.vite`, `.cache`, shell history; assert no `.git`. | Trace test finds nothing (`ls -lt`, `find -newer`, `.pyc`). |
+| 4.2.2 Trace removal | Delete `.orig` / `.rej` / patch files; remove `grading_tests` paths (#6.1.2); set one fixed mtime on all files; clear `__pycache__`, `*.pyc`, `.vite`, `.cache`, shell history; assert no `.git`. | Trace test finds nothing (`ls -lt`, `find -newer`, `.pyc`). |
 | 4.2.3 Read-only locks | Editable files owned by `runner`; others root-owned `444`; sticky bit on directories; matched against editable and read-only patterns. Learners may create new files (ignored by grading). | Learner cannot edit, delete, or rename a locked file. |
 | 4.2.4 Authoring workspace | Authoring sessions (#3): no patch, clean copy outside the workspace (`/opt/cerberus/clean`, agent-only) for diffs. | Diff API works in authoring mode. |
 
@@ -80,7 +80,7 @@ Clean-copy test execution for the #3 validator and #6 grading.
 
 | Story | Description | Done when |
 |---|---|---|
-| 4.6.1 Clean-copy runner | Fresh container, `--network none` -> apply patches -> copy in only allowed editable files from the host store -> `run-tests` -> collect JUnit -> destroy. | Returns JUnit report, exit code, runtime. |
+| 4.6.1 Clean-copy runner | Fresh container, `--network none` -> apply patches -> copy in only allowed editable files from the host store -> keep `grading_tests` (#6.1.2) -> `run-tests` -> collect JUnit -> destroy. | Returns JUnit report, exit code, runtime. |
 | 4.6.2 Test run modes | `baseline` (no patch), `patched`, `reversed`, `learner` (patch + learner edits). | All four modes work. |
 | 4.6.3 Test run limits and queue | One at a time locally; timeout (`run-tests` <= 120 s + overhead). | Queue and timeout are enforced. |
 
