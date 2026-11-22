@@ -1,6 +1,6 @@
 # Architecture
 
-One monorepo with three apps: `web/` (Next.js), `api/` (FastAPI), `agent/` (Rust). Local mode runs with `docker compose up`.
+One monorepo with three apps: `web/` (Next.js), `api/` (FastAPI), `agent/` (Rust). Local mode runs with `docker compose up` (services: db, api, worker, web, caddy, Docker socket proxy).
 
 ## Request path
 
@@ -10,7 +10,7 @@ Browser (web/)
   ▼
 Caddy (local HTTPS: app, *.localhost previews, MCP)
   ▼
-API (api/, FastAPI)  ── Postgres (cerberus-pg volume)
+API (api/, FastAPI) + worker  ── Postgres (data, job queue, EventBus; cerberus-pg volume)
   │  Unix socket, protocol/agent.v1.schema.json
   ▼
 Agent (agent/, Rust) inside each dev box container
@@ -23,7 +23,7 @@ The browser never talks to a container directly.
 ```
 Cerberus/
 ├── CLAUDE.md · README.md · LICENSE
-├── docker-compose.yml          # local mode: db + api + web + caddy
+├── docker-compose.yml          # local mode: db + api + worker + web + caddy + socket proxy
 ├── .env.example                # placeholders only
 ├── .githooks/                  # pre-commit, pre-push
 ├── .github/                    # workflows (linked-issue, ci-web, ci-api, ci-agent), CODEOWNERS, PR template
@@ -47,12 +47,14 @@ Cerberus/
 │   ├── migrations/             # Alembic
 │   ├── src/cerberus/
 │   │   ├── main.py · config.py
+│   │   ├── runs/               # #190 run orchestration (state machine)
 │   │   ├── platform/           # #190: db, providers, queue, realtime, events,
 │   │   │                       #     logging (STE100), secrets, store, recovery
 │   │   ├── projects/           # #2
 │   │   ├── issues/             # #3 (includes mcp/)
 │   │   ├── sandbox/            # #4 executor, workspace, testrun, preview proxy, agent client
-│   │   ├── tutor/              # #5 llm adapters, guardrails, tools, docs RAG
+│   │   ├── llm/                # #5 shared LLM layer: adapters, usage, budgets (used by tutor and issues)
+│   │   ├── tutor/              # #5 context, tools, guardrails, hints, docs
 │   │   ├── scoring/            # #6
 │   │   └── accounts/           # #7
 │   └── tests/
