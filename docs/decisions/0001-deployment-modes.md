@@ -30,7 +30,7 @@ CERBERUS_MODE=local | hosted
 ### Rules that apply from day one
 
 1. **Tenancy columns.** Every table has `org_id` and `user_id`. Local mode uses one default org and one default user.
-2. **Roles.** `learner` and `admin` exist from the start. The local user has both.
+2. **Roles.** `learner`, `author`, and `admin` exist from the start. The local user has all three. `author` can create and update issues; only `admin` (or the local user) approves them.
 3. **Same database.** Postgres in both modes. One migration set.
 4. **Logs.** Every log entry has `org_id` and `user_id` when known.
 5. **Mode checks.** Only the provider factories read `CERBERUS_MODE`. Other code uses the interfaces below.
