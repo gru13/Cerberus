@@ -2,7 +2,7 @@
 
 Debugging practice and exam platform: a web IDE loads a correct base project plus one versioned issue patch; the user fixes the bug; a guardrailed LLM tutor (user's own API key) helps with Socratic hints and documentation.
 
-Status: design phase. Agree each design topic with the user before writing code.
+Status: design complete; build not started. Design index: `docs/README.md`. Agree each design topic (and any change to it) with the user before writing code.
 
 ## Logging rules (mandatory for all code)
 
