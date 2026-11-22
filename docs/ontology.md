@@ -29,6 +29,7 @@ Fixed vocabulary for logs and the knowledge graph. Add a term here before you us
 | Snapshot | A saved copy of changed workspace files |
 | Port | A listening port in a dev box |
 | Volume | A Docker volume that holds one run workspace |
+| Job | A background task in the job queue |
 
 ## Verbs (predicates)
 
@@ -50,3 +51,4 @@ Fixed vocabulary for logs and the knowledge graph. Add a term here before you us
 | pushes | Agent pushes Repository |
 | moves | User moves Initiative to a status |
 | recovers | User recovers Run after a crash |
+| queues | API queues Job |

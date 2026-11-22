@@ -44,6 +44,8 @@ CERBERUS_MODE=local | hosted
 | `SandboxExecutor` | `LocalDocker` | `WorkerPool` |
 | `KeyProvider` | `UserKey` | `OrgKey` (with budget) |
 | `ContentSource` | single repo | list of repos |
+| `BlobStore` | `LocalFolder` | `ObjectStorage` |
+| `EventBus` | `PostgresBus` (LISTEN/NOTIFY) | `NatsBus` |
 
 ## Consequences
 
@@ -52,3 +54,7 @@ CERBERUS_MODE=local | hosted
 - Initiative #2: image build sits behind `ImageProvider`; registry is a parked story.
 - Initiative #7: covers both modes (auth, orgs, groups, roles, key policy, admin, exam assignment). To be discussed later.
 - A small cost now: every query filters by `org_id`.
+
+## Amendments
+
+- 2026-11-22: Added `BlobStore` (host store, snapshots) and `EventBus` (cross-process events) from initiative 8 (#190). No Kafka or other broker in local mode.
