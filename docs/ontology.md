@@ -31,6 +31,7 @@ Fixed vocabulary for logs and the knowledge graph. Add a term here before you us
 | Volume | A Docker volume that holds one run workspace |
 | Job | A background task in the job queue |
 | DocPack | Docs for one library version |
+| Result | One graded score of a Run |
 
 ## Verbs (predicates)
 
@@ -54,3 +55,4 @@ Fixed vocabulary for logs and the knowledge graph. Add a term here before you us
 | recovers | User recovers Run after a crash |
 | queues | API queues Job |
 | blocks | Guardrail blocks Hint |
+| flags | Grader flags Issue or Run |
