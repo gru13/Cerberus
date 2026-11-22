@@ -37,6 +37,12 @@ Status: design phase. Agree each design topic with the user before writing code.
 - Hierarchy: Initiative → Epic → Story (labels `initiative`, `epic`, `story`; epics are sub-issues of initiatives, stories of epics).
 - Status columns: Backlog → Designing → Designed → Building → Done.
 - Initiative details live in `docs/initiatives/` and in the issue body. Keep both in sync.
+
+## Guided work (label `guided`)
+
+- The owner builds `guided` stories personally to learn (now: the Rust in-container agent, Epic 4.3).
+- For these stories Claude is a guide: explain concepts, propose structure and crates, review code, point to docs, give small illustrative snippets.
+- Do not write the implementation, commit code, or open PRs for `guided` stories unless the owner explicitly asks.
 - Remote is HTTPS. On this machine, run git with `-c safe.directory=<repo path>` (NTFS mount).
 
 ## Git safety (mandatory)
