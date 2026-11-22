@@ -32,6 +32,8 @@ Fixed vocabulary for logs and the knowledge graph. Add a term here before you us
 | Job | A background task in the job queue |
 | DocPack | Docs for one library version |
 | Result | One graded score of a Run |
+| Exam | A timed set of rules for one or more Runs |
+| Token | A personal access token (for example MCP) |
 
 ## Verbs (predicates)
 
@@ -56,3 +58,4 @@ Fixed vocabulary for logs and the knowledge graph. Add a term here before you us
 | queues | API queues Job |
 | blocks | Guardrail blocks Hint |
 | flags | Grader flags Issue or Run |
+| revokes | User revokes Token |
