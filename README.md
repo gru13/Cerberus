@@ -2,11 +2,11 @@
 
 A debugging practice and exam platform.
 
-The user opens a web IDE (like VS Code). The IDE loads a correct base project with one injected bug. The user finds and fixes the bug. Hidden tests check the fix. An AI tutor helps with questions and documentation, but it does not give the fix.
+The user opens a web IDE (like VS Code). The IDE loads a correct base project with one injected bug. The user finds and fixes the bug. Tests check the fix: the project tests (visible, read-only) and optional held-out grading tests. An AI tutor helps with questions and documentation, but it does not give the fix.
 
 ## Status
 
-Design phase. No application code yet.
+Design phase. All 8 initiatives are designed (see `docs/initiatives/`). No application code yet.
 
 ## Key decisions
 
