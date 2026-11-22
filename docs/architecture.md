@@ -53,7 +53,8 @@ Cerberus/
 │   │   ├── projects/           # #2
 │   │   ├── issues/             # #3 (includes mcp/)
 │   │   ├── sandbox/            # #4 executor, workspace, testrun, preview proxy, agent client
-│   │   ├── tutor/              # #5 llm adapters, guardrails, tools, docs RAG
+│   │   ├── llm/                # #5 shared LLM layer: adapters, usage, budgets (used by tutor and issues)
+│   │   ├── tutor/              # #5 context, tools, guardrails, hints, docs
 │   │   ├── scoring/            # #6
 │   │   └── accounts/           # #7
 │   └── tests/
