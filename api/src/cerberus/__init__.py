@@ -1,4 +1,4 @@
-"""Cerberus platform API."""
+"""Intent: Expose the installed version of the cerberus package."""
 
 from importlib.metadata import PackageNotFoundError, version
 

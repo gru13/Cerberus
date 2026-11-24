@@ -1,3 +1,5 @@
+"""Intent: Test the `cerberus` command line interface."""
+
 import pytest
 from typer.testing import CliRunner
 
