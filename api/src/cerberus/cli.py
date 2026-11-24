@@ -1,4 +1,4 @@
-"""The `cerberus` command line interface."""
+"""Intent: Provide the `cerberus` command line interface (api, worker, migrate, doctor)."""
 
 import sys
 from typing import Annotated
@@ -18,6 +18,7 @@ MIN_PYTHON = (3, 13)
 
 
 def _version_callback(value: bool) -> None:
+    """Print the version and stop when `--version` is given."""
     if value:
         typer.echo(f"cerberus {__version__}")
         raise typer.Exit
@@ -52,6 +53,7 @@ def api(
 
 
 def _not_ready(command: str, story: str) -> None:
+    """Tell the user that a command does not exist yet, then exit with code 1."""
     typer.echo(f"The {command} command is not ready. Story {story} adds it.", err=True)
     raise typer.Exit(code=1)
 
@@ -70,7 +72,11 @@ def migrate() -> None:
 
 @app.command()
 def doctor() -> None:
-    """Check that this machine can run Cerberus."""
+    """Check that this machine can run Cerberus.
+
+    Functional: Prints PASS or FAIL per check and exits 1 when any check fails.
+    Technical: Checks the Python version and that the FastAPI app loads; later stories add checks.
+    """
     ok = True
     if sys.version_info[:2] >= MIN_PYTHON:
         typer.echo(f"PASS The Python version is {sys.version.split()[0]}.")
@@ -84,7 +90,8 @@ def doctor() -> None:
 
         create_app()
         typer.echo("PASS The API application loads.")
-    except Exception as exc:
+    # Why: doctor is a boundary; it must report any load failure instead of crashing.
+    except Exception as exc:  # noqa: BLE001
         ok = False
         typer.echo(f"FAIL The API application does not load: {type(exc).__name__}.")
     if not ok:

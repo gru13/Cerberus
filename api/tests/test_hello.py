@@ -1,3 +1,5 @@
+"""Intent: Test the hello endpoint, including its OpenAPI entry."""
+
 from fastapi.testclient import TestClient
 
 from cerberus import __version__

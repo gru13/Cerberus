@@ -43,6 +43,15 @@ Status: design complete; build not started. Design index: `docs/README.md`. Agre
 - Built by: when a story reaches Done, set `Built by` (Claude 100% / gru13 100% / gru13 + Claude) and `Claude %` (0–100, Claude's share of the code). gru13's stories are 0 unless Claude wrote part of the code. Also add a one-line "Built by" comment on the issue.
 - Initiative details live in `docs/initiatives/` and in the issue body. Keep both in sync.
 
+## Code style (mandatory)
+
+- Follow `docs/code-style.md` for all code. The short form:
+  - Every function has a full typed signature and a header: one summary line, then `Functional:` and `Technical:` lines (plus `Limits:`, `Errors:`, `Why:` when relevant). Functions of 3 lines or fewer need only the summary.
+  - One intent per file, stated on the first line (`Intent: ...`). Warn above 200 lines; above 300 lines, split or add `Why:`. Functions are at most 70 lines.
+  - Python: Pydantic v2 models for all structured data; errors subclass `CerberusError` with a fixed code and STE100 message; never raise built-in exceptions or catch broadly.
+  - Rust: `thiserror`, no `unwrap`/`expect`/`panic!` outside tests, `unsafe` forbidden.
+- Run the `api: check` task before every PR.
+
 ## Dev tasks (mandatory)
 
 - `.vscode/tasks.json` lists every developer command: CLI commands, checks, and scripts.

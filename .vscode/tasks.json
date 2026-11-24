@@ -80,10 +80,24 @@
       "problemMatcher": []
     },
     {
+      "label": "api: style-check",
+      "detail": "Project style rules: Intent lines, headers, size flags, 70-line functions, no built-in raises.",
+      "type": "shell",
+      "command": "uv run python scripts/style_check.py",
+      "problemMatcher": []
+    },
+    {
+      "label": "repo: outline",
+      "detail": "Map of the code: each file's Intent line and each function's summary line.",
+      "type": "shell",
+      "command": "uv run python scripts/style_check.py --outline src scripts",
+      "problemMatcher": []
+    },
+    {
       "label": "api: check",
-      "detail": "All CI checks in order: lint, format-check, typecheck, test.",
+      "detail": "All CI checks in order: lint, format-check, typecheck, style-check, test.",
       "dependsOrder": "sequence",
-      "dependsOn": ["api: lint", "api: format-check", "api: typecheck", "api: test"],
+      "dependsOn": ["api: lint", "api: format-check", "api: typecheck", "api: style-check", "api: test"],
       "group": { "kind": "build", "isDefault": true },
       "problemMatcher": []
     }
