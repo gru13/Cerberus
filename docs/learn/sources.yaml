@@ -1,44 +1,4024 @@
 version: 1
 stale_after_days: 90
 allowed_domains:
-  - doc.rust-lang.org
-  - docs.rs
-  - crates.io
-  - tokio.rs
-  - rust-lang.github.io
-  - docs.python.org
-  - peps.python.org
-  - docs.pydantic.dev
-  - fastapi.tiangolo.com
-  - www.starlette.io
-  - starlette.dev
-  - www.uvicorn.org
-  - docs.sqlalchemy.org
-  - alembic.sqlalchemy.org
-  - www.postgresql.org
-  - magicstack.github.io
-  - procrastinate.readthedocs.io
-  - websockets.readthedocs.io
-  - cryptography.io
-  - www.structlog.org
-  - docs.astral.sh
-  - docs.docker.com
-  - caddyserver.com
-  - man7.org
-  - docs.kernel.org
-  - www.kernel.org
-  - www.rfc-editor.org
-  - datatracker.ietf.org
-  - html.spec.whatwg.org
-  - websockets.spec.whatwg.org
-  - fetch.spec.whatwg.org
-  - www.w3.org
-  - json-schema.org
-  - csrc.nist.gov
-  - nvlpubs.nist.gov
-  - developer.mozilla.org
-  - cheatsheetseries.owasp.org
-  - owasp.org
-  - docs.github.com
-  - github.com
-concepts: []
+- doc.rust-lang.org
+- docs.rs
+- crates.io
+- tokio.rs
+- rust-lang.github.io
+- docs.python.org
+- peps.python.org
+- docs.pydantic.dev
+- fastapi.tiangolo.com
+- www.starlette.io
+- starlette.dev
+- www.uvicorn.org
+- docs.sqlalchemy.org
+- alembic.sqlalchemy.org
+- www.postgresql.org
+- magicstack.github.io
+- procrastinate.readthedocs.io
+- websockets.readthedocs.io
+- cryptography.io
+- www.structlog.org
+- docs.astral.sh
+- docs.docker.com
+- caddyserver.com
+- man7.org
+- docs.kernel.org
+- www.kernel.org
+- www.rfc-editor.org
+- datatracker.ietf.org
+- html.spec.whatwg.org
+- websockets.spec.whatwg.org
+- fetch.spec.whatwg.org
+- www.w3.org
+- json-schema.org
+- csrc.nist.gov
+- nvlpubs.nist.gov
+- developer.mozilla.org
+- cheatsheetseries.owasp.org
+- owasp.org
+- docs.github.com
+- github.com
+concepts:
+- id: sandbox.asyncio-timeout
+  title: asyncio.timeout
+  area: sandbox
+  stories:
+  - 4.6.3
+  phase: P1
+  keywords:
+  - asyncio.timeout
+  - TimeoutError
+  - wait_for
+  - cancellation
+  notes: 'asyncio.timeout is an async context manager added in Python 3.11.
+
+    At the deadline it cancels the task and raises TimeoutError.
+
+    Catch TimeoutError outside the async with block.
+
+    Code that swallows CancelledError breaks it.
+
+    '
+  sources:
+  - url: https://docs.python.org/3/library/asyncio-task.html
+    title: 'Coroutines and Tasks: Timeouts'
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15 docs
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.caddy-admin-api
+  title: Caddy admin API
+  area: sandbox
+  stories:
+  - 4.4.2
+  phase: P1
+  keywords:
+  - admin API
+  - POST /load
+  - /config/ path
+  - localhost:2019
+  notes: 'The admin endpoint listens on localhost:2019 by default.
+
+    POST /load replaces the whole config and rolls back on error.
+
+    /config/[path] reads or patches one part of the config.
+
+    Bind it to a Unix socket if untrusted code runs nearby.
+
+    '
+  sources:
+  - url: https://caddyserver.com/docs/api
+    title: API
+    kind: official-docs
+    publisher: Caddy project
+    version: Caddy 2.x docs, no version shown
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.caddy-forward-auth
+  title: Caddy forward_auth
+  area: sandbox
+  stories:
+  - 4.4.2
+  phase: P1
+  keywords:
+  - forward_auth
+  - copy_headers
+  - session token check
+  - auth gateway
+  notes: 'Caddy sends a copy of each request to an auth gateway.
+
+    A 2xx answer lets the request continue.
+
+    Any other answer goes back to the client.
+
+    copy_headers passes chosen gateway headers to the app.
+
+    '
+  sources:
+  - url: https://caddyserver.com/docs/caddyfile/directives/forward_auth
+    title: forward_auth (Caddyfile directive)
+    kind: official-docs
+    publisher: Caddy project
+    version: Caddy 2.x docs, no version shown
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.caddy-reverse-proxy
+  title: Caddy reverse_proxy
+  area: sandbox
+  stories:
+  - 4.4.2
+  phase: P1
+  keywords:
+  - reverse_proxy
+  - dynamic upstreams
+  - WebSocket upgrade
+  - SSRF
+  notes: 'The directive proxies requests to one or more backends.
+
+    Dynamic upstreams come from modules, for example A or SRV records.
+
+    WebSocket upgrades are tunneled both ways.
+
+    Map the upstream yourself. Do not trust the Host header.
+
+    '
+  sources:
+  - url: https://caddyserver.com/docs/caddyfile/directives/reverse_proxy
+    title: reverse_proxy (Caddyfile directive)
+    kind: official-docs
+    publisher: Caddy project
+    version: Caddy 2.11.x docs
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.caddy-stream-close-delay
+  title: Caddy stream_close_delay
+  area: sandbox
+  stories:
+  - 4.4.2
+  phase: P1
+  keywords:
+  - stream_close_delay
+  - config reload
+  - WebSocket close
+  - stream_timeout
+  notes: 'By default a config reload closes WebSocket connections.
+
+    stream_close_delay keeps them open for a set time.
+
+    The docs suggest a value such as 5m as a start.
+
+    This confirms the study guide pitfall about terminals.
+
+    '
+  sources:
+  - url: https://caddyserver.com/docs/caddyfile/directives/reverse_proxy
+    title: reverse_proxy (Caddyfile directive)
+    kind: official-docs
+    publisher: Caddy project
+    version: Caddy 2.11.x docs
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.capabilities
+  title: Linux capabilities
+  area: sandbox
+  stories:
+  - 4.1.2
+  - 4.2.2
+  phase: P1
+  keywords:
+  - CAP_CHOWN
+  - CAP_FOWNER
+  - CAP_DAC_OVERRIDE
+  - cap-drop
+  notes: 'Root power is split into separate switches.
+
+    CHOWN changes owners; FOWNER skips owner checks such as chmod and timestamps.
+
+    DAC_OVERRIDE skips file permission checks.
+
+    Dropping all caps removes these even for root.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/capabilities.7.html
+    title: capabilities(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.cgroup-v2-limits
+  title: cgroup v2 resource limits
+  area: sandbox
+  stories:
+  - 4.1.2
+  phase: P1
+  keywords:
+  - memory.max
+  - pids.max
+  - cpu.max
+  - memory.high
+  - OOM
+  notes: 'memory.max is a hard cap that can trigger the OOM killer.
+
+    memory.high only throttles.
+
+    pids.max makes fork fail with EAGAIN.
+
+    cpu.max holds quota and period in microseconds.
+
+    '
+  sources:
+  - url: https://docs.kernel.org/admin-guide/cgroup-v2.html
+    title: Control Group v2
+    kind: official-docs
+    publisher: The Linux kernel documentation
+    version: kernel docs (current)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.csp-frame-ancestors
+  title: CSP frame-ancestors
+  area: sandbox
+  stories:
+  - 4.4.2
+  phase: P1
+  keywords:
+  - frame-ancestors
+  - Content-Security-Policy
+  - X-Frame-Options
+  - clickjacking
+  notes: 'The directive says which parents may embed a page.
+
+    It replaces X-Frame-Options and does not fall back to default-src.
+
+    It works only as an HTTP header, not in a meta tag.
+
+    Set it so the IDE origin may frame the preview.
+
+    '
+  sources:
+  - url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/frame-ancestors
+    title: 'CSP: frame-ancestors'
+    kind: official-docs
+    publisher: MDN Web Docs (Mozilla)
+    version: CSP Level 3; MDN live docs
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.defusedxml
+  title: defusedxml for untrusted XML
+  area: sandbox
+  stories:
+  - 4.6.1
+  phase: P1
+  keywords:
+  - defusedxml
+  - XXE
+  - billion laughs
+  - JUnit XML
+  notes: 'defusedxml replaces stdlib XML parsers with hardened ones.
+
+    It covers entity expansion, external entities and DTD retrieval.
+
+    JUnit files come from learner code, so parse them with it.
+
+    The README shows the last release as 0.8.0.
+
+    '
+  sources:
+  - url: https://github.com/tiran/defusedxml/blob/main/README.md
+    title: defusedxml README
+    kind: project-repo
+    publisher: Christian Heimes (project maintainer)
+    version: 0.8.0 (latest changelog entry)
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.python.org/3/library/xml.html
+    title: 'XML Processing Modules: XML security'
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15 docs
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.docker-embedded-dns
+  title: Docker embedded DNS server
+  area: sandbox
+  stories:
+  - 4.4.1
+  phase: P1
+  keywords:
+  - 127.0.0.11
+  - embedded DNS
+  - container name resolution
+  - DNS forwarding
+  notes: 'User-defined networks use a DNS server at 127.0.0.11.
+
+    It resolves container names and aliases on that network.
+
+    It forwards other names to the host DNS servers.
+
+    Check whether an internal network still leaks names this way.
+
+    '
+  sources:
+  - url: https://docs.docker.com/engine/network/
+    title: Networking overview
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker Engine docs, no version shown
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.docker-internal-network
+  title: Docker internal networks
+  area: sandbox
+  stories:
+  - 4.4.1
+  phase: P1
+  keywords:
+  - --internal
+  - network create
+  - no default route
+  - isolation
+  notes: 'An internal network has no default route and no outside traffic.
+
+    Containers on it still reach each other and the gateway IP.
+
+    The host can reach every container IP directly.
+
+    Attach only the proxy, never the API or database.
+
+    '
+  sources:
+  - url: https://docs.docker.com/reference/cli/docker/network/create/
+    title: docker network create
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker Engine docs, no version shown
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.docker-network-none
+  title: Docker none network driver
+  area: sandbox
+  stories:
+  - 4.6.1
+  phase: P1
+  keywords:
+  - --network none
+  - loopback only
+  - network isolation
+  notes: 'With --network none the container has only a loopback interface.
+
+    It has no other network access.
+
+    Use it for the clean-copy test runner.
+
+    '
+  sources:
+  - url: https://docs.docker.com/engine/network/drivers/none/
+    title: None network driver
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker Engine docs, no version shown
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.docker-run-hardening-flags
+  title: docker run hardening flags
+  area: sandbox
+  stories:
+  - 4.1.2
+  phase: P1
+  keywords:
+  - --cap-drop
+  - no-new-privileges
+  - --read-only
+  - --pids-limit
+  - --tmpfs
+  - --user
+  notes: 'Flags combine to shrink what a container can do.
+
+    Drop caps, set no-new-privileges, make the rootfs read-only.
+
+    Add pids and memory limits and a non-root user.
+
+    Use tmpfs for the paths that must be writable.
+
+    '
+  sources:
+  - url: https://docs.docker.com/reference/cli/docker/container/run/
+    title: docker container run
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker Engine docs (current)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.docker-sdk-engine
+  title: Docker Engine API and SDKs
+  area: sandbox
+  stories:
+  - 4.1.2
+  - 4.6.1
+  phase: P1
+  keywords:
+  - Engine API
+  - SDK
+  - version negotiation
+  - docker-py
+  notes: 'The daemon exposes a REST API; official SDKs exist for Go and Python.
+
+    Pin or negotiate the API version in code.
+
+    The API is the way to start and limit containers from the platform.
+
+    '
+  sources:
+  - url: https://docs.docker.com/reference/api/engine/sdk/
+    title: Develop with Docker Engine SDKs
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker Engine docs (current)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.docker-volume-copyup
+  title: Docker volume copy-up
+  area: sandbox
+  stories:
+  - 4.1.2
+  - 4.5.2
+  phase: P1
+  keywords:
+  - named volume
+  - copy-up
+  - volume-nocopy
+  - mount over existing files
+  notes: 'An empty named volume gets the image files at the mount path on first use.
+
+    A non-empty volume hides existing files instead.
+
+    The volume-nocopy option stops the copy.
+
+    This affects shared code and socket volumes.
+
+    '
+  sources:
+  - url: https://docs.docker.com/engine/storage/volumes/
+    title: Volumes
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker Engine docs (current)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.execve-argv
+  title: execve with an argv array
+  area: sandbox
+  stories:
+  - 4.3.6
+  phase: P1
+  keywords:
+  - execve
+  - argv
+  - no shell
+  - E2BIG
+  - command injection
+  notes: 'execve takes the program, an argv array and an envp array.
+
+    Both arrays end with a null pointer.
+
+    No shell parses the strings, so no injection through them.
+
+    Total size is capped; too much gives E2BIG.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man2/execve.2.html
+    title: execve(2)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  - url: https://doc.rust-lang.org/std/process/struct.Command.html
+    title: std::process::Command
+    kind: api-reference
+    publisher: The Rust project
+    version: Rust 1.100.0
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.globset
+  title: globset glob matching
+  area: sandbox
+  stories:
+  - 4.3.2
+  - 4.2.3
+  phase: P1
+  keywords:
+  - glob
+  - globset
+  - literal_separator
+  - gitignore semantics
+  notes: 'globset matches paths against one glob or a set of globs.
+
+    It reports all matching patterns.
+
+    ** is valid only as a whole path component.
+
+    literal_separator controls whether * crosses slashes; this causes dialect mismatch with Python.
+
+    '
+  sources:
+  - url: https://docs.rs/globset/latest/globset/
+    title: globset
+    kind: api-reference
+    publisher: ripgrep project (BurntSushi)
+    version: globset 0.4.22
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.governor
+  title: governor rate limiter
+  area: sandbox
+  stories:
+  - 4.3.3
+  phase: P1
+  keywords:
+  - governor
+  - rate limit
+  - GCRA
+  - token check
+  notes: 'governor is a fast Rust rate limiting library.
+
+    It uses the Generic Cell Rate Algorithm.
+
+    The terminal listener can limit connection and message rates per key.
+
+    Pair it with token checks.
+
+    '
+  sources:
+  - url: https://docs.rs/governor/latest/governor/
+    title: governor
+    kind: api-reference
+    publisher: governor project
+    version: governor 0.10.4
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.grep-searcher
+  title: grep-searcher crate
+  area: sandbox
+  stories:
+  - 4.3.2
+  - 4.3.6
+  phase: P1
+  keywords:
+  - ripgrep internals
+  - grep-searcher
+  - grep-regex
+  - in-process search
+  notes: 'grep-searcher is ripgrep''s line-oriented search library.
+
+    It reads input, applies a matcher and sends results to a sink.
+
+    It pairs with grep-regex.
+
+    Using it avoids a subprocess and the risks of flags like --pre.
+
+    '
+  sources:
+  - url: https://docs.rs/grep-searcher/latest/grep_searcher/
+    title: grep_searcher
+    kind: api-reference
+    publisher: ripgrep project (BurntSushi)
+    version: grep-searcher 0.1.18
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.iframe-sandbox
+  title: iframe sandbox attribute
+  area: sandbox
+  stories:
+  - 4.4.2
+  phase: P1
+  keywords:
+  - iframe sandbox
+  - allow-scripts
+  - allow-same-origin
+  - separate origin
+  notes: 'An empty sandbox value applies all restrictions.
+
+    Tokens lift single restrictions, for example allow-scripts.
+
+    allow-scripts with allow-same-origin on same-origin content defeats the sandbox.
+
+    Serve untrusted content from a separate origin.
+
+    '
+  sources:
+  - url: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/iframe
+    title: '<iframe>: The Inline Frame element'
+    kind: official-docs
+    publisher: MDN Web Docs (Mozilla)
+    version: MDN live docs, no version shown
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.inode-timestamps
+  title: Inode timestamps
+  area: sandbox
+  stories:
+  - 4.2.2
+  phase: P1
+  keywords:
+  - atime
+  - mtime
+  - ctime
+  - stat
+  - trace removal
+  notes: 'Each inode holds atime, mtime and ctime.
+
+    ctime changes on any metadata change such as chmod or chown.
+
+    So ctime can show that a file was touched later.
+
+    Writing a file also updates mtime.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/inode.7.html
+    title: inode(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.inotify
+  title: inotify and IN_Q_OVERFLOW
+  area: sandbox
+  stories:
+  - 4.3.2
+  phase: P1
+  keywords:
+  - inotify
+  - IN_Q_OVERFLOW
+  - max_user_watches
+  - file watch
+  notes: 'inotify reports file events through a queue.
+
+    If the queue overflows, an IN_Q_OVERFLOW event arrives and events are lost, so rescan.
+
+    max_user_watches limits watches per user.
+
+    Rename produces paired events.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/inotify.7.html
+    title: inotify(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.jsonc-parsing
+  title: Parsing JSON with comments
+  area: sandbox
+  stories:
+  - 4.3.4
+  phase: P1
+  keywords:
+  - jsonc
+  - comments
+  - tasks.json
+  - jsonc-parser
+  notes: 'The task file allows comments and may end lists with commas.
+
+    Plain JSON parsers reject such files.
+
+    The jsonc-parser crate accepts comments by default; a flag turns that off.
+
+    Pick strictness on purpose.
+
+    '
+  sources:
+  - url: https://docs.rs/jsonc-parser/latest/jsonc_parser/
+    title: jsonc_parser
+    kind: api-reference
+    publisher: dprint (docs.rs)
+    version: jsonc-parser 0.34.0
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.length-delimited-codec
+  title: LengthDelimitedCodec framing
+  area: sandbox
+  stories:
+  - 4.3.1
+  phase: P1
+  keywords:
+  - framing
+  - length prefix
+  - tokio-util codec
+  - max frame length
+  notes: 'Length-delimited framing turns a byte stream into whole frames.
+
+    Each frame has a length prefix, so readers need no manual buffering.
+
+    Set a maximum frame length to reject oversized input.
+
+    Combine with serde for the agent protocol.
+
+    '
+  sources:
+  - url: https://docs.rs/tokio-util/latest/tokio_util/codec/length_delimited/index.html
+    title: tokio_util::codec::length_delimited
+    kind: api-reference
+    publisher: Tokio project
+    version: tokio-util 0.7.20
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.notify-crate
+  title: notify crate and debouncer
+  area: sandbox
+  stories:
+  - 4.3.2
+  phase: P1
+  keywords:
+  - notify
+  - file watcher
+  - debouncer
+  - rename events
+  notes: 'notify is the cross-platform file watcher crate.
+
+    notify-debouncer-full groups bursts, joins rename chains and drops duplicate events.
+
+    The page lists platform limits, such as inotify watch counts.
+
+    Exclude big dirs like node_modules.
+
+    '
+  sources:
+  - url: https://docs.rs/notify/latest/notify/
+    title: notify
+    kind: api-reference
+    publisher: notify-rs project
+    version: notify 9.0.0
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.rs/notify-debouncer-full/latest/notify_debouncer_full/
+    title: notify_debouncer_full
+    kind: api-reference
+    publisher: notify-rs project
+    version: notify-debouncer-full 0.8.0
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.openat2
+  title: openat2 and RESOLVE_BENEATH
+  area: sandbox
+  stories:
+  - 4.3.2
+  phase: P1
+  keywords:
+  - path traversal
+  - symlink escape
+  - RESOLVE_BENEATH
+  - RESOLVE_NO_SYMLINKS
+  notes: 'openat2 opens a path relative to a directory fd with resolve flags.
+
+    RESOLVE_BENEATH blocks any escape from that directory, including absolute symlinks.
+
+    RESOLVE_NO_SYMLINKS rejects symlinks in every component.
+
+    The call dates from Linux 5.6.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man2/openat2.2.html
+    title: openat2(2)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.pid1-zombie-reaping
+  title: PID 1 duties and docker --init
+  area: sandbox
+  stories:
+  - 4.3.1
+  phase: P1
+  keywords:
+  - PID 1
+  - zombie
+  - docker run --init
+  - signal handling
+  notes: 'A container''s first process acts as init.
+
+    It must reap exited children, or zombies pile up, and handle signals.
+
+    docker run --init puts a small init at PID 1 to do this.
+
+    The agent can use it or implement reaping itself.
+
+    '
+  sources:
+  - url: https://docs.docker.com/reference/cli/docker/container/run/
+    title: docker container run
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker docs (current)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.portable-pty
+  title: portable-pty crate
+  area: sandbox
+  stories:
+  - 4.3.3
+  phase: P1
+  keywords:
+  - portable-pty
+  - PTY
+  - spawn_blocking
+  - cross-platform
+  notes: 'portable-pty offers traits for PTY work across platforms.
+
+    The docs page does not say if I/O blocks; the guide says it does, so test it.
+
+    Wrap its readers and writers in spawn_blocking.
+
+    Alternatives are pty-process and AsyncFd.
+
+    '
+  sources:
+  - url: https://docs.rs/portable-pty/latest/portable_pty/
+    title: portable_pty
+    kind: api-reference
+    publisher: WezTerm project
+    version: portable-pty 0.9.0
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.proc-net-tcp
+  title: /proc/net/tcp socket table
+  area: sandbox
+  stories:
+  - 4.3.5
+  phase: P1
+  keywords:
+  - listening ports
+  - proc net tcp
+  - hex address
+  - socket inode
+  notes: 'The file lists TCP sockets, listeners first.
+
+    Addresses and ports are in hex.
+
+    A two-digit hex state code marks listen or established.
+
+    The inode column links a socket to the owning process.
+
+    The kernel page marks the file as deprecated.
+
+    '
+  sources:
+  - url: https://docs.kernel.org/networking/proc_net_tcp.html
+    title: The proc/net/tcp and proc/net/tcp6 variables
+    kind: official-docs
+    publisher: The Linux kernel documentation
+    version: kernel docs (current)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.proc-status-fields
+  title: /proc/PID/status fields
+  area: sandbox
+  stories:
+  - 4.1.2
+  phase: P1
+  keywords:
+  - CapEff
+  - CapBnd
+  - NoNewPrivs
+  - Seccomp
+  - verify hardening
+  notes: 'Shows capability masks: CapEff, CapPrm, CapBnd and others.
+
+    Seccomp field: 0 off, 1 strict, 2 filter.
+
+    NoNewPrivs shows the no_new_privs bit.
+
+    Use it to check a hardened container from inside.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man5/proc_pid_status.5.html
+    title: proc_pid_status(5)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.process-groups-killpg
+  title: Process groups and killpg
+  area: sandbox
+  stories:
+  - 4.3.3
+  - 4.3.4
+  phase: P1
+  keywords:
+  - killpg
+  - process group
+  - SIGTERM
+  - SIGKILL
+  notes: 'killpg sends a signal to every process in a group.
+
+    On Linux it calls kill with a negated group id.
+
+    Start each task in its own group, send SIGTERM, then SIGKILL after a grace period.
+
+    This stops orphaned dev servers.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man3/killpg.3.html
+    title: killpg(3)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.procfs-crate
+  title: procfs crate for port detection
+  area: sandbox
+  stories:
+  - 4.3.5
+  phase: P1
+  keywords:
+  - procfs
+  - TcpNetEntry
+  - net::tcp
+  - Linux /proc
+  notes: 'Rust crate that reads /proc as typed data.
+
+    The net module has tcp() and tcp6() with TcpNetEntry rows.
+
+    This avoids hand parsing of the text tables.
+
+    Linux only.
+
+    '
+  sources:
+  - url: https://docs.rs/procfs/latest/procfs/net/index.html
+    title: procfs::net
+    kind: api-reference
+    publisher: procfs crate (docs.rs)
+    version: procfs 0.18.0
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.rs/procfs/latest/procfs/
+    title: procfs
+    kind: api-reference
+    publisher: procfs crate (docs.rs)
+    version: procfs 0.18.0
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.procrastinate-queues-locks
+  title: Procrastinate queues and locks
+  area: sandbox
+  stories:
+  - 4.6.3
+  - 8.5.2
+  phase: P1
+  keywords:
+  - procrastinate
+  - lock
+  - queue
+  - lock_mode
+  notes: 'Jobs with the same lock never run at the same time.
+
+    The default ordered mode also keeps lock order.
+
+    If no worker reads a queue, jobs on the same lock stay blocked.
+
+    mutex mode does not fix that blocked-queue case.
+
+    '
+  sources:
+  - url: https://procrastinate.readthedocs.io/en/stable/howto/advanced/locks.html
+    title: Use locks
+    kind: official-docs
+    publisher: Procrastinate project
+    version: stable docs, no version shown
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.protected-links-sysctl
+  title: fs.protected_hardlinks and protected_symlinks
+  area: sandbox
+  stories:
+  - 4.2.3
+  phase: P1
+  keywords:
+  - protected_hardlinks
+  - protected_symlinks
+  - sysctl
+  - TOCTOU
+  notes: 'Both are host sysctls under /proc/sys/fs.
+
+    protected_hardlinks stops links to files the user does not own or access.
+
+    protected_symlinks limits following links in sticky world-writable directories.
+
+    A container cannot set them. The host kernel decides.
+
+    '
+  sources:
+  - url: https://docs.kernel.org/admin-guide/sysctl/fs.html
+    title: Documentation for /proc/sys/fs
+    kind: official-docs
+    publisher: The Linux Kernel documentation
+    version: Linux 7.4.0-rc4 docs
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.pty-session
+  title: pseudoterminals (pty(7))
+  area: sandbox
+  stories:
+  - 4.3.3
+  phase: P1
+  keywords:
+  - pty
+  - master slave
+  - terminal
+  - session
+  notes: 'A pseudoterminal is a linked master and slave device pair.
+
+    The slave acts like a terminal; the program on the master drives it.
+
+    The agent holds the master and runs bash on the slave.
+
+    Session setup uses setsid and a controlling terminal.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/pty.7.html
+    title: pty(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.pyc-files
+  title: pyc cache files and source mtime
+  area: sandbox
+  stories:
+  - 4.2.2
+  phase: P1
+  keywords:
+  - pyc
+  - __pycache__
+  - bytecode cache
+  - source mtime
+  notes: 'The pyc header stores the source mtime and size by default.
+
+    Python compares them with the source before it loads the cache.
+
+    Hash-based pyc files exist and do not use mtime.
+
+    Remove __pycache__ to avoid leaking patched file times.
+
+    '
+  sources:
+  - url: https://docs.python.org/3/reference/import.html
+    title: 'The import system: cached bytecode invalidation'
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2
+    primary: true
+    checked: 2026-11-24
+  - url: https://peps.python.org/pep-0552/
+    title: PEP 552 - Deterministic pycs
+    kind: spec
+    publisher: Python Software Foundation
+    version: Final
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.python-pathspec
+  title: pathspec gitignore matching
+  area: sandbox
+  stories:
+  - 4.2.3
+  - 4.3.2
+  phase: P1
+  keywords:
+  - pathspec
+  - gitignore
+  - glob patterns
+  - GitIgnoreSpec
+  notes: 'The pathspec library matches paths with gitignore-style patterns.
+
+    PathSpec follows the documented rules. GitIgnoreSpec copies real git behavior.
+
+    Use match_file or match_files to test paths.
+
+    The Python side must agree with Rust globset.
+
+    '
+  sources:
+  - url: https://github.com/cpburnz/python-pathspec
+    title: python-pathspec
+    kind: project-repo
+    publisher: cpburnz (project maintainer)
+    version: README, no version shown
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.python-tarfile
+  title: tarfile extraction filters
+  area: sandbox
+  stories:
+  - 4.6.1
+  phase: P1
+  keywords:
+  - tarfile
+  - extractall filter
+  - data filter
+  - path traversal
+  notes: 'The data filter blocks absolute paths and paths outside the target.
+
+    It blocks links that point outside and device files.
+
+    Python 3.14 made data the default filter.
+
+    Filters do not stop disk or memory exhaustion. Extract to a fresh directory.
+
+    '
+  sources:
+  - url: https://docs.python.org/3/library/tarfile.html
+    title: tarfile - Read and write tar archive files
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.rename-atomic
+  title: rename(2) atomic replace
+  area: sandbox
+  stories:
+  - 4.3.2
+  phase: P1
+  keywords:
+  - atomic write
+  - rename
+  - EXDEV
+  - temp file
+  notes: 'rename atomically replaces the target, so readers never see it missing.
+
+    Source and target must be on one filesystem, or it fails with EXDEV.
+
+    The new inode is owned by the writer, which affects lock invariants.
+
+    Write a temp file, fsync, then rename.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man2/rename.2.html
+    title: rename(2)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.rustix
+  title: rustix syscall bindings
+  area: sandbox
+  stories:
+  - 4.3.1
+  - 4.3.2
+  phase: P1
+  keywords:
+  - rustix
+  - syscalls
+  - safe bindings
+  - POSIX
+  notes: 'rustix gives safe Rust wrappers for POSIX, Unix and Linux syscalls.
+
+    It can replace nix for peercred, signals and openat2.
+
+    It avoids libc in its default backend.
+
+    Check feature flags for each module.
+
+    '
+  sources:
+  - url: https://docs.rs/rustix/latest/rustix/
+    title: rustix
+    kind: api-reference
+    publisher: Bytecode Alliance
+    version: rustix 1.1.6
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.seccomp
+  title: seccomp syscall filtering
+  area: sandbox
+  stories:
+  - 4.1.2
+  phase: P1
+  keywords:
+  - seccomp-bpf
+  - syscall filter
+  - no_new_privs
+  - default profile
+  notes: 'Seccomp limits which system calls a thread may make.
+
+    Filter mode uses a BPF program that can check arguments.
+
+    A filter needs no_new_privs or CAP_SYS_ADMIN.
+
+    Docker applies a default profile; a custom one comes via --security-opt.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man2/seccomp.2.html
+    title: seccomp(2)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.docker.com/engine/security/seccomp/
+    title: Seccomp security profiles for Docker
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker Engine docs (current)
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.setrlimit
+  title: setrlimit resource limits
+  area: sandbox
+  stories:
+  - 4.3.6
+  phase: P1
+  keywords:
+  - RLIMIT_NPROC
+  - RLIMIT_AS
+  - RLIMIT_FSIZE
+  - RLIMIT_CPU
+  - prlimit
+  notes: 'Each limit has a soft value and a hard cap.
+
+    NPROC makes fork fail with EAGAIN; root and some capabilities are exempt.
+
+    FSIZE sends SIGXFSZ; CPU sends SIGXCPU, then SIGKILL at the hard limit.
+
+    AS makes memory calls fail with ENOMEM.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man2/setrlimit.2.html
+    title: getrlimit(2)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.shell-command-capture
+  title: Capturing command output
+  area: sandbox
+  stories:
+  - 4.3.7
+  phase: P1
+  keywords:
+  - stdout stderr capture
+  - Command::output
+  - Stdio
+  - exit status
+  notes: 'output() waits and captures stdout and stderr.
+
+    spawn() returns a handle and inherits stdio by default.
+
+    A non-zero exit is not an Err; read the status.
+
+    No shell is used unless you start one.
+
+    '
+  sources:
+  - url: https://doc.rust-lang.org/std/process/struct.Command.html
+    title: std::process::Command
+    kind: api-reference
+    publisher: The Rust project
+    version: Rust 1.100.0
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.rs/tokio/latest/tokio/process/index.html
+    title: tokio::process
+    kind: api-reference
+    publisher: Tokio project (docs.rs)
+    version: tokio 1.54.1
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.sock-diag
+  title: sock_diag netlink socket query
+  area: sandbox
+  stories:
+  - 4.3.5
+  phase: P1
+  keywords:
+  - sock_diag
+  - netlink
+  - socket listing
+  - ss
+  notes: 'A netlink interface to ask the kernel about sockets.
+
+    It covers UNIX, IPv4 and IPv6 sockets.
+
+    It is an alternative to parsing /proc/net/tcp.
+
+    The ss tool uses it.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/sock_diag.7.html
+    title: sock_diag(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.sticky-bit-permissions
+  title: Sticky bit and file permissions
+  area: sandbox
+  stories:
+  - 4.2.3
+  phase: P1
+  keywords:
+  - sticky bit
+  - S_ISVTX
+  - delete rename
+  - directory owner
+  notes: 'On a directory the sticky bit limits delete and rename.
+
+    Only the file owner, the directory owner, or a privileged process may do it.
+
+    So a root-owned sticky directory protects root-owned locked files.
+
+    A runner-owned directory breaks this protection.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/inode.7.html
+    title: inode(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.thiserror
+  title: thiserror derive macro
+  area: sandbox
+  stories:
+  - 4.3.1
+  phase: P1
+  keywords:
+  - thiserror
+  - Error derive
+  - error enum
+  - Rust errors
+  notes: 'thiserror derives std::error::Error for an enum or struct.
+
+    It removes the Display and From boilerplate.
+
+    The project style requires it in Rust, with no unwrap or panic.
+
+    One enum per module keeps error codes fixed.
+
+    '
+  sources:
+  - url: https://docs.rs/thiserror/latest/thiserror/
+    title: thiserror
+    kind: api-reference
+    publisher: David Tolnay
+    version: thiserror 2.0.21
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.tokio-asyncfd
+  title: tokio AsyncFd
+  area: sandbox
+  stories:
+  - 4.3.3
+  phase: P1
+  keywords:
+  - AsyncFd
+  - readiness
+  - clear_ready
+  - raw fd
+  notes: 'AsyncFd registers a raw Unix fd with Tokio''s reactor.
+
+    Tasks can then await read or write readiness.
+
+    After WouldBlock, clear only the readiness that blocked.
+
+    Use it with nix::pty master fds.
+
+    '
+  sources:
+  - url: https://docs.rs/tokio/latest/tokio/io/unix/struct.AsyncFd.html
+    title: AsyncFd in tokio::io::unix
+    kind: api-reference
+    publisher: Tokio project
+    version: tokio 1.54.1
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.tokio-mpsc-bounded
+  title: Bounded tokio mpsc channel
+  area: sandbox
+  stories:
+  - 4.3.7
+  phase: P1
+  keywords:
+  - mpsc
+  - backpressure
+  - bounded channel
+  - event stream
+  notes: 'Multi-producer, single-consumer queue between tasks.
+
+    A bounded channel makes senders wait when full.
+
+    This gives backpressure for the event stream.
+
+    Use blocking_send from sync code.
+
+    '
+  sources:
+  - url: https://docs.rs/tokio/latest/tokio/sync/mpsc/index.html
+    title: tokio::sync::mpsc
+    kind: api-reference
+    publisher: Tokio project (docs.rs)
+    version: tokio 1.54.1
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.tokio-process
+  title: tokio::process for agent tasks
+  area: sandbox
+  stories:
+  - 4.3.4
+  phase: P1
+  keywords:
+  - tokio process
+  - kill_on_drop
+  - zombie
+  - Child
+  notes: 'Async wrapper over std Command for spawning tasks.
+
+    A dropped Child keeps running unless kill_on_drop is set.
+
+    Tokio reaps finished children only on a best-effort basis.
+
+    Await the child to the end for strict cleanup.
+
+    '
+  sources:
+  - url: https://docs.rs/tokio/latest/tokio/process/index.html
+    title: tokio::process
+    kind: api-reference
+    publisher: Tokio project (docs.rs)
+    version: tokio 1.54.1
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.tokio-select-cancel
+  title: tokio select! and cancellation
+  area: sandbox
+  stories:
+  - 4.3.1
+  phase: P1
+  keywords:
+  - select!
+  - cancellation safety
+  - CancellationToken
+  - shutdown
+  notes: 'select! waits on several futures and drops the losers.
+
+    A dropped branch can lose partial work, so branches must be cancellation safe.
+
+    mpsc recv is safe; read_exact and write_all are not.
+
+    Use it for the agent''s accept loop and shutdown.
+
+    '
+  sources:
+  - url: https://docs.rs/tokio/latest/tokio/macro.select.html
+    title: select in tokio
+    kind: api-reference
+    publisher: Tokio project
+    version: tokio 1.54.1
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.tokio-spawn-blocking
+  title: tokio spawn_blocking
+  area: sandbox
+  stories:
+  - 4.3.3
+  phase: P1
+  keywords:
+  - spawn_blocking
+  - blocking thread pool
+  - abort
+  - runtime shutdown
+  notes: 'spawn_blocking runs a closure on a dedicated thread pool.
+
+    It keeps blocking calls off the async executor.
+
+    Abort has no effect once the closure runs.
+
+    Runtime shutdown waits for started blocking tasks.
+
+    '
+  sources:
+  - url: https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html
+    title: spawn_blocking in tokio::task
+    kind: api-reference
+    publisher: Tokio project
+    version: tokio 1.54.1
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.tokio-unixlistener
+  title: tokio UnixListener
+  area: sandbox
+  stories:
+  - 4.3.1
+  phase: P1
+  keywords:
+  - UnixListener
+  - unix socket
+  - bind
+  - accept
+  - stale socket
+  notes: 'Tokio''s UnixListener binds a socket path and accepts UnixStream connections.
+
+    A leftover socket file makes bind fail, so the agent removes it first (an OS rule, not stated on this
+    page).
+
+    The agent serves its protocol on one socket path.
+
+    '
+  sources:
+  - url: https://docs.rs/tokio/latest/tokio/net/struct.UnixListener.html
+    title: UnixListener in tokio::net
+    kind: api-reference
+    publisher: Tokio project
+    version: tokio 1.54.1
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.tracing-json
+  title: tracing-subscriber JSON output
+  area: sandbox
+  stories:
+  - 4.3.1
+  phase: P1
+  keywords:
+  - tracing
+  - JSON lines
+  - structured logs
+  - tracing-subscriber
+  notes: 'tracing-subscriber''s Json formatter prints one JSON object per line.
+
+    It fits the project''s structured log rule.
+
+    Fields from events become JSON keys.
+
+    Custom fields such as event and subject go in as event fields.
+
+    '
+  sources:
+  - url: https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/struct.Json.html
+    title: Json in tracing_subscriber::fmt::format
+    kind: api-reference
+    publisher: Tokio project
+    version: tracing-subscriber 0.3.23
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.unix-socket-peercred
+  title: SO_PEERCRED and unix(7) sockets
+  area: sandbox
+  stories:
+  - 4.3.1
+  - 8.4.2
+  phase: P1
+  keywords:
+  - SO_PEERCRED
+  - ucred
+  - sun_path
+  - peer credentials
+  notes: 'SO_PEERCRED returns pid, uid and gid of the peer on a connected unix stream socket.
+
+    The agent can check who connects.
+
+    The values are those at connect or listen time.
+
+    Linux sun_path holds 108 bytes, so keep the socket path short.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/unix.7.html
+    title: unix(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.userns-rootless
+  title: User namespaces and rootless Docker
+  area: sandbox
+  stories:
+  - 4.1.2
+  phase: P1
+  keywords:
+  - user namespace
+  - uid_map
+  - rootless
+  - subuid
+  notes: 'A user namespace maps inner IDs to outer IDs; inner root is unprivileged outside.
+
+    uid_map lines hold inner start, outer start and length.
+
+    Rootless Docker runs the daemon as a normal user.
+
+    It needs newuidmap and subordinate ID ranges.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/user_namespaces.7.html
+    title: user_namespaces(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.docker.com/engine/security/rootless/
+    title: Rootless mode
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker Engine docs (current)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.utimensat
+  title: utimensat sets file times
+  area: sandbox
+  stories:
+  - 4.2.2
+  phase: P1
+  keywords:
+  - utimensat
+  - UTIME_OMIT
+  - UTIME_NOW
+  - AT_SYMLINK_NOFOLLOW
+  - ctime
+  notes: 'Sets atime and mtime with nanosecond precision.
+
+    Explicit times need ownership or privilege; write access is not enough.
+
+    UTIME_NOW and UTIME_OMIT are special nanosecond values.
+
+    The call always sets ctime to now.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man2/utimensat.2.html
+    title: utimensat(2)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: realtime.asyncio-future-timeouts
+  title: Futures, cancellation and timeouts in asyncio
+  area: realtime
+  stories:
+  - 8.4.2
+  phase: P1
+  keywords:
+  - Future
+  - set_exception
+  - cancel
+  - asyncio.timeout
+  - wait_for
+  - pending requests
+  notes: 'A request map holds one Future per request id; the reader task resolves them.
+
+    On disconnect, call set_exception on each pending Future so no caller hangs.
+
+    Check cancelled() before set_result, or an InvalidStateError can occur.
+
+    asyncio.timeout bounds a block; wait_for bounds one awaitable and cancels it.
+
+    '
+  sources:
+  - url: https://docs.python.org/3/library/asyncio-future.html
+    title: asyncio Future
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.python.org/3/library/asyncio-task.html
+    title: Coroutines and Tasks (timeout, wait_for)
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: realtime.asyncio-queue-bounded
+  title: Bounded asyncio.Queue
+  area: realtime
+  stories:
+  - 8.4.1
+  phase: P1
+  keywords:
+  - maxsize
+  - QueueFull
+  - put_nowait
+  - backpressure
+  - slow consumer
+  notes: 'With maxsize above zero, await put() waits until a slot is free.
+
+    put_nowait raises QueueFull instead, which lets the server detect a slow consumer.
+
+    On QueueFull, drop the client or force a resync so memory stays flat.
+
+    '
+  sources:
+  - url: https://docs.python.org/3/library/asyncio-queue.html
+    title: asyncio Queues
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: realtime.asyncio-unix-connection
+  title: asyncio.open_unix_connection
+  area: realtime
+  stories:
+  - 8.4.2
+  phase: P1
+  keywords:
+  - Unix socket
+  - StreamReader
+  - StreamWriter
+  - limit
+  - sun_path
+  notes: 'The coroutine returns a (reader, writer) pair for a Unix domain socket.
+
+    The limit argument sets the reader buffer size; the default is 64 KiB.
+
+    It is available on Unix only.
+
+    Socket path length limits come from the OS, not asyncio (see unix(7)).
+
+    '
+  sources:
+  - url: https://docs.python.org/3/library/asyncio-stream.html
+    title: asyncio Streams
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: realtime.asyncpg-add-listener
+  title: asyncpg add_listener
+  area: realtime
+  stories:
+  - 8.4.4
+  phase: P1
+  keywords:
+  - asyncpg
+  - add_listener
+  - notification callback
+  - pool
+  notes: 'add_listener(channel, callback) registers a callback on one connection.
+
+    The callback gets connection, pid, channel and payload.
+
+    Releasing a connection to a pool removes its listeners, so use a dedicated connection.
+
+    '
+  sources:
+  - url: https://magicstack.github.io/asyncpg/current/api/index.html
+    title: asyncpg API Reference (Connection.add_listener)
+    kind: api-reference
+    publisher: MagicStack
+    version: asyncpg docs, changelog to 0.32.0
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: realtime.caddy-flush-interval
+  title: Caddy reverse_proxy flush_interval
+  area: realtime
+  stories:
+  - 8.4.3
+  phase: P1
+  keywords:
+  - flush_interval
+  - '-1'
+  - buffering
+  - stream_close_delay
+  - stream_timeout
+  notes: 'A negative flush_interval (usually -1) turns off response buffering.
+
+    Caddy then flushes after every write, which suits streaming and terminals.
+
+    The same page covers stream_timeout and stream_close_delay for config reloads.
+
+    The page does not describe flush_interval for WebSockets; test it.
+
+    '
+  sources:
+  - url: https://caddyserver.com/docs/caddyfile/directives/reverse_proxy
+    title: reverse_proxy (Caddyfile directive)
+    kind: official-docs
+    publisher: Caddy
+    version: unversioned (current docs)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: realtime.origin-check-websocket
+  title: Origin check on the WebSocket upgrade
+  area: realtime
+  stories:
+  - 8.4.1
+  - 8.1.5
+  phase: P0
+  keywords:
+  - CSWSH
+  - Origin header
+  - cross-site WebSocket hijacking
+  - '403'
+  - allowlist
+  notes: 'Browsers send cookies on the upgrade, so any site can open a socket as the user.
+
+    The server must compare Origin to an explicit allowlist and refuse with 403.
+
+    Avoid wildcards and substring matching; compare whole origins.
+
+    Origin does not stop non-browser clients, so keep real auth as well.
+
+    '
+  sources:
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/WebSocket_Security_Cheat_Sheet.html
+    title: WebSocket Security Cheat Sheet
+    kind: official-docs
+    publisher: OWASP Cheat Sheet Series
+    version: unversioned (current)
+    primary: true
+    checked: 2026-11-24
+  - url: https://www.rfc-editor.org/rfc/rfc6455.html#section-10.2
+    title: RFC 6455 section 10.2, Origin Considerations
+    kind: spec
+    publisher: IETF
+    version: RFC 6455 (December 2011)
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: realtime.pg-listen
+  title: PostgreSQL LISTEN
+  area: realtime
+  stories:
+  - 8.4.4
+  phase: P1
+  keywords:
+  - LISTEN
+  - UNLISTEN
+  - session scope
+  - channel
+  notes: 'LISTEN registers the current session on a channel.
+
+    Registration ends with the session, so a new connection must listen again.
+
+    Events sent while no session listens are not kept; catch up by id.
+
+    LISTEN takes effect at commit of its transaction.
+
+    '
+  sources:
+  - url: https://www.postgresql.org/docs/current/sql-listen.html
+    title: LISTEN
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: realtime.pg-notify
+  title: PostgreSQL NOTIFY
+  area: realtime
+  stories:
+  - 8.4.4
+  phase: P1
+  keywords:
+  - NOTIFY
+  - pg_notify
+  - payload limit
+  - queue
+  - commit delivery
+  notes: 'Notifications deliver only at commit; a rollback discards them.
+
+    The payload must be under 8000 bytes by default; send an id and fetch the row.
+
+    The queue is shared and finite; a full queue makes NOTIFY commits fail.
+
+    Check pg_notification_queue_usage() to watch it.
+
+    '
+  sources:
+  - url: https://www.postgresql.org/docs/current/sql-notify.html
+    title: NOTIFY
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: realtime.pg-terminate-backend
+  title: pg_terminate_backend
+  area: realtime
+  stories:
+  - 8.4.4
+  phase: P1
+  keywords:
+  - pg_terminate_backend
+  - pg_stat_activity
+  - fault injection
+  - pg_signal_backend
+  notes: 'The function ends the session of a given backend pid.
+
+    It needs superuser or the pg_signal_backend role, or membership of the target role.
+
+    Use it in tests to kill the listener connection and check reconnect and catch-up.
+
+    An optional timeout waits until the process exits.
+
+    '
+  sources:
+  - url: https://www.postgresql.org/docs/current/functions-admin.html
+    title: System Administration Functions (pg_terminate_backend)
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: realtime.pg-transaction-visibility
+  title: Commit order and transaction visibility in PostgreSQL
+  area: realtime
+  stories:
+  - 8.4.1
+  phase: P1
+  keywords:
+  - xid8
+  - pg_current_xact_id
+  - pg_snapshot_xmin
+  - snapshot
+  - safe horizon
+  - MVCC
+  notes: 'A row is visible only after its transaction commits, in any id order.
+
+    A reader that saw id N+1 can miss id N if N commits later.
+
+    pg_current_xact_id gives a 64-bit transaction id; xmin of a snapshot marks a safe horizon.
+
+    Read only events from transactions older than that horizon to avoid gaps.
+
+    '
+  sources:
+  - url: https://www.postgresql.org/docs/current/functions-info.html
+    title: System Information Functions (pg_current_xact_id, snapshots)
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19
+    primary: true
+    checked: 2026-11-24
+  - url: https://www.postgresql.org/docs/current/mvcc.html
+    title: Concurrency Control (MVCC)
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: realtime.starlette-websocket
+  title: Starlette and FastAPI WebSocket endpoints
+  area: realtime
+  stories:
+  - 8.4.1
+  phase: P1
+  keywords:
+  - WebSocket
+  - accept
+  - WebSocketDisconnect
+  - receive
+  - send
+  notes: 'The WebSocket class gives accept, send, receive and close for one connection.
+
+    A client close raises WebSocketDisconnect on receive, so catch it to clean up.
+
+    FastAPI re-exports the Starlette class and adds route decorators.
+
+    A per-process connection list does not scale across processes; a bus is needed.
+
+    '
+  sources:
+  - url: https://starlette.dev/websockets/
+    title: WebSockets - Starlette
+    kind: official-docs
+    publisher: Starlette
+    version: unversioned (current docs)
+    primary: true
+    checked: 2026-11-24
+  - url: https://fastapi.tiangolo.com/advanced/websockets/
+    title: WebSockets - FastAPI
+    kind: official-docs
+    publisher: FastAPI
+    version: unversioned (current docs)
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: realtime.tcp-nodelay
+  title: TCP_NODELAY
+  area: realtime
+  stories:
+  - 8.4.3
+  phase: P1
+  keywords:
+  - Nagle
+  - TCP_NODELAY
+  - latency
+  - small writes
+  notes: 'The option turns off Nagle''s algorithm so small writes go out at once.
+
+    Interactive streams such as terminals need this for low keystroke latency.
+
+    Set it with setsockopt at the IPPROTO_TCP level.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/tcp.7.html
+    title: tcp(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19 (2026-04-19)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: realtime.uuid-v7
+  title: UUID version 7
+  area: realtime
+  stories:
+  - 8.4.1
+  phase: P1
+  keywords:
+  - UUIDv7
+  - time-ordered id
+  - monotonic
+  - RFC 9562
+  notes: 'UUIDv7 puts a 48-bit millisecond timestamp first, then random bits.
+
+    Ids sort by creation time, which helps index locality.
+
+    Creation order is not commit order, so do not use it alone for resume.
+
+    Same-millisecond ids need a counter or sub-millisecond bits for monotonic order.
+
+    '
+  sources:
+  - url: https://www.rfc-editor.org/rfc/rfc9562.html
+    title: Universally Unique IDentifiers (UUIDs)
+    kind: spec
+    publisher: IETF
+    version: RFC 9562 (May 2024)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: realtime.websocket-ping-pong
+  title: WebSocket ping and pong control frames
+  area: realtime
+  stories:
+  - 8.4.1
+  phase: P1
+  keywords:
+  - heartbeat
+  - ping
+  - pong
+  - half-open TCP
+  - control frame
+  notes: 'Ping and pong are control frames; a pong must echo the ping payload.
+
+    Either side may ping at any time to test that the peer is alive.
+
+    A missing pong within a deadline means a dead or half-open link; close it.
+
+    Browsers cannot send protocol pings, so an app-level message may be needed.
+
+    '
+  sources:
+  - url: https://www.rfc-editor.org/rfc/rfc6455.html
+    title: The WebSocket Protocol (sections 5.5.2 and 5.5.3)
+    kind: spec
+    publisher: IETF
+    version: RFC 6455 (December 2011)
+    primary: true
+    checked: 2026-11-24
+  - url: https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers
+    title: Writing WebSocket servers
+    kind: official-docs
+    publisher: MDN Web Docs
+    version: unversioned (current)
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: persistence.asyncio-tasks-timers
+  title: asyncio tasks and timers
+  area: persistence
+  stories:
+  - 8.8.2
+  phase: P1
+  keywords:
+  - create_task
+  - TaskGroup
+  - timers
+  - task reference
+  notes: 'create_task schedules a coroutine as a Task.
+
+    Keep a reference to each task, or the loop may drop it early.
+
+    Cancel pending timers and tasks on shutdown.
+
+    '
+  sources:
+  - url: https://docs.python.org/3/library/asyncio-task.html
+    title: Coroutines and Tasks
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: persistence.durable-write-fsync
+  title: 'Durable writes: fsync and atomic rename'
+  area: persistence
+  stories:
+  - 8.8.1
+  phase: P1
+  keywords:
+  - fsync
+  - rename
+  - durability
+  - directory fsync
+  notes: 'Write a temp file, fsync it, rename it, then fsync the directory.
+
+    fsync on a file does not make its directory entry durable.
+
+    rename replaces the target in one atomic step.
+
+    The save response waits until this sequence ends.
+
+    '
+  sources:
+  - url: https://man7.org/linux/man-pages/man2/fsync.2.html
+    title: fsync(2)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  - url: https://man7.org/linux/man-pages/man2/rename.2.html
+    title: rename(2)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: persistence.http-etag-if-match
+  title: HTTP ETag and If-Match
+  area: persistence
+  stories:
+  - 8.8.3
+  phase: P1
+  keywords:
+  - ETag
+  - If-Match
+  - '412'
+  - '409'
+  - precondition
+  notes: 'An ETag names one version of a resource.
+
+    If-Match makes a write apply only when the ETag still matches.
+
+    A failed precondition returns 412; this project plans 409 with server version.
+
+    '
+  sources:
+  - url: https://www.rfc-editor.org/rfc/rfc9110.html
+    title: 'RFC 9110: HTTP Semantics'
+    kind: spec
+    publisher: IETF
+    version: RFC 9110 (June 2022)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: persistence.optimistic-compare-and-swap
+  title: Optimistic concurrency with compare-and-swap
+  area: persistence
+  stories:
+  - 8.8.3
+  phase: P1
+  keywords:
+  - compare-and-swap
+  - base_hash
+  - UPDATE WHERE
+  - read committed
+  notes: 'UPDATE ... WHERE hash = base changes the row only if no one else did.
+
+    Under Read Committed a waiting UPDATE re-checks its WHERE after the other commit.
+
+    Zero rows updated means a conflict.
+
+    Same new hash as the server has means replay, not conflict.
+
+    '
+  sources:
+  - url: https://www.postgresql.org/docs/current/transaction-iso.html
+    title: Transaction Isolation
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: persistence.pg-advisory-locks
+  title: PostgreSQL advisory locks
+  area: persistence
+  stories:
+  - 8.5.2
+  - 8.8.4
+  phase: P1
+  keywords:
+  - advisory lock
+  - pg_advisory_xact_lock
+  - mutual exclusion
+  notes: 'Application-defined locks that the server does not enforce itself.
+
+    Session level locks last until release or disconnect.
+
+    Transaction level locks end at commit or rollback, which is safer.
+
+    Pick a stable key scheme, such as a hash of run id.
+
+    '
+  sources:
+  - url: https://www.postgresql.org/docs/current/explicit-locking.html
+    title: Explicit Locking (advisory locks)
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: persistence.problem-json
+  title: Problem Details for HTTP APIs
+  area: persistence
+  stories:
+  - 8.8.3
+  phase: P1
+  keywords:
+  - application/problem+json
+  - RFC 9457
+  - error format
+  notes: 'A standard JSON shape for API errors: type, title, status, detail, instance.
+
+    Extra members can carry data, such as the server version.
+
+    RFC 9457 replaces RFC 7807.
+
+    '
+  sources:
+  - url: https://www.rfc-editor.org/rfc/rfc9457.html
+    title: 'RFC 9457: Problem Details for HTTP APIs'
+    kind: spec
+    publisher: IETF
+    version: RFC 9457 (July 2023)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: persistence.procrastinate-retry
+  title: Procrastinate retry strategy
+  area: persistence
+  stories:
+  - 8.5.2
+  phase: P1
+  keywords:
+  - RetryStrategy
+  - max attempts
+  - backoff
+  notes: 'A task can retry a set number of times or use a RetryStrategy object.
+
+    Custom retry logic can decide per exception.
+
+    Failed jobs can also be retried by hand.
+
+    Do not build a second lease system beside this one.
+
+    '
+  sources:
+  - url: https://procrastinate.readthedocs.io/en/stable/howto/advanced/retry.html
+    title: Define a retry strategy on a task
+    kind: official-docs
+    publisher: Procrastinate project
+    version: stable (no version number shown)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: persistence.python-hashlib
+  title: Python hashlib
+  area: persistence
+  stories:
+  - 8.8.1
+  phase: P1
+  keywords:
+  - hashlib
+  - sha256
+  - file_digest
+  notes: 'hashlib.sha256 gives a hash object with update and hexdigest.
+
+    file_digest hashes a binary file object (Python 3.11+).
+
+    Hash large files in chunks and use a thread for blocking I/O.
+
+    '
+  sources:
+  - url: https://docs.python.org/3/library/hashlib.html
+    title: hashlib - Secure hashes and message digests
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: persistence.sha256-content-addressing
+  title: SHA-256 and content addressing
+  area: persistence
+  stories:
+  - 8.8.1
+  phase: P1
+  keywords:
+  - SHA-256
+  - content addressing
+  - dedupe
+  - blob store
+  notes: 'SHA-256 is a standard hash that gives a fixed-size digest.
+
+    The digest of the bytes names the blob, so equal files share one blob.
+
+    Same files give the same hash, which makes snapshots deterministic.
+
+    Hash the raw bytes, not decoded text.
+
+    '
+  sources:
+  - url: https://csrc.nist.gov/pubs/fips/180-4/upd1/final
+    title: FIPS 180-4, Secure Hash Standard (SHS)
+    kind: spec
+    publisher: NIST
+    version: FIPS 180-4 (August 2015)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: persistence.skip-locked
+  title: SELECT FOR UPDATE SKIP LOCKED
+  area: persistence
+  stories:
+  - 8.5.2
+  phase: P1
+  keywords:
+  - SKIP LOCKED
+  - job queue
+  - reaper
+  notes: 'Rows that another transaction holds locked are skipped, not waited on.
+
+    Several workers can claim different rows without blocking each other.
+
+    The result is not a consistent view, so use it for queues only.
+
+    A reaper can use it to requeue expired leases safely.
+
+    '
+  sources:
+  - url: https://www.postgresql.org/docs/current/sql-select.html
+    title: SELECT, locking clause
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: persistence.sqlalchemy-async
+  title: SQLAlchemy asyncio extension
+  area: persistence
+  stories:
+  - 8.8.1
+  - 8.8.3
+  phase: P1
+  keywords:
+  - AsyncSession
+  - create_async_engine
+  - asyncpg
+  notes: 'Core and ORM work through AsyncEngine and AsyncSession.
+
+    Lazy loading does not work in async code, so load data explicitly.
+
+    One AsyncSession must not be shared between concurrent tasks.
+
+    '
+  sources:
+  - url: https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html
+    title: Asynchronous I/O (asyncio)
+    kind: official-docs
+    publisher: SQLAlchemy project
+    version: SQLAlchemy 2.0.58
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: persistence.sqlalchemy-for-update
+  title: SQLAlchemy with_for_update
+  area: persistence
+  stories:
+  - 8.8.1
+  - 8.8.3
+  phase: P1
+  keywords:
+  - with_for_update
+  - row lock
+  - skip_locked
+  notes: 'with_for_update adds FOR UPDATE to a SELECT.
+
+    Options such as of, nowait and skip_locked change the lock behavior.
+
+    Use it to serialize writers per (run, path) row.
+
+    '
+  sources:
+  - url: https://docs.sqlalchemy.org/en/20/core/selectable.html#sqlalchemy.sql.expression.GenerativeSelect.with_for_update
+    title: GenerativeSelect.with_for_update
+    kind: api-reference
+    publisher: SQLAlchemy project
+    version: SQLAlchemy 2.0.58
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.sqlalchemy.org/en/20/orm/queryguide/query.html
+    title: Legacy Query API
+    kind: api-reference
+    publisher: SQLAlchemy project
+    version: SQLAlchemy 2.0.58
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: persistence.trailing-debounce
+  title: Trailing-edge debounce
+  area: persistence
+  stories:
+  - 8.8.2
+  phase: P1
+  keywords:
+  - debounce
+  - coalescing
+  - call_later
+  - per-path timer
+  notes: 'Each new event for a path cancels the old timer and starts a new one.
+
+    The fetch runs once, after the path is quiet.
+
+    Keep one timer per path.
+
+    Implement it with loop.call_later and TimerHandle.cancel.
+
+    '
+  sources:
+  - url: https://docs.python.org/3/library/asyncio-eventloop.html
+    title: 'Event Loop: call_later'
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.alembic-migrations
+  title: Alembic migrations
+  area: security
+  stories:
+  - 8.2.2
+  phase: P0
+  keywords:
+  - alembic
+  - revision
+  - alembic_version
+  - migration
+  notes: 'Alembic runs versioned revision scripts against the database.
+
+    It keeps its own alembic_version table, which has no org_id.
+
+    Keep that table on the allow-list in the schema test.
+
+    Migrations also create the RLS policies and roles.
+
+    '
+  sources:
+  - url: https://alembic.sqlalchemy.org/en/latest/tutorial.html
+    title: Tutorial - Alembic
+    kind: official-docs
+    publisher: SQLAlchemy project (Alembic)
+    version: Alembic 1.20.1
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.asgi-middleware
+  title: Pure ASGI middleware and scope types
+  area: security
+  stories:
+  - 8.1.5
+  phase: P0
+  keywords:
+  - asgi
+  - scope type
+  - websocket scope
+  - middleware
+  notes: 'A pure ASGI middleware sees http and websocket scopes in one place.
+
+    Check scope["type"] to run logic for one kind only.
+
+    This lets one Origin or CSRF check cover WebSocket handshakes.
+
+    The guide notes CORSMiddleware does not block these.
+
+    '
+  sources:
+  - &id002
+    url: https://starlette.dev/middleware/
+    title: Middleware - Starlette
+    kind: official-docs
+    publisher: Starlette project
+    version: version not shown (current docs)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.constant-time-compare
+  title: Constant-time comparison
+  area: security
+  stories:
+  - 8.7.4
+  - 4.3.3
+  phase: P1
+  keywords:
+  - compare_digest
+  - timing attack
+  - constant time
+  notes: 'Plain == can leak how many leading bytes match.
+
+    hmac.compare_digest compares in a way meant to resist timing attacks.
+
+    Use it to check signatures and token hashes.
+
+    The secrets module re-exports the same function.
+
+    '
+  sources:
+  - &id001
+    url: https://docs.python.org/3/library/hmac.html
+    title: hmac - Keyed-Hashing for Message Authentication
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.python.org/3/library/secrets.html
+    title: secrets - Generate secure random numbers
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.csrf-defenses
+  title: CSRF defenses
+  area: security
+  stories:
+  - 8.1.5
+  phase: P0
+  keywords:
+  - csrf
+  - double-submit cookie
+  - synchronizer token
+  - origin check
+  notes: 'Cookie-authenticated writes need a CSRF defense even with SameSite set.
+
+    The sheet prefers Sec-Fetch-Site first, with an Origin check as fallback.
+
+    It prefers signed double-submit over the naive form.
+
+    A missing or null Origin must not count as same-origin.
+
+    '
+  sources:
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html
+    title: Cross-Site Request Forgery Prevention Cheat Sheet
+    kind: official-docs
+    publisher: OWASP Cheat Sheet Series
+    version: undated (current)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.cswsh
+  title: Cross-site WebSocket hijacking
+  area: security
+  stories:
+  - 8.1.5
+  - 8.4.1
+  phase: P0
+  keywords:
+  - cswsh
+  - websocket origin
+  - handshake
+  notes: 'Browsers attach cookies to WebSocket handshakes from any site.
+
+    A hostile page can then open an authenticated socket.
+
+    The server must validate Origin on every handshake and reject with 403.
+
+    RFC 6455 says a server that skips the check accepts all origins.
+
+    '
+  sources:
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/WebSocket_Security_Cheat_Sheet.html
+    title: WebSocket Security Cheat Sheet
+    kind: official-docs
+    publisher: OWASP Cheat Sheet Series
+    version: undated (current)
+    primary: true
+    checked: 2026-11-24
+  - url: https://www.rfc-editor.org/rfc/rfc6455
+    title: 'RFC 6455: The WebSocket Protocol'
+    kind: spec
+    publisher: IETF
+    version: RFC 6455 (Dec 2011)
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.dns-rebinding
+  title: DNS rebinding and Host allow-list
+  area: security
+  stories:
+  - 8.1.5
+  phase: P0
+  keywords:
+  - dns rebinding
+  - host header
+  - loopback
+  notes: 'A hostile site can re-point its DNS name at 127.0.0.1 and then call a local API from the browser.
+
+    Domain checks done once at lookup time do not stop this.
+
+    The fix is to validate the Host header on every request against a fixed list.
+
+    The SSRF sheet states the limit of name-only allow-lists.
+
+    '
+  sources:
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html
+    title: Server-Side Request Forgery Prevention Cheat Sheet
+    kind: official-docs
+    publisher: OWASP Cheat Sheet Series
+    version: undated (current)
+    primary: true
+    checked: 2026-11-24
+  - url: https://starlette.dev/middleware/
+    title: Middleware - Starlette (TrustedHostMiddleware)
+    kind: official-docs
+    publisher: Starlette project
+    version: version not shown (current docs)
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.docker-engine-api-create
+  title: Docker Engine API container create
+  area: security
+  stories:
+  - 8.10.2
+  phase: P0
+  keywords:
+  - containers/create
+  - hostconfig
+  - api version prefix
+  notes: 'The create call takes a HostConfig body with the risky fields.
+
+    The spec defines Privileged, Binds, CapAdd, NetworkMode and PidMode.
+
+    A body-checking proxy must read these fields.
+
+    Paths carry a version prefix such as /v1.47/.
+
+    '
+  sources:
+  - url: https://docs.docker.com/reference/api/engine/version/v1.47.yaml
+    title: Docker Engine API v1.47 OpenAPI spec
+    kind: api-reference
+    publisher: Docker Inc.
+    version: API 1.47
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.docker.com/reference/api/engine/version/v1.47/
+    title: Docker Engine API v1.47 reference
+    kind: api-reference
+    publisher: Docker Inc.
+    version: API 1.47
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.docker-image-inspect
+  title: docker image inspect
+  area: security
+  stories:
+  - 2.2.3
+  - 8.10.4
+  phase: P0
+  keywords:
+  - image inspect
+  - format
+  - image size
+  notes: 'The command prints detailed JSON for one or more images.
+
+    Use --format with a Go template to pick fields.
+
+    The page does not name a Size field; check the output yourself.
+
+    Use it for the image size limit.
+
+    '
+  sources:
+  - url: https://docs.docker.com/reference/cli/docker/image/inspect/
+    title: docker image inspect
+    kind: man-page
+    publisher: Docker Inc.
+    version: current (undated)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.docker-privileged-binds
+  title: Privileged containers and host binds
+  area: security
+  stories:
+  - 8.10.2
+  phase: P0
+  keywords:
+  - privileged
+  - binds
+  - host mount
+  - capabilities
+  notes: 'Mounting the host root into a container lets it change the host filesystem freely.
+
+    Privileged adds all kernel capabilities.
+
+    Validate every create request if an API makes containers.
+
+    Drop all capabilities and add back only needed ones.
+
+    '
+  sources:
+  - url: https://docs.docker.com/engine/security/
+    title: Docker Engine security
+    kind: official-docs
+    publisher: Docker Inc.
+    version: current (undated)
+    primary: true
+    checked: 2026-11-24
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html
+    title: Docker Security Cheat Sheet
+    kind: official-docs
+    publisher: OWASP Cheat Sheet Series
+    version: undated (current)
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.docker-socket-proxy
+  title: Docker socket proxy
+  area: security
+  stories:
+  - 8.10.2
+  phase: P0
+  keywords:
+  - docker.sock
+  - socket proxy
+  - haproxy
+  - '403'
+  notes: 'The Tecnativa proxy exposes only chosen API sections through environment switches.
+
+    Blocked requests get 403.
+
+    It filters by section, not by request body.
+
+    The docker.sock grants root-equivalent control, per OWASP.
+
+    '
+  sources:
+  - url: https://github.com/Tecnativa/docker-socket-proxy
+    title: Tecnativa/docker-socket-proxy
+    kind: project-repo
+    publisher: Tecnativa
+    version: no release listed; images :lts, :latest, :3.4; API 1.27-1.51
+    primary: true
+    checked: 2026-11-24
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html
+    title: Docker Security Cheat Sheet
+    kind: official-docs
+    publisher: OWASP Cheat Sheet Series
+    version: undated (current)
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.dockerfile-multistage-digest
+  title: Multi-stage builds and digest pinning
+  area: security
+  stories:
+  - 2.2.3
+  phase: P0
+  keywords:
+  - multi-stage
+  - digest pin
+  - base image
+  - final stage
+  notes: 'Tags are mutable; a digest fixes the exact image.
+
+    Pinning stops automatic security fixes, so plan digest updates.
+
+    Multi-stage builds keep build tools out of the final image.
+
+    Check every FROM and the final USER.
+
+    '
+  sources:
+  - url: https://docs.docker.com/build/building/best-practices/
+    title: Building best practices
+    kind: official-docs
+    publisher: Docker Inc.
+    version: current (undated)
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.docker.com/build/building/multi-stage/
+    title: Multi-stage builds
+    kind: official-docs
+    publisher: Docker Inc.
+    version: current (undated)
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.dockerfile-parse
+  title: dockerfile-parse library
+  area: security
+  stories:
+  - 2.2.3
+  phase: P0
+  keywords:
+  - dockerfile-parse
+  - dockerfile ast
+  - python
+  notes: 'A Python library that parses Dockerfile files into instructions.
+
+    Use it to walk each FROM, ARG, ENV and USER.
+
+    The page shows no release number; pin the PyPI version yourself.
+
+    Hadolint is an optional extra linter.
+
+    '
+  sources:
+  - url: https://github.com/containerbuildsystem/dockerfile-parse
+    title: containerbuildsystem/dockerfile-parse
+    kind: project-repo
+    publisher: containerbuildsystem
+    version: no release listed on repo page
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.dockerfile-reference
+  title: Dockerfile reference
+  area: security
+  stories:
+  - 2.2.3
+  phase: P0
+  keywords:
+  - from
+  - arg
+  - user
+  - add
+  - env
+  notes: 'The reference defines every instruction the validator must parse.
+
+    FROM can use ARG values and names stages.
+
+    USER sets the default user for later steps and runtime.
+
+    ADD accepts URLs, and ENV values persist in the image.
+
+    '
+  sources:
+  - url: https://docs.docker.com/reference/dockerfile/
+    title: Dockerfile reference
+    kind: official-docs
+    publisher: Docker Inc.
+    version: current (undated)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.dockerignore
+  title: dockerignore
+  area: security
+  stories:
+  - 2.2.3
+  phase: P0
+  keywords:
+  - dockerignore
+  - build context
+  - .git
+  notes: 'The file sits in the build context root.
+
+    Matching paths are removed before the context goes to the builder.
+
+    Syntax is glob-like, with ! for exceptions; the last match wins.
+
+    A rule should exclude .git.
+
+    '
+  sources:
+  - url: https://docs.docker.com/build/concepts/context/
+    title: Build context (.dockerignore)
+    kind: official-docs
+    publisher: Docker Inc.
+    version: current (undated)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.hadolint
+  title: Hadolint
+  area: security
+  stories:
+  - 2.2.3
+  phase: P0
+  keywords:
+  - hadolint
+  - dockerfile linter
+  - shellcheck
+  notes: 'Hadolint lints Dockerfiles against best practices.
+
+    It also checks shell code inside RUN steps.
+
+    Use it as an extra linter beside the custom rules.
+
+    It is written in Haskell and runs as a binary or container.
+
+    '
+  sources:
+  - url: https://github.com/hadolint/hadolint
+    title: hadolint/hadolint
+    kind: project-repo
+    publisher: Hadolint project
+    version: no release listed on repo page
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.hmac-signed-tokens
+  title: HMAC-signed tokens
+  area: security
+  stories:
+  - 8.7.4
+  - 4.3.3
+  phase: P1
+  keywords:
+  - hmac
+  - signed token
+  - expiry
+  - single use
+  notes: 'HMAC binds a message to a secret key, so the server can verify its own tokens.
+
+    Put run id, user id and expiry in the signed message.
+
+    Pair with a jti and an atomic consume for single use.
+
+    Use a digest name explicitly; digestmod is required.
+
+    '
+  sources:
+  - *id001
+  - url: https://www.rfc-editor.org/rfc/rfc2104
+    title: 'RFC 2104: HMAC'
+    kind: spec
+    publisher: IETF
+    version: RFC 2104 (Feb 1997)
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.hyper-unix-socket
+  title: hyper over a Unix socket
+  area: security
+  stories:
+  - 8.10.2
+  phase: P0
+  keywords:
+  - hyperlocal
+  - hyper-util
+  - unix domain socket
+  notes: 'hyperlocal links hyper to Unix domain sockets for clients and servers.
+
+    hyper-util holds helper pieces and is less stable than hyper.
+
+    This is the base for a Rust proxy to the Docker socket.
+
+    Check crate versions against your hyper major version.
+
+    '
+  sources:
+  - url: https://docs.rs/hyperlocal/latest/hyperlocal/
+    title: hyperlocal
+    kind: api-reference
+    publisher: docs.rs (hyperlocal crate)
+    version: hyperlocal 0.9.1
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.rs/hyper-util/latest/hyper_util/
+    title: hyper-util
+    kind: api-reference
+    publisher: docs.rs (hyper-util crate)
+    version: hyper-util 0.1.21
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.jwt-jti
+  title: JWT ID (jti) claim
+  area: security
+  stories:
+  - 8.7.4
+  phase: P1
+  keywords:
+  - jti
+  - replay
+  - jwt
+  - registered claim
+  notes: 'jti is an optional registered claim that gives a token a unique id.
+
+    It can help stop a token from being replayed.
+
+    Store used jti values and consume each one once.
+
+    Ids must make accidental duplicates extremely unlikely.
+
+    '
+  sources:
+  - url: https://www.rfc-editor.org/rfc/rfc7519
+    title: 'RFC 7519: JSON Web Token (JWT)'
+    kind: spec
+    publisher: IETF
+    version: RFC 7519 (May 2015)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.postgres-rls
+  title: PostgreSQL row-level security
+  area: security
+  stories:
+  - 8.2.2
+  phase: P0
+  keywords:
+  - rls
+  - force row level security
+  - policy
+  - table owner
+  notes: 'Policies filter rows per role, as a second layer under app filters.
+
+    Table owners bypass policies unless FORCE ROW LEVEL SECURITY is set.
+
+    Use an app role that is not the owner.
+
+    A per-transaction setting can carry the org id.
+
+    '
+  sources:
+  - url: https://www.postgresql.org/docs/current/ddl-rowsecurity.html
+    title: Row Security Policies
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19 (current)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.python-contextvars
+  title: contextvars and asyncio
+  area: security
+  stories:
+  - 8.2.2
+  phase: P0
+  keywords:
+  - contextvar
+  - copy_context
+  - asyncio task
+  - tenant context
+  notes: 'ContextVar holds per-request state such as the current tenant.
+
+    asyncio supports it natively; tasks copy the context when created.
+
+    A background job has no request context, so set it explicitly.
+
+    Fail closed when the variable is unset.
+
+    '
+  sources:
+  - url: https://docs.python.org/3/library/contextvars.html
+    title: contextvars - Context Variables
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.python-secrets
+  title: Python secrets module
+  area: security
+  stories:
+  - 8.7.4
+  phase: P1
+  keywords:
+  - secrets
+  - token_urlsafe
+  - csprng
+  notes: 'secrets draws from the OS source of randomness and suits tokens.
+
+    token_urlsafe(n) returns n random bytes in URL-safe base64.
+
+    Do not use the random module for tokens.
+
+    It also offers compare_digest.
+
+    '
+  sources:
+  - url: https://docs.python.org/3/library/secrets.html
+    title: secrets - Generate secure random numbers
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.samesite-cookies
+  title: SameSite cookies and site vs origin
+  area: security
+  stories:
+  - 8.1.5
+  phase: P0
+  keywords:
+  - samesite
+  - strict
+  - site vs origin
+  - localhost
+  notes: 'Strict sends the cookie only on same-site requests; Lax also allows top-level safe navigations.
+
+    Site means scheme plus registrable domain; ports and subdomains do not change it.
+
+    Origin also needs host and port to match.
+
+    So preview subdomains can be same-site with the app, which needs a test.
+
+    '
+  sources:
+  - url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
+    title: Set-Cookie header (SameSite)
+    kind: official-docs
+    publisher: MDN Web Docs
+    version: current (undated)
+    primary: true
+    checked: 2026-11-24
+  - url: https://www.rfc-editor.org/rfc/rfc6454
+    title: 'RFC 6454: The Web Origin Concept'
+    kind: spec
+    publisher: IETF
+    version: RFC 6454 (Dec 2011)
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.sec-fetch-site
+  title: Sec-Fetch-Site fetch metadata
+  area: security
+  stories:
+  - 8.1.5
+  phase: P0
+  keywords:
+  - sec-fetch-site
+  - fetch metadata
+  - same-site
+  notes: 'The browser adds this request header with one of four values.
+
+    The values are cross-site, same-site, same-origin and none.
+
+    A server can reject writes that are not same-origin.
+
+    Older browsers omit it, so keep an Origin fallback.
+
+    '
+  sources:
+  - url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Fetch-Site
+    title: Sec-Fetch-Site header
+    kind: official-docs
+    publisher: MDN Web Docs
+    version: current (undated)
+    primary: true
+    checked: 2026-11-24
+  - url: https://www.w3.org/TR/fetch-metadata/
+    title: Fetch Metadata Request Headers
+    kind: spec
+    publisher: W3C
+    version: Working Draft, 21 September 2026
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.secret-scanning-tools
+  title: Secret scanning tools
+  area: security
+  stories:
+  - 2.2.3
+  phase: P0
+  keywords:
+  - gitleaks
+  - detect-secrets
+  - secret scan
+  notes: 'Gitleaks scans repos, files and stdin for keys and tokens.
+
+    detect-secrets uses a baseline of known findings and blocks new ones.
+
+    Scan project files and image layers.
+
+    The gitleaks README says future releases are security patches only.
+
+    '
+  sources:
+  - url: https://github.com/gitleaks/gitleaks
+    title: gitleaks/gitleaks
+    kind: project-repo
+    publisher: Gitleaks project
+    version: no release listed on repo page
+    primary: true
+    checked: 2026-11-24
+  - url: https://github.com/Yelp/detect-secrets
+    title: Yelp/detect-secrets
+    kind: project-repo
+    publisher: Yelp
+    version: pre-commit example v1.5.0; releases not listed
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.sqlalchemy-loader-criteria
+  title: with_loader_criteria
+  area: security
+  stories:
+  - 8.2.2
+  phase: P0
+  keywords:
+  - with_loader_criteria
+  - global filter
+  - relationship loading
+  notes: 'It adds a filter for one entity everywhere it appears in a statement.
+
+    This includes joins, subqueries and relationship loads.
+
+    Use it inside do_orm_execute to scope by org_id.
+
+    Identity-map hits from session.get can bypass it.
+
+    '
+  sources:
+  - url: https://docs.sqlalchemy.org/en/20/orm/queryguide/api.html#sqlalchemy.orm.with_loader_criteria
+    title: 'ORM API Features for Querying: with_loader_criteria'
+    kind: api-reference
+    publisher: SQLAlchemy project
+    version: SQLAlchemy 2.0.58
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.sqlalchemy-orm-execute-hook
+  title: SQLAlchemy do_orm_execute hook
+  area: security
+  stories:
+  - 8.2.2
+  phase: P0
+  keywords:
+  - do_orm_execute
+  - session events
+  - tenant filter
+  notes: 'This session event runs for ORM statements sent through Session.execute.
+
+    A handler can add criteria to every statement.
+
+    It does not see raw Core text() SQL sent outside the ORM path.
+
+    Combine it with with_loader_criteria.
+
+    '
+  sources:
+  - url: https://docs.sqlalchemy.org/en/20/orm/events.html#sqlalchemy.orm.SessionEvents.do_orm_execute
+    title: 'ORM Events: SessionEvents.do_orm_execute'
+    kind: api-reference
+    publisher: SQLAlchemy project
+    version: SQLAlchemy 2.0.58
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: security.starlette-trustedhost
+  title: Starlette TrustedHostMiddleware
+  area: security
+  stories:
+  - 8.1.5
+  phase: P0
+  keywords:
+  - trustedhostmiddleware
+  - allowed_hosts
+  - host header
+  notes: 'The middleware checks the Host header against allowed_hosts.
+
+    A failed check returns 400.
+
+    A wildcard entry allows every host, so avoid it.
+
+    IPv6 hosts use bracket notation.
+
+    '
+  sources:
+  - *id002
+  llms_txt: null
+- id: security.token-hashing-at-rest
+  title: Hashing tokens at rest
+  area: security
+  stories:
+  - 8.7.4
+  phase: P1
+  keywords:
+  - token hash
+  - sha-256
+  - lookup by hash
+  - entropy
+  notes: 'Random high-entropy tokens need only a fast hash such as SHA-256, not bcrypt.
+
+    Store the hash and look up by hash.
+
+    Never store the raw token next to its hash.
+
+    Hashing does not help if the token itself leaks.
+
+    '
+  sources:
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html
+    title: Session Management Cheat Sheet
+    kind: official-docs
+    publisher: OWASP Cheat Sheet Series
+    version: undated (current)
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.python.org/3/library/secrets.html
+    title: secrets - Generate secure random numbers
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: protocol.base64-rfc4648
+  title: Base64 encoding (RFC 4648)
+  area: protocol
+  stories:
+  - 8.9.3
+  phase: P1
+  keywords:
+  - base64
+  - padding
+  - base64url
+  - file bodies
+  notes: 'File bytes cannot sit raw in JSON, so encode them as base64 strings.
+
+    The standard alphabet uses plus and slash with equals padding.
+
+    The url-safe form swaps in dash and underscore.
+
+    Pick one form and test it with shared fixtures on both sides.
+
+    '
+  sources:
+  - url: https://www.rfc-editor.org/rfc/rfc4648
+    title: 'RFC 4648: The Base16, Base32, and Base64 Data Encodings'
+    kind: spec
+    publisher: IETF / RFC Editor
+    version: RFC 4648, October 2006
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: protocol.datamodel-code-generator
+  title: datamodel-code-generator
+  area: protocol
+  stories:
+  - 8.9.3
+  phase: P1
+  keywords:
+  - codegen
+  - pydantic v2
+  - jsonschema input
+  - version pin
+  notes: 'The tool turns a JSON Schema file into Pydantic v2 models.
+
+    Use input type jsonschema and output type pydantic_v2.BaseModel.
+
+    Pin the tool version so generated output does not churn.
+
+    Commit the generated file and check it in CI.
+
+    '
+  sources:
+  - url: https://github.com/koxudaxi/datamodel-code-generator
+    title: datamodel-code-generator repository
+    kind: project-repo
+    publisher: koxudaxi (project maintainer)
+    version: default branch, checked 2026-11-24 (version not shown)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: protocol.json-number-precision
+  title: JSON number interoperability (RFC 8259 section 6)
+  area: protocol
+  stories:
+  - 8.9.3
+  phase: P1
+  keywords:
+  - u64
+  - IEEE 754
+  - 2^53
+  - integer precision
+  notes: 'JSON numbers have no fixed size, but most parsers read them as IEEE 754 doubles.
+
+    Integers outside plus or minus 2^53 minus 1 may lose precision.
+
+    A Rust u64 can exceed that range, so send large ids or sizes as strings.
+
+    Add a fixture with a big value to catch this.
+
+    '
+  sources:
+  - url: https://www.rfc-editor.org/rfc/rfc8259
+    title: 'RFC 8259: The JSON Data Interchange Format'
+    kind: spec
+    publisher: IETF / RFC Editor
+    version: RFC 8259, December 2017
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: protocol.json-schema-2020-12
+  title: JSON Schema 2020-12 core
+  area: protocol
+  stories:
+  - 8.9.3
+  phase: P1
+  keywords:
+  - oneOf
+  - const
+  - additionalProperties
+  - unevaluatedProperties
+  notes: 'The schema file is the single contract between the Rust agent and the Python API.
+
+    Use oneOf with a const tag field to describe each message type.
+
+    additionalProperties false rejects unknown fields; this limits forward compatibility.
+
+    The Core spec defines applicators and unevaluatedProperties for composed schemas.
+
+    '
+  sources:
+  - url: https://json-schema.org/draft/2020-12/json-schema-core
+    title: 'JSON Schema: A Media Type for Describing JSON Documents'
+    kind: spec
+    publisher: JSON Schema organization
+    version: draft-bhutton-json-schema-01 (2020-12), 2022-06-16
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: protocol.jsonschema-crate
+  title: jsonschema crate (Rust validator)
+  area: protocol
+  stories:
+  - 8.9.3
+  phase: P1
+  keywords:
+  - jsonschema
+  - validate
+  - is_valid
+  - draft 2020-12
+  notes: 'Use the crate as a dev-dependency to validate Rust-made messages against the schema.
+
+    is_valid returns a bool; validate returns the first error.
+
+    It supports Draft 2020-12 and older drafts.
+
+    Pick the draft explicitly to match the schema file.
+
+    '
+  sources:
+  - url: https://docs.rs/jsonschema/latest/jsonschema/
+    title: jsonschema crate documentation
+    kind: api-reference
+    publisher: docs.rs
+    version: jsonschema 0.63.1
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: protocol.messagepack
+  title: MessagePack format
+  area: protocol
+  stories:
+  - 4.3.1
+  phase: P1
+  keywords:
+  - messagepack
+  - rmp-serde
+  - binary format
+  - bin type
+  notes: 'MessagePack is a binary format with a native bin type, so no base64 is needed.
+
+    The Rust crate rmp-serde plugs into serde.
+
+    to_vec_named keeps field names, which suits tagged enums.
+
+    The study guide picks JSON first; MessagePack is the alternative.
+
+    '
+  sources:
+  - url: https://github.com/msgpack/msgpack/blob/master/spec.md
+    title: MessagePack specification
+    kind: spec
+    publisher: MessagePack project
+    version: spec.md, master branch
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.rs/rmp-serde/latest/rmp_serde/
+    title: rmp-serde crate documentation
+    kind: api-reference
+    publisher: docs.rs
+    version: rmp-serde 1.3.1
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: protocol.ndjson-framing
+  title: NDJSON and length-delimited framing
+  area: protocol
+  stories:
+  - 4.3.1
+  phase: P1
+  keywords:
+  - ndjson
+  - LengthDelimitedCodec
+  - frame size cap
+  - framing
+  notes: 'NDJSON puts one JSON text per line; texts must not contain raw newlines.
+
+    Length-delimited frames use a size prefix instead.
+
+    In tokio-util the codec exposes a max frame length setting.
+
+    Always cap the frame size to stop a huge length prefix.
+
+    '
+  sources:
+  - url: https://github.com/ndjson/ndjson-spec
+    title: NDJSON specification
+    kind: spec
+    publisher: ndjson project
+    version: 1.0.0
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.rs/tokio-util/latest/tokio_util/codec/length_delimited/struct.LengthDelimitedCodec.html
+    title: LengthDelimitedCodec
+    kind: api-reference
+    publisher: docs.rs
+    version: tokio-util 0.7.20
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: protocol.protocol-semver
+  title: Semantic Versioning for the protocol
+  area: protocol
+  stories:
+  - 8.9.3
+  phase: P1
+  keywords:
+  - semver
+  - major version
+  - minor version
+  - feature flags
+  notes: 'Apply semver to the protocol: a major change breaks compatibility, so refuse the peer.
+
+    A minor change adds features in a compatible way; negotiate with feature flags.
+
+    A patch fixes bugs without changing the wire format.
+
+    Send the version in the first message.
+
+    '
+  sources:
+  - url: https://github.com/semver/semver/blob/master/semver.md
+    title: Semantic Versioning 2.0.0
+    kind: spec
+    publisher: semver project
+    version: 2.0.0
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: protocol.pydantic-discriminated-unions
+  title: Pydantic discriminated unions
+  area: protocol
+  stories:
+  - 8.9.3
+  phase: P1
+  keywords:
+  - discriminator
+  - Literal tag
+  - tagged union
+  - Field
+  notes: 'Field(discriminator="type") picks the union member from one tag field.
+
+    Each member declares the tag as a Literal type.
+
+    This gives faster validation and clearer errors than a plain union.
+
+    It maps to the oneOf plus const shape in the schema.
+
+    '
+  sources:
+  - url: https://github.com/pydantic/pydantic/blob/main/docs/concepts/unions.md
+    title: Unions (Pydantic docs source)
+    kind: project-repo
+    publisher: Pydantic project
+    version: main branch (docs.pydantic.dev now redirects to pydantic.dev)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: protocol.schemars
+  title: schemars (JSON Schema from Rust types)
+  area: protocol
+  stories:
+  - 8.9.3
+  phase: P1
+  keywords:
+  - schemars
+  - JsonSchema derive
+  - schema_for
+  notes: 'Derive JsonSchema on Rust types, then call schema_for! to get a schema.
+
+    It respects serde attributes.
+
+    Use it only to compare with the hand-written schema file, not as the source.
+
+    A diff shows drift between Rust types and the contract.
+
+    '
+  sources:
+  - url: https://docs.rs/schemars/latest/schemars/
+    title: schemars crate documentation
+    kind: api-reference
+    publisher: docs.rs
+    version: schemars 1.2.3
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: protocol.serde-tagged-enums
+  title: Serde enum representations
+  area: protocol
+  stories:
+  - 8.9.3
+  phase: P1
+  keywords:
+  - serde tag
+  - internally tagged
+  - deny_unknown_fields
+  - untagged
+  notes: 'Serde has four enum forms: external (default), internal tag, adjacent tag and content, untagged.
+
+    Internal tagging with tag="type" matches a oneOf plus const schema.
+
+    Internal tags do not allow tuple variants.
+
+    deny_unknown_fields blocks new fields, so it costs forward compatibility.
+
+    '
+  sources:
+  - url: https://github.com/serde-rs/serde-rs.github.io/blob/master/_src/enum-representations.md
+    title: Enum representations (serde.rs source)
+    kind: project-repo
+    publisher: serde-rs project
+    version: master branch; serde 1.0.229 on docs.rs
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.rs/serde/latest/serde/
+    title: serde crate documentation
+    kind: api-reference
+    publisher: docs.rs
+    version: serde 1.0.229
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: protocol.tokio-tungstenite
+  title: tokio-tungstenite
+  area: protocol
+  stories:
+  - 4.3.3
+  phase: P1
+  keywords:
+  - tokio-tungstenite
+  - accept_hdr_async
+  - websocket server
+  - handshake callback
+  notes: 'The crate adds async WebSocket streams on top of tungstenite and tokio.
+
+    accept_async upgrades a stream; accept_hdr_async adds a header callback.
+
+    Use the callback to check token and Origin before the upgrade.
+
+    The stream is both a Stream and a Sink of messages.
+
+    '
+  sources:
+  - url: https://docs.rs/tokio-tungstenite/latest/tokio_tungstenite/
+    title: tokio-tungstenite crate documentation
+    kind: api-reference
+    publisher: docs.rs
+    version: tokio-tungstenite 0.30.0
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: protocol.websocket-rfc6455
+  title: WebSocket protocol (RFC 6455)
+  area: protocol
+  stories:
+  - 4.3.3
+  phase: P1
+  keywords:
+  - websocket
+  - frame opcodes
+  - masking
+  - close frame
+  notes: 'Frames carry an opcode: text, binary, ping, pong or close.
+
+    Client-to-server frames are masked with a 32-bit key.
+
+    Use binary frames for terminal data and text frames for JSON control messages.
+
+    The handshake is an HTTP upgrade where origin and token checks happen.
+
+    '
+  sources:
+  - url: https://www.rfc-editor.org/rfc/rfc6455
+    title: 'RFC 6455: The WebSocket Protocol'
+    kind: spec
+    publisher: IETF / RFC Editor
+    version: RFC 6455, December 2011
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: build.cargo-release-profile
+  title: Cargo release profile
+  area: build
+  stories:
+  - 8.10.4
+  phase: P1
+  keywords:
+  - lto
+  - panic abort
+  - strip
+  - codegen-units
+  - opt-level
+  notes: 'The release profile controls size and speed of the agent binary.
+
+    lto true or thin links across crates; codegen-units 1 helps optimization.
+
+    panic abort drops unwinding code.
+
+    strip symbols shrinks the file; the default is none.
+
+    '
+  sources:
+  - url: https://doc.rust-lang.org/cargo/reference/profiles.html
+    title: Profiles
+    kind: official-docs
+    publisher: The Rust Project
+    version: The Cargo Book (current)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: build.cargo-zigbuild
+  title: cargo-zigbuild
+  area: build
+  stories:
+  - 8.10.4
+  phase: P1
+  keywords:
+  - zig
+  - linker
+  - cross compile
+  - musl target
+  notes: 'cargo-zigbuild uses Zig as the linker, so no container is needed.
+
+    For a fully static binary, choose a musl target.
+
+    A glibc version can be set as a target suffix.
+
+    It is the alternative to cross.
+
+    '
+  sources:
+  - url: https://github.com/rust-cross/cargo-zigbuild
+    title: cargo-zigbuild repository README
+    kind: project-repo
+    publisher: rust-cross project
+    version: README, default branch
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: build.cross-rs
+  title: cross (cross-rs)
+  area: build
+  stories:
+  - 8.10.4
+  phase: P1
+  keywords:
+  - cross
+  - docker
+  - podman
+  - cross compile
+  notes: 'cross wraps cargo and builds inside a container with the target toolchain.
+
+    It needs Docker 20.10+ or Podman 3.4+.
+
+    Use the same flags as cargo, for example cross build --target.
+
+    Config lives in Cross.toml or Cargo.toml metadata.
+
+    '
+  sources:
+  - url: https://github.com/cross-rs/cross
+    title: cross repository README
+    kind: project-repo
+    publisher: cross-rs project
+    version: README, MSRV 1.85.0
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: build.mimalloc
+  title: mimalloc allocator
+  area: build
+  stories:
+  - 8.10.4
+  phase: P1
+  keywords:
+  - mimalloc
+  - global_allocator
+  - musl malloc
+  - allocator
+  notes: 'The musl default allocator can be slow under heavy threads.
+
+    The mimalloc crate replaces it through #[global_allocator].
+
+    The optional secure feature adds hardening for a speed cost.
+
+    Measure before you adopt it.
+
+    '
+  sources:
+  - url: https://docs.rs/mimalloc/latest/mimalloc/
+    title: mimalloc crate documentation
+    kind: api-reference
+    publisher: docs.rs
+    version: mimalloc 0.1.52
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: build.reproducible-builds
+  title: Reproducible Rust builds
+  area: build
+  stories:
+  - 8.10.4
+  phase: P1
+  keywords:
+  - remap-path-prefix
+  - reproducible
+  - Cargo.lock
+  - checksum
+  notes: 'Same inputs should give the same binary hash.
+
+    rustc --remap-path-prefix removes build paths from output.
+
+    Pin toolchain and dependencies; build with --locked.
+
+    Publish a checksum and verify it before injecting the binary.
+
+    '
+  sources:
+  - url: https://doc.rust-lang.org/rustc/command-line-arguments.html
+    title: Command-line arguments (rustc)
+    kind: official-docs
+    publisher: The Rust Project
+    version: rustc book (current)
+    primary: true
+    checked: 2026-11-24
+  - url: https://doc.rust-lang.org/cargo/reference/profiles.html
+    title: Profiles
+    kind: official-docs
+    publisher: The Rust Project
+    version: The Cargo Book (current)
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: build.rust-musl-targets
+  title: Rust musl targets
+  area: build
+  stories:
+  - 8.10.4
+  phase: P1
+  keywords:
+  - musl
+  - static linking
+  - x86_64-unknown-linux-musl
+  - aarch64-unknown-linux-musl
+  notes: 'The musl targets produce static Linux binaries that need no libc in the image.
+
+    Both x86_64 and aarch64 musl are Tier 2 with host tools.
+
+    The platform page lists musl 1.2.5.
+
+    Install them with rustup target add.
+
+    '
+  sources:
+  - url: https://doc.rust-lang.org/rustc/platform-support.html
+    title: Platform Support
+    kind: official-docs
+    publisher: The Rust Project
+    version: rustc book, musl 1.2.5 listed
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
