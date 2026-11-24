@@ -3,7 +3,7 @@
 The master index for the Cerberus design. Start here.
 
 - **Status:** design phase is complete. All 8 initiatives are designed. No application code yet.
-- **Board:** [Cerberus Workboard](https://github.com/users/gru13/projects/4). Views: **My work** (what needs the owner), **Roadmap** (open work by initiative and phase), **Done**. Status: Designing → Backlog → Ready → In progress → In review → Done, plus Parked. Fields: Initiative, Phase.
+- **Board:** [Cerberus Workboard](https://github.com/users/gru13/projects/4). Views: **My work** (what needs the owner), **Roadmap** (open work by initiative and phase), **Done**. Status: Designing → Backlog → Ready → In progress → In review → Done, plus Parked. Fields: Initiative, Phase, Built by, Claude %.
 - **Rules for contributors and AI sessions:** [`CLAUDE.md`](../CLAUDE.md) (logging in ASD-STE100, build log, git safety, guided work)
 
 ## What Cerberus is
