@@ -9,7 +9,7 @@
 ## Key design points
 
 1. **One codebase, two processes.** `cerberus api` serves HTTP and WebSocket. `cerberus worker` runs long jobs (builds, validations, test runs, generation). Same image, different command.
-2. **Postgres is the only infrastructure.** Data, job queue (procrastinate, `SKIP LOCKED`), and cross-process events (`LISTEN/NOTIFY` behind `EventBus`). No Redis, no Kafka. Terminals relay directly in memory.
+2. **Postgres is the only infrastructure.** Data, job queue (procrastinate, `SKIP LOCKED`), and cross-process events (`LISTEN/NOTIFY` behind `EventBus`). No Redis, no Kafka. Terminals go browser -> Caddy -> agent; the API only issues terminal tokens (8.4.3, 8.7.4).
 3. **Logs and events are different.** Logs are operational (stdout + file). Events are domain facts in the `events` table for replay and the knowledge graph. Both use STE100 and the subject-predicate-object triple.
 4. **Local is still protected.** Any website can call `localhost`, so the API checks Host and Origin, uses a SameSite=Strict cookie, and needs a CSRF token on writes.
 
@@ -58,7 +58,7 @@ Browser socket, agent connections, terminal streams, and the EventBus.
 |---|---|---|
 | 8.4.1 Browser socket `guided` | One WebSocket per tab (`/api/v1/ws`), channels: terminal, files, ports, tasks, toasts. Cookie auth, heartbeat, resume from last event id. | A reconnect loses no events. |
 | 8.4.2 Agent connections `guided` | One Unix-socket connection per session; reconnect with backoff; protocol version check. | An agent restart reconnects. |
-| 8.4.3 Terminal streams `guided` | Binary frames both ways, resize messages, backpressure. Direct relay in memory (no broker). | Typing latency < 50 ms locally. |
+| 8.4.3 Terminal streams `guided` | The terminal goes direct: browser -> Caddy -> agent WebSocket. The backend only issues a terminal token (8.7.4) and logs session start and stop. Binary frames both ways, resize messages, backpressure. | Typing latency < 30 ms locally; the backend carries no terminal bytes. |
 | 8.4.4 EventBus interface and PostgresBus `guided` | `EventBus` publish/subscribe interface. `PostgresBus` (LISTEN/NOTIFY) now; `NatsBus` parked for hosted. No Kafka. | Worker events reach the browser through the EventBus. |
 
 ## Epic 8.5 — Job queue
@@ -94,7 +94,7 @@ Encryption at rest, API keys, rotation, and tokens.
 | 8.7.1 Encryption at rest `guided` | AES-GCM. Master key created on first start in `~/.cerberus/secret.key` (0600) or from env; key id per record. | DB keys are unreadable without the master key. |
 | 8.7.2 API key storage `guided` | Show only the last 4 characters; decrypt only on the tutor call path; redaction test on logs. | A key never appears in logs or responses. |
 | 8.7.3 Key rotation | `cerberus rotate-key` encrypts all records again with a new key. | Rotation loses no key. |
-| 8.7.4 Tokens `guided` | MCP and preview session tokens: random, stored hashed, scoped, expiring, revocable. | A revoked token fails at once. |
+| 8.7.4 Tokens `guided` | MCP, preview, and terminal tokens: random, stored hashed, scoped, expiring, revocable. Terminal tokens: signed, about 60 s to connect, bound to run and user, single use. | A revoked token fails at once; a terminal token works once only. |
 
 ## Epic 8.8 — Recovery and host store
 

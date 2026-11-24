@@ -65,7 +65,7 @@ Terminal tabs, task buttons, and per-task output.
 
 | Story | Description | Done when |
 |---|---|---|
-| 1.5.1 Terminal panel | xterm.js tabs and splits, resize, copy and paste, reconnect after a network drop. | Several terminals work and survive a reload. |
+| 1.5.1 Terminal panel | xterm.js tabs and splits, resize, copy and paste. Gets a terminal token from the backend, then connects to `wss://term-<run>.localhost`; asks for a new token on reconnect after a network drop. | Several terminals work and survive a reload. |
 | 1.5.2 Task buttons | Run project and Run tests always visible; other tasks.json tasks in a dropdown; stop and restart. | Buttons call the agent task runner. |
 | 1.5.3 Task output | One output tab per running task (e.g. backend, frontend), ANSI colours, clear. | A compound run-project shows one tab per service. |
 

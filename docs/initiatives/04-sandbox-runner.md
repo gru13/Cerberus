@@ -9,7 +9,7 @@
 
 ## Key design points
 
-1. **Agent in every container.** A small static Rust binary copied in at start. No change to project Dockerfiles. It owns terminals, files (with lock rules), tasks, port detection, tutor tools, and the event stream. The backend talks to it over a mounted Unix socket.
+1. **Agent in every container.** A small static Rust binary copied in at start. No change to project Dockerfiles. It owns terminals, files (with lock rules), tasks, port detection, tutor tools, and the event stream. The backend talks to it over a mounted Unix socket. Exception: the terminal WebSocket, through Caddy, with a terminal token (4.3.3, 4.4.2).
 2. **No internet, but previews work.** Each dev box joins its own Docker `--internal` network: the backend can reach it; it cannot reach the internet. Throwaway runs use `--network none`.
 3. **Real read-only files.** Editable files belong to `runner`; others are root-owned `444`; directories have the sticky bit. The agent API also rejects writes. Grading from a clean copy is the final guard.
 4. **Trace removal.** Patch applied as root in the running container (not in an image layer). Then delete `.orig` / `.rej` / patch, set one fixed mtime, clear caches and shell history, and assert no `.git`.
@@ -47,7 +47,7 @@ A small static Rust binary copied into each container. The owner builds it; Clau
 |---|---|---|
 | 4.3.1 Agent skeleton and transport `guided` | Rust static binary (musl) for x86_64 and aarch64. Copied in at start. Listens on a mounted Unix socket. Versioned protocol (JSON or MessagePack). Suggested crates: `tokio`, `serde`, `clap`, `tracing`. | Backend to agent ping works on amd64 and arm64. |
 | 4.3.2 Agent file API `guided` | list / read / write / rename / create / delete / search with lock rules; file-watch events. Suggested crates: `notify`, `ignore`/`globset`. | IDE file tree and edits work through the agent. |
-| 4.3.3 Agent terminal API `guided` | Many PTYs (bash, else sh), resize, streamed through the backend over WebSocket. Suggested crate: `portable-pty`. | Several terminal tabs work. |
+| 4.3.3 Agent terminal API `guided` | Many PTYs (bash, else sh), resize. WebSocket listener on the internal network only (never published to the host). Checks the terminal token (signature, expiry, run id, single use) and the Origin; rate limit; idle timeout. Logs command lines only (4.3.7). Suggested crate: `portable-pty`. | Several terminal tabs work through Caddy; a missing, expired, or reused token is rejected. |
 | 4.3.4 Agent task runner `guided` | Parse `tasks.json`; run `run-project` (with `dependsOn`, parallel/sequence, background) and `run-tests`, plus optional tasks; stream output per task; stop and restart. | IDE buttons run tasks. |
 | 4.3.5 Agent port detection `guided` | Poll `/proc/net/tcp` and `tcp6` (~1 s) for new LISTEN ports; emit `port.open` / `port.close`. Suggested crate: `procfs`. | "Port 5173 opened" reaches the IDE. |
 | 4.3.6 Agent tutor tools `guided` | Allow-listed read-only commands for the tutor (#5): `ls`, `cat` with line range, `grep`/`rg`, `find`, `python -c help()`. Timeout and output size limit. No writes. | Tutor can grep the learner code safely. |
@@ -60,7 +60,7 @@ No internet in the dev box, but app previews still work.
 | Story | Description | Done when |
 |---|---|---|
 | 4.4.1 Internal network per session `guided` | Docker `--internal` network: backend can reach the container; the container cannot reach the internet. | `curl` to the internet fails inside; preview works. |
-| 4.4.2 Preview proxy `guided` | HTTPS reverse proxy backend -> container:port, WebSocket support (hot reload), session-token check. | A Vite app with hot reload works in preview. |
+| 4.4.2 Preview proxy `guided` | HTTPS reverse proxy -> container:port, WebSocket support (hot reload), session-token check. Terminal route `wss://term-<run>.localhost` -> agent listener; Caddy checks the token before forwarding. | A Vite app with hot reload works in preview; the terminal route rejects requests without a valid token. |
 | 4.4.3 Preview URLs | Subdomain per port: `https://<port>-<run>.localhost` (no DNS setup; avoids path-prefix breakage). | Several ports preview side by side. |
 | 4.4.4 No network for throwaway runs `guided` | Validation and grading runs use `--network none`. | No network in validation or grading. |
 

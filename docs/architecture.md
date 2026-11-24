@@ -14,9 +14,12 @@ API (api/, FastAPI) + worker  ── Postgres (data, job queue, EventBus; cerber
   │  Unix socket, protocol/agent.v1.schema.json
   ▼
 Agent (agent/, Rust) inside each dev box container
+
+Terminal only:
+Browser ──wss://term-<run>.localhost (terminal token)──► Caddy ──► Agent WebSocket
 ```
 
-The browser never talks to a container directly.
+The terminal is the one direct path. The API issues a short-lived, single-use terminal token; Caddy and the agent both check it. Files, tests, tasks, ports, and events go through the API, so persistence, replay, and scoring stay complete.
 
 ## Repository layout
 
