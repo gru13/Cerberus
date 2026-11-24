@@ -148,4 +148,4 @@ Generated from `logs/build.jsonl`. Newer decisions win.
 |---|---|---|
 | `gru13/Cerberus` | private (open source later) | Platform: design docs, `web/`, `api/`, `agent/` |
 | `cerberus-content` | private (planned) | Projects: one folder per project |
-| `cerberus-issues` | public (planned) | Public issue dataset as JSONL |
+| `cerberus-issues` | public (planned) | Public issue dataset as JSONL (CC BY 4.0) |

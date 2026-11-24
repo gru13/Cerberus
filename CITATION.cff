@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use Cerberus, please credit it as below."
+title: "Cerberus: a debugging practice and exam platform"
+type: software
+authors:
+  - alias: gru13
+    website: "https://github.com/gru13"
+repository-code: "https://github.com/gru13/Cerberus"
+license: Apache-2.0
+keywords:
+  - debugging
+  - education
+  - exam
+  - sandbox
+  - llm-tutor
