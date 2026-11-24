@@ -40,6 +40,7 @@ Status: design complete; build not started. Design index: `docs/README.md`. Agre
 - Assignee = needs the owner: assign gru13 to `guided` stories, items In review, and items that need an owner decision. Leave other items unassigned.
 - Views: **My work** (assigned to the owner, not Done or Parked), **Roadmap** (all open work), **Done**.
 - When a PR opens, move its issue to In review and assign gru13. When it merges, move it to Done.
+- Built by: when a story reaches Done, set `Built by` (Claude 100% / gru13 100% / gru13 + Claude) and `Claude %` (0–100, Claude's share of the code). gru13's stories are 0 unless Claude wrote part of the code. Also add a one-line "Built by" comment on the issue.
 - Initiative details live in `docs/initiatives/` and in the issue body. Keep both in sync.
 
 ## Dev tasks (mandatory)
