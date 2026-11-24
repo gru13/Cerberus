@@ -54,7 +54,7 @@ File tree, Monaco tabs, autosave with an offline journal, search, and syntax hig
 |---|---|---|
 | 1.4.1 File tree | From the agent file API; lock icon on read-only files; create, rename, delete (editable files only); live updates from file-watch events. | The tree matches the container; locked files cannot change. |
 | 1.4.2 Editor tabs | Monaco with tabs, split view, dirty markers, read-only mode for locked files. | Edit, save, and split work. |
-| 1.4.3 Autosave and offline journal | Debounced autosave (~1 s) plus Ctrl+S. Unsaved edits queue in IndexedDB (run, file, base hash). Offline badge when the backend is not reachable; replay on reconnect. Base-hash mismatch shows a diff: Keep mine / Keep server. Status: saved / saving / offline / error. | No edit is lost on refresh, network drop, or backend restart. |
+| 1.4.3 Autosave and offline journal `guided` | Debounced autosave (~1 s) plus Ctrl+S. Unsaved edits queue in IndexedDB (run, file, base hash). Offline badge when the backend is not reachable; replay on reconnect. Base-hash mismatch shows a diff: Keep mine / Keep server. Status: saved / saving / offline / error. | No edit is lost on refresh, network drop, or backend restart. |
 | 1.4.4 Search | Quick open (file names) and search across files (agent search). | Ctrl+P and Ctrl+Shift+F work. |
 | 1.4.5 Syntax highlighting | Monaco highlighting and bracket matching for Python, TypeScript/JS, HTML, CSS, JSON, YAML, Markdown. | Seed project files highlight correctly. |
 | 1.4.6 Language intelligence - parked | Autocomplete and go-to-definition through a language server (pyright, tsserver) in the container, relayed by the agent. | Placeholder. |

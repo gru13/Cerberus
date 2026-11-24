@@ -48,9 +48,9 @@ What the tutor knows and the read-only tools it can use.
 |---|---|---|
 | 5.3.1 Context builder | Bug report, failure messages from the last test run, open file and selection, conversation summary. Fits a token budget. Never the patch. | Context is logged as ids and hashes only. |
 | 5.3.2 Project code tools | Through the agent (#4.3.6): list, read (line range), grep, find. Read-only, size limits. | Tool steps show in the chat. |
-| 5.3.3 Symbol docs tool | Docstrings and signatures from installed libraries in the dev box (Python `inspect` / `pydoc`; TS/JS `.d.ts` + JSDoc from `node_modules`). Exact version, offline. | Answers come from the installed library version. |
+| 5.3.3 Symbol docs tool `guided` | Docstrings and signatures from installed libraries in the dev box (Python `inspect` / `pydoc`; TS/JS `.d.ts` + JSDoc from `node_modules`). Exact version, offline. | Answers come from the installed library version. |
 | 5.3.4 Prefetch mode | For models without tools: the server preloads the open file, the failing test, and the code it calls. | Small local models still get useful context. |
-| 5.3.5 Untrusted tool output | Code, comments, and docs enter the prompt marked as data, with size limits. Instructions inside files are ignored. | An injection in a learner file has no effect. |
+| 5.3.5 Untrusted tool output `guided` | Code, comments, and docs enter the prompt marked as data, with size limits. Instructions inside files are ignored. | An injection in a learner file has no effect. |
 
 ## Epic 5.4 — Docs library
 
@@ -70,13 +70,13 @@ Server-side checks so the tutor never gives the fix or the direct answer. **Need
 
 | Story | Description | Done when |
 |---|---|---|
-| 5.5.7 Guardrail deep design | Dedicated design session with the owner before any guardrail code: threat model (learner tricks, prompt injection, prose leaks, multi-turn extraction), attack catalog, check methods and thresholds, false-positive budget, model differences, exam vs practice rules, eval metrics. | Design doc agreed and recorded as a decision; 5.5.1-5.5.6 updated from it. |
-| 5.5.1 Versioned policy | Policy prompts in the repo, per mode and hint level. Policy version stored with each message. | Each answer traces to a policy version. |
-| 5.5.2 Input check | Requests for the fix, full code, or diff, and injection patterns, get a Socratic redirect. | "Write the fix" is declined politely. |
-| 5.5.3 Output check | Code blocks are held and checked: (a) similarity to the reverse patch (normalized tokens + tree-sitter AST for Python and TS); (b) project identifiers in samples (only generic samples allowed); (c) rewritten project code: a block close to a project function but changed; (d) direct answer: patch location (file, function, line) together with the changed operators or literals. | Fix-like code and direct answers never reach the learner. |
-| 5.5.4 Streaming with hold-back | Prose streams with a short buffer; code blocks release only after the check. A blocked answer is regenerated once with a stricter instruction, else a safe fallback. | Streaming feels live and stays safe. |
-| 5.5.5 Guardrail eval set | YAML conversations (allowed / blocked / borderline) per seed issue. CI runs the deterministic checks; a manual run against real models reports leak rate per model. | Leak rate is known for each model. |
-| 5.5.6 Answer judge (optional) | Off by default. In exam mode a second, cheap LLM call asks "does this reveal the fix or the location?" before release. Catches prose leaks; uses the user's tokens. | A prose leak in the eval set is caught when the judge is on. |
+| 5.5.7 Guardrail deep design `guided` | Dedicated design session with the owner before any guardrail code: threat model (learner tricks, prompt injection, prose leaks, multi-turn extraction), attack catalog, check methods and thresholds, false-positive budget, model differences, exam vs practice rules, eval metrics. | Design doc agreed and recorded as a decision; 5.5.1-5.5.6 updated from it. |
+| 5.5.1 Versioned policy `guided` | Policy prompts in the repo, per mode and hint level. Policy version stored with each message. | Each answer traces to a policy version. |
+| 5.5.2 Input check `guided` | Requests for the fix, full code, or diff, and injection patterns, get a Socratic redirect. | "Write the fix" is declined politely. |
+| 5.5.3 Output check `guided` | Code blocks are held and checked: (a) similarity to the reverse patch (normalized tokens + tree-sitter AST for Python and TS); (b) project identifiers in samples (only generic samples allowed); (c) rewritten project code: a block close to a project function but changed; (d) direct answer: patch location (file, function, line) together with the changed operators or literals. | Fix-like code and direct answers never reach the learner. |
+| 5.5.4 Streaming with hold-back `guided` | Prose streams with a short buffer; code blocks release only after the check. A blocked answer is regenerated once with a stricter instruction, else a safe fallback. | Streaming feels live and stays safe. |
+| 5.5.5 Guardrail eval set `guided` | YAML conversations (allowed / blocked / borderline) per seed issue. CI runs the deterministic checks; a manual run against real models reports leak rate per model. | Leak rate is known for each model. |
+| 5.5.6 Answer judge (optional) `guided` | Off by default. In exam mode a second, cheap LLM call asks "does this reveal the fix or the location?" before release. Catches prose leaks; uses the user's tokens. | A prose leak in the eval set is caught when the judge is on. |
 
 ## Epic 5.6 — Hint ladder and modes
 

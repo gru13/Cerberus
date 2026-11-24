@@ -56,7 +56,7 @@ Connect Claude Code, Codex, Cursor, and other harnesses to author issues.
 | 3.4.7 MCP tools: update issues | `list_needs_update(project)`, `start_update(issue_id)` (old intent + new code), then the code/test/submit tools. | Affected issues can be fixed through MCP. |
 | 3.4.8 Authoring skill | Skill file in this repo under `skills/`: rules (minimal, realistic, no syntax errors, caught by a test, report shows symptom), categories, flow, good and bad examples. | A harness produces drafts that pass validation. |
 | 3.4.9 MCP setup guide | Config snippets for Claude Code, Codex, Cursor (HTTPS URL, token, local certificate trust). | An author connects in under 2 minutes. |
-| 3.4.10 MCP safety | MCP cannot approve or activate. No access outside the session or to the network. Rate limits on tool calls. | Review stays in the UI only. |
+| 3.4.10 MCP safety `guided` | MCP cannot approve or activate. No access outside the session or to the network. Rate limits on tool calls. | Review stays in the UI only. |
 
 ## Epic 3.5 — Issue validation
 
@@ -65,7 +65,7 @@ Prove each issue is real, caught by tests, and reversible.
 | Story | Description | Done when |
 |---|---|---|
 | 3.5.1 Static patch checks | Editable and not read-only files only; applies cleanly; <= 3 files, <= 30 lines; no added or deleted files. | Rejected with a reason. |
-| 3.5.2 Test checks | `--network none`. Baseline: all pass. With patch: >= 1 failure, <= 50% failing, only `<failure>` never `<error>` (no syntax/import errors), matches expected_failures, 3 identical runs. Reversed: all pass. | Validation record saved. |
+| 3.5.2 Test checks `guided` | `--network none`. Baseline: all pass. With patch: >= 1 failure, <= 50% failing, only `<failure>` never `<error>` (no syntax/import errors), matches expected_failures, 3 identical runs. Reversed: all pass. | Validation record saved. |
 | 3.5.3 Validation queue | One at a time locally; worker pool in hosted. Progress in UI. ~5 min max. | Queue visible. |
 | 3.5.4 Validation logs | `issue.validate.pass\|fail` with reason (STE100). | Each outcome is logged. |
 
@@ -86,10 +86,10 @@ Our own generator, as one more client of the Authoring API.
 
 | Story | Description | Done when |
 |---|---|---|
-| 3.7.1 Issue generator | Uses the same Authoring API tools. Input: project, category, area, difficulty. Up to 3 retries with the validation reason. | Valid drafts for seed projects. |
-| 3.7.2 Generated hints and report | Author hints optional; LLM fills gaps (>= 3, vague to specific). Report shows the symptom. | Every active issue has hints. |
-| 3.7.3 Generator target areas | Prefer covered functions when coverage data exists. | No untested targets when coverage exists. |
-| 3.7.4 Generator cost rules | Uses the shared LLM usage component (#5): model routing, prompt caching, session budget, cost meter. | Cost shows for each generation. |
+| 3.7.1 Issue generator `guided` | Uses the same Authoring API tools. Input: project, category, area, difficulty. Up to 3 retries with the validation reason. | Valid drafts for seed projects. |
+| 3.7.2 Generated hints and report `guided` | Author hints optional; LLM fills gaps (>= 3, vague to specific). Report shows the symptom. | Every active issue has hints. |
+| 3.7.3 Generator target areas `guided` | Prefer covered functions when coverage data exists. | No untested targets when coverage exists. |
+| 3.7.4 Generator cost rules `guided` | Uses the shared LLM usage component (#5): model routing, prompt caching, session budget, cost meter. | Cost shows for each generation. |
 
 ## Epic 3.8 — Carry-over and updates
 
@@ -97,10 +97,10 @@ Keep issues working when a project changes.
 
 | Story | Description | Done when |
 |---|---|---|
-| 3.8.1 Impact check | On a new project version: changed files between versions vs files in the patch. No overlap = unaffected; else affected. | Every issue is classified. |
-| 3.8.2 Automatic carry-over | Unaffected: quick re-validate, auto-active; old version becomes stale. | No human work needed. |
-| 3.8.3 Affected issue handling | `patch --fuzz=2` + full validation. Pass -> in-review; fail -> needs-update. | Flags are correct. |
-| 3.8.4 Update issue feature | In UI or MCP: edit by hand, regenerate with LLM (same intent), or retire. Then validate and review. | A broken issue can be fixed. |
+| 3.8.1 Impact check `guided` | On a new project version: changed files between versions vs files in the patch. No overlap = unaffected; else affected. | Every issue is classified. |
+| 3.8.2 Automatic carry-over `guided` | Unaffected: quick re-validate, auto-active; old version becomes stale. | No human work needed. |
+| 3.8.3 Affected issue handling `guided` | `patch --fuzz=2` + full validation. Pass -> in-review; fail -> needs-update. | Flags are correct. |
+| 3.8.4 Update issue feature `guided` | In UI or MCP: edit by hand, regenerate with LLM (same intent), or retire. Then validate and review. | A broken issue can be fixed. |
 
 ## Epic 3.9 — Issue sharing
 
@@ -119,7 +119,7 @@ Give each run a validated issue and hand it to the sandbox.
 
 | Story | Description | Done when |
 |---|---|---|
-| 3.10.1 Issue picking | Project, mode, difficulty, categories, user history (no repeats). Pool first; generate on demand; fall back to pool. | A run always gets an issue or a clear error. |
+| 3.10.1 Issue picking `guided` | Project, mode, difficulty, categories, user history (no repeats). Pool first; generate on demand; fall back to pool. | A run always gets an issue or a clear error. |
 | 3.10.2 Pool pre-fill | 3 per project. Off by default in local mode; cost estimate before turning on. Generated issues still need review. | Opt-in works. |
 | 3.10.3 Run package | `{project_version_id, image, patches[], reports[], editable[], readonly[]}` handed to #4. | #4 gets everything in one object. |
 | 3.10.4 Combine issues - parked | Non-overlapping patches with combined validation. | Placeholder. |

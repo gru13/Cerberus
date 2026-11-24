@@ -44,7 +44,8 @@ Status: design complete; build not started. Design index: `docs/README.md`. Agre
 
 ## Guided work (label `guided`)
 
-- The owner builds `guided` stories personally to learn (now: the Rust in-container agent, Epic 4.3).
+- The owner builds `guided` stories personally to learn: security, performance, and core systems (about 40% of the effort). The list is in `docs/README.md` (Ownership): sandbox and Rust agent, realtime and persistence, AI safety, data integrity and the bug generator, platform security.
+- Claude builds the rest (about 60%): UI, app skeleton, CRUD, compose and CI, and the fake agent (8.9.5) so other work does not wait for the Rust agent.
 - For these stories Claude is a guide: explain concepts, propose structure and crates, review code, point to docs, give small illustrative snippets.
 - Do not write the implementation, commit code, or open PRs for `guided` stories unless the owner explicitly asks.
 - Remote is HTTPS. On this machine, run git with `-c safe.directory=<repo path>` (NTFS mount).

@@ -24,7 +24,7 @@ Project setup, config, errors, health, and local security.
 | 8.1.2 Config | Deploy config from env with pydantic-settings (`CERBERUS_MODE`, DB URL, data dir). User settings in the DB. | A bad config stops start with a clear STE100 message. |
 | 8.1.3 Error format | problem+json (RFC 9457), error code registry, request id. | All errors have the same shape. |
 | 8.1.4 Health | `/healthz` (live) and `/readyz` (DB, Docker, free disk, data dir writable). | The UI status page uses them. |
-| 8.1.5 Local security | Host and Origin allow-list (blocks DNS rebinding), SameSite=Strict session cookie, CSRF check on writes, API bound to 127.0.0.1 only. | A request from another origin is rejected. |
+| 8.1.5 Local security `guided` | Host and Origin allow-list (blocks DNS rebinding), SameSite=Strict session cookie, CSRF check on writes, API bound to 127.0.0.1 only. | A request from another origin is rejected. |
 
 ## Epic 8.2 — Database and migrations
 
@@ -33,7 +33,7 @@ Async SQLAlchemy, tenancy, Alembic, core tables, backup.
 | Story | Description | Done when |
 |---|---|---|
 | 8.2.1 Database setup | Async SQLAlchemy 2 + asyncpg. Base model: `id` (UUIDv7), `org_id`, `user_id`, timestamps. | Models work in tests. |
-| 8.2.2 Tenancy guard | Queries are scoped by org and user automatically. A test fails if a table has no `org_id`. | One user cannot read the rows of another user. |
+| 8.2.2 Tenancy guard `guided` | Queries are scoped by org and user automatically. A test fails if a table has no `org_id`. | One user cannot read the rows of another user. |
 | 8.2.3 Migrations | Alembic; run on start (`cerberus migrate`). CI checks the migration chain and that models match. | A fresh DB and an upgraded DB are the same. |
 | 8.2.4 Core tables | `orgs`, `users`, `memberships` (roles), `settings`. Local mode seeds org `local` and user `local` with all roles. | First start creates the local user. |
 | 8.2.5 Backup and restore | `cerberus backup` (pg_dump + host store) and `cerberus restore`. | Restore on a clean machine works. |
@@ -56,10 +56,10 @@ Browser socket, agent connections, terminal streams, and the EventBus.
 
 | Story | Description | Done when |
 |---|---|---|
-| 8.4.1 Browser socket | One WebSocket per tab (`/api/v1/ws`), channels: terminal, files, ports, tasks, toasts. Cookie auth, heartbeat, resume from last event id. | A reconnect loses no events. |
-| 8.4.2 Agent connections | One Unix-socket connection per session; reconnect with backoff; protocol version check. | An agent restart reconnects. |
-| 8.4.3 Terminal streams | Binary frames both ways, resize messages, backpressure. Direct relay in memory (no broker). | Typing latency < 50 ms locally. |
-| 8.4.4 EventBus interface and PostgresBus | `EventBus` publish/subscribe interface. `PostgresBus` (LISTEN/NOTIFY) now; `NatsBus` parked for hosted. No Kafka. | Worker events reach the browser through the EventBus. |
+| 8.4.1 Browser socket `guided` | One WebSocket per tab (`/api/v1/ws`), channels: terminal, files, ports, tasks, toasts. Cookie auth, heartbeat, resume from last event id. | A reconnect loses no events. |
+| 8.4.2 Agent connections `guided` | One Unix-socket connection per session; reconnect with backoff; protocol version check. | An agent restart reconnects. |
+| 8.4.3 Terminal streams `guided` | Binary frames both ways, resize messages, backpressure. Direct relay in memory (no broker). | Typing latency < 50 ms locally. |
+| 8.4.4 EventBus interface and PostgresBus `guided` | `EventBus` publish/subscribe interface. `PostgresBus` (LISTEN/NOTIFY) now; `NatsBus` parked for hosted. No Kafka. | Worker events reach the browser through the EventBus. |
 
 ## Epic 8.5 — Job queue
 
@@ -68,7 +68,7 @@ Postgres job queue (procrastinate) in a separate worker process.
 | Story | Description | Done when |
 |---|---|---|
 | 8.5.1 Queue on Postgres | procrastinate on Postgres (`SKIP LOCKED`), priorities, `run_at`; separate `cerberus worker` process from the same image. | Jobs run in the worker. |
-| 8.5.2 Retries and leases | Lease with heartbeat; expired lease goes back to the queue; max attempts; idempotency key; dead-letter list. | Killing the worker loses no job. |
+| 8.5.2 Retries and leases `guided` | Lease with heartbeat; expired lease goes back to the queue; max attempts; idempotency key; dead-letter list. | Killing the worker loses no job. |
 | 8.5.3 Concurrency limits | Per job type. Local: 1 test run (#4.6.3), 1 build, 1 generation. | Limits are enforced. |
 | 8.5.4 Progress and cancel | Jobs send progress through the EventBus (startup steps, build logs); cancel. | The UI shows live progress. |
 | 8.5.5 Scheduled jobs | Idle check (30 min), cleanup, pool pre-fill (#3). | Periodic jobs run. |
@@ -91,10 +91,10 @@ Encryption at rest, API keys, rotation, and tokens.
 
 | Story | Description | Done when |
 |---|---|---|
-| 8.7.1 Encryption at rest | AES-GCM. Master key created on first start in `~/.cerberus/secret.key` (0600) or from env; key id per record. | DB keys are unreadable without the master key. |
-| 8.7.2 API key storage | Show only the last 4 characters; decrypt only on the tutor call path; redaction test on logs. | A key never appears in logs or responses. |
+| 8.7.1 Encryption at rest `guided` | AES-GCM. Master key created on first start in `~/.cerberus/secret.key` (0600) or from env; key id per record. | DB keys are unreadable without the master key. |
+| 8.7.2 API key storage `guided` | Show only the last 4 characters; decrypt only on the tutor call path; redaction test on logs. | A key never appears in logs or responses. |
 | 8.7.3 Key rotation | `cerberus rotate-key` encrypts all records again with a new key. | Rotation loses no key. |
-| 8.7.4 Tokens | MCP and preview session tokens: random, stored hashed, scoped, expiring, revocable. | A revoked token fails at once. |
+| 8.7.4 Tokens `guided` | MCP and preview session tokens: random, stored hashed, scoped, expiring, revocable. | A revoked token fails at once. |
 
 ## Epic 8.8 — Recovery and host store
 
@@ -102,11 +102,11 @@ Write-through host store, conflict checks, startup checks, and recovery.
 
 | Story | Description | Done when |
 |---|---|---|
-| 8.8.1 Host store | Write-through on every save; blobs by sha256 in `~/.cerberus/runs/<run>/files/`; manifest table `run_files` (path, hash, version, source: editor or terminal). | Every saved edit is on disk. |
-| 8.8.2 Terminal change capture | Agent file-watch events -> debounced fetch -> store. | A `sed -i` change reaches the store. |
-| 8.8.3 Conflict check | Each save sends `base_hash`; a mismatch returns 409 with the server version (used by #1.4.3). | Journal replay never overwrites silently. |
-| 8.8.4 Startup checks | Compare the DB with Docker: `ready` runs without a container become `interrupted`; clean orphans (#4.1.5); requeue expired leases. | A Docker restart leaves a consistent state. |
-| 8.8.5 Recover endpoint | Fast path (reattach volume) or slow path (rebuild from store), with progress events. | #1.3.4 Recover works. |
+| 8.8.1 Host store `guided` | Write-through on every save; blobs by sha256 in `~/.cerberus/runs/<run>/files/`; manifest table `run_files` (path, hash, version, source: editor or terminal). | Every saved edit is on disk. |
+| 8.8.2 Terminal change capture `guided` | Agent file-watch events -> debounced fetch -> store. | A `sed -i` change reaches the store. |
+| 8.8.3 Conflict check `guided` | Each save sends `base_hash`; a mismatch returns 409 with the server version (used by #1.4.3). | Journal replay never overwrites silently. |
+| 8.8.4 Startup checks `guided` | Compare the DB with Docker: `ready` runs without a container become `interrupted`; clean orphans (#4.1.5); requeue expired leases. | A Docker restart leaves a consistent state. |
+| 8.8.5 Recover endpoint `guided` | Fast path (reattach volume) or slow path (rebuild from store), with progress events. | #1.3.4 Recover works. |
 
 ## Epic 8.9 — API contract and clients
 
@@ -116,8 +116,9 @@ API conventions, generated TypeScript client, agent protocol codegen, contract t
 |---|---|---|
 | 8.9.1 API conventions | `/api/v1`, resource names, cursor pagination, stable operationIds. | Documented in `docs/`. |
 | 8.9.2 TypeScript client | `openapi-typescript` + `openapi-fetch` generate `web/src/lib/api`; CI fails when it is out of date. | The web app compiles against the generated client. |
-| 8.9.3 Agent protocol codegen | Pydantic models generated from `protocol/agent.v1.schema.json`. The Rust side tests sample messages against the schema (owner, guided). | Both sides pass the schema check in CI. |
+| 8.9.3 Agent protocol codegen `guided` | Pydantic models generated from `protocol/agent.v1.schema.json`. The Rust side tests sample messages against the schema (owner, guided). | Both sides pass the schema check in CI. |
 | 8.9.4 Contract tests | Schemathesis fuzzes the OpenAPI spec in CI. | No 500 errors on fuzzed input. |
+| 8.9.5 Fake agent for tests | A small Python test double that speaks `protocol/agent.v1.schema.json` (files, terminals, tasks, ports, events with canned data). The backend and UI build and test against it until the owner's Rust agent is ready. Not a replacement for the agent. | Backend and UI tests pass against the fake agent; swapping in the real agent needs no code change. |
 
 ## Epic 8.10 — Compose packaging
 
@@ -126,9 +127,9 @@ One-command local install with HTTPS, a Docker socket proxy, and release images.
 | Story | Description | Done when |
 |---|---|---|
 | 8.10.1 Compose file | Services db, api, worker, web, caddy; healthchecks; `restart: unless-stopped`; volume `cerberus-pg`; bind mount `~/.cerberus`. | `docker compose up` starts everything. |
-| 8.10.2 Docker socket proxy | api and worker reach Docker only through a socket proxy that allows the needed endpoints. | No raw Docker socket in app containers. |
+| 8.10.2 Docker socket proxy `guided` | api and worker reach Docker only through a socket proxy that allows the needed endpoints. | No raw Docker socket in app containers. |
 | 8.10.3 Local HTTPS | Caddy: `cerberus.localhost`, `*.localhost` previews, MCP; local CA download (#1.11.4). | The browser trusts the certificates after one setup step. |
-| 8.10.4 Agent binary bundling | CI builds musl amd64 and arm64 agent binaries; the api image carries both; the executor copies the right one. | The agent works on both architectures. |
+| 8.10.4 Agent binary bundling `guided` | CI builds musl amd64 and arm64 agent binaries; the api image carries both; the executor copies the right one. | The agent works on both architectures. |
 | 8.10.5 First run | Migrate, seed the local user, create the secret key, print the URL. `cerberus doctor` checks the setup. | A new user runs Cerberus in < 5 minutes. |
 | 8.10.6 Release images | api and web images on GHCR on each tag; compose pulls them. Local build for development. | Users need no build tools. |
 

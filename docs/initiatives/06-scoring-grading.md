@@ -19,9 +19,9 @@ Grade the fix from a clean copy, with held-out tests and a flake guard.
 | Story | Description | Done when |
 |---|---|---|
 | 6.1.1 Grading job | Submit -> queue job -> clean-copy runner in `learner` mode (#4.6) with the host store snapshot -> JUnit -> result. Idempotent per snapshot hash. | A submit gives a graded result. |
-| 6.1.2 Grading tests (held-out) | `project.yaml` `grading_tests` (optional patterns). Removed from the dev box at prepare (#4.2.2); present only in clean-copy runs. Results show counts, not names. | A hardcoded fix fails the held-out tests. |
-| 6.1.3 Pass rules | Full suite passes: expected failures now pass, no test that passed before now fails, `<error>` counts as a fail. | Rules apply per issue. |
-| 6.1.4 Flake guard | Failing tests run once more. Different results -> mark flaky, no penalty, flag the issue or project. | A flaky test never costs the learner. |
+| 6.1.2 Grading tests (held-out) `guided` | `project.yaml` `grading_tests` (optional patterns). Removed from the dev box at prepare (#4.2.2); present only in clean-copy runs. Results show counts, not names. | A hardcoded fix fails the held-out tests. |
+| 6.1.3 Pass rules `guided` | Full suite passes: expected failures now pass, no test that passed before now fails, `<error>` counts as a fail. | Rules apply per issue. |
+| 6.1.4 Flake guard `guided` | Failing tests run once more. Different results -> mark flaky, no penalty, flag the issue or project. | A flaky test never costs the learner. |
 | 6.1.5 Practice check | "Check my fix" in practice runs the same grading without submit. | The learner sees if the fix holds, held-out tests included. |
 
 ## Epic 6.2 — Score formula
