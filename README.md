@@ -33,7 +33,14 @@ Design phase is complete: 8 initiatives, 65 epics, 283 stories on the [workboard
 | `docs/decisions/` | Long-form design decisions |
 | `docs/ontology.md` | Entity types and verbs for logs and the knowledge graph |
 | `logs/build.jsonl` | Build log: decisions, status changes, failures |
+| `LICENSE`, `LICENSE-docs`, `NOTICE`, `CITATION.cff` | Apache-2.0 (code), CC BY 4.0 (docs, dataset), credit notice, citation |
 | `.githooks/`, `.github/` | Commit and push hooks, linked-issue check, PR template, CODEOWNERS |
+
+## License and credit
+
+- **Code:** [Apache License 2.0](LICENSE).
+- **Docs and the public issue dataset:** [CC BY 4.0](LICENSE-docs).
+- If you use or build on Cerberus, keep the [NOTICE](NOTICE) file and credit it: *"Based on Cerberus © 2026 gru13 (https://github.com/gru13/Cerberus)"*. Contact: guruprasath1302@gmail.com. GitHub's "Cite this repository" button uses [CITATION.cff](CITATION.cff).
 
 ## Contributing
 
