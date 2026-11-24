@@ -61,6 +61,20 @@ Browser (#1) ──REST + WebSocket──► API (#190) ──► Postgres (data
 Accounts, exams, tokens (#7) and run orchestration (#190) tie a run together.
 ```
 
+## Ownership
+
+The owner builds the `guided` stories to learn (security, performance, core systems; about 40% of the effort). Claude explains and reviews these, and builds everything else (about 60%: UI, app skeleton, CRUD, compose and CI). On the board, `guided` stories are assigned to the owner.
+
+| Area | Owner stories (`guided`) |
+|---|---|
+| Sandbox and Rust agent | 4.3.1–4.3.7 agent · 4.1.2 hardening · 4.2.2 trace removal · 4.2.3 read-only locks · 4.4.1, 4.4.2, 4.4.4 network and preview proxy · 4.5.1–4.5.2 snapshots and resume · 4.6.1–4.6.3 clean-copy runner · 8.9.3 agent protocol · 8.10.4 agent binary builds |
+| Realtime and persistence | 8.4.1–8.4.4 realtime relay · 8.8.1–8.8.5 host store and recovery · 1.4.3 offline journal · 8.5.2 job leases |
+| AI safety and retrieval | 5.5.1–5.5.7 guardrails · 5.3.5 untrusted tool output · 5.3.3 symbol docs tool · 3.4.10 MCP safety |
+| Data integrity and generation | 3.5.2 validator test checks · 3.8.1–3.8.4 carry-over · 3.7.1–3.7.4 LLM bug generator · 3.10.1 issue picking · 6.1.2–6.1.4 held-out tests, pass rules, flake guard |
+| Platform security | 8.1.5 local security · 8.2.2 tenancy guard · 8.7.1, 8.7.2, 8.7.4 secrets and tokens · 8.10.2 Docker socket proxy · 2.2.3 Dockerfile rules |
+
+Total: 61 stories and 7 epics (4.3, 5.5, 8.4, 8.8, 3.8, 3.7, 4.6). Claude builds 8.9.5, a fake agent for tests, so backend and UI work does not wait for the Rust agent.
+
 ## Build order
 
 Each story has a `Phase` field on the board with these values. Stories in the current phase are `Ready`.

@@ -23,7 +23,7 @@ Start, harden, track, and clean up dev box containers.
 | Story | Description | Done when |
 |---|---|---|
 | 4.1.1 SandboxExecutor interface | `create(run_package) -> session`, `exec`, `stop`, `snapshot`, `destroy`. `LocalDocker` now; `WorkerPool` parked. | Interface and LocalDocker work. |
-| 4.1.2 Container hardening | Non-root user, `--cap-drop ALL`, `no-new-privileges`, default seccomp, read-only root FS, workspace on a named volume per run (`cerberus-run-<id>`), tmpfs `/tmp`, limits: PIDs, 2 CPU, 4 GB RAM, 5 GB disk (configurable). | Hardening checklist passes. |
+| 4.1.2 Container hardening `guided` | Non-root user, `--cap-drop ALL`, `no-new-privileges`, default seccomp, read-only root FS, workspace on a named volume per run (`cerberus-run-<id>`), tmpfs `/tmp`, limits: PIDs, 2 CPU, 4 GB RAM, 5 GB disk (configurable). | Hardening checklist passes. |
 | 4.1.3 Session lifecycle | starting -> patching -> ready -> idle -> stopped -> destroyed. Idle timeout 30 min (snapshot then stop). One active session per user in local mode. | States are logged (`sandbox.session.*`). |
 | 4.1.4 Startup and health checks | Docker present and running; image present (or built by #2); clear errors. Startup target < 5 s. | Clear message when Docker is missing. |
 | 4.1.5 Sandbox cleanup | Destroy stopped sessions. Remove a run volume when the run is submitted or deleted. Remove orphan containers, networks, and volumes on app start. | No leftovers after a crash. |
@@ -35,8 +35,8 @@ Apply the patch, remove all traces, and lock read-only files.
 | Story | Description | Done when |
 |---|---|---|
 | 4.2.1 Apply patches | Apply run-package patches as root, in order. Fail the session with a clear error on reject. | Patched workspace ready. |
-| 4.2.2 Trace removal | Delete `.orig` / `.rej` / patch files; remove `grading_tests` paths (#6.1.2); set one fixed mtime on all files; clear `__pycache__`, `*.pyc`, `.vite`, `.cache`, shell history; assert no `.git`. | Trace test finds nothing (`ls -lt`, `find -newer`, `.pyc`). |
-| 4.2.3 Read-only locks | Editable files owned by `runner`; others root-owned `444`; sticky bit on directories; matched against editable and read-only patterns. Learners may create new files (ignored by grading). | Learner cannot edit, delete, or rename a locked file. |
+| 4.2.2 Trace removal `guided` | Delete `.orig` / `.rej` / patch files; remove `grading_tests` paths (#6.1.2); set one fixed mtime on all files; clear `__pycache__`, `*.pyc`, `.vite`, `.cache`, shell history; assert no `.git`. | Trace test finds nothing (`ls -lt`, `find -newer`, `.pyc`). |
+| 4.2.3 Read-only locks `guided` | Editable files owned by `runner`; others root-owned `444`; sticky bit on directories; matched against editable and read-only patterns. Learners may create new files (ignored by grading). | Learner cannot edit, delete, or rename a locked file. |
 | 4.2.4 Authoring workspace | Authoring sessions (#3): no patch, clean copy outside the workspace (`/opt/cerberus/clean`, agent-only) for diffs. | Diff API works in authoring mode. |
 
 ## Epic 4.3 — In-container agent (Rust)
@@ -59,10 +59,10 @@ No internet in the dev box, but app previews still work.
 
 | Story | Description | Done when |
 |---|---|---|
-| 4.4.1 Internal network per session | Docker `--internal` network: backend can reach the container; the container cannot reach the internet. | `curl` to the internet fails inside; preview works. |
-| 4.4.2 Preview proxy | HTTPS reverse proxy backend -> container:port, WebSocket support (hot reload), session-token check. | A Vite app with hot reload works in preview. |
+| 4.4.1 Internal network per session `guided` | Docker `--internal` network: backend can reach the container; the container cannot reach the internet. | `curl` to the internet fails inside; preview works. |
+| 4.4.2 Preview proxy `guided` | HTTPS reverse proxy backend -> container:port, WebSocket support (hot reload), session-token check. | A Vite app with hot reload works in preview. |
 | 4.4.3 Preview URLs | Subdomain per port: `https://<port>-<run>.localhost` (no DNS setup; avoids path-prefix breakage). | Several ports preview side by side. |
-| 4.4.4 No network for throwaway runs | Validation and grading runs use `--network none`. | No network in validation or grading. |
+| 4.4.4 No network for throwaway runs `guided` | Validation and grading runs use `--network none`. | No network in validation or grading. |
 
 ## Epic 4.5 — Persistence and resume
 
@@ -70,8 +70,8 @@ Save and restore the learner workspace.
 
 | Story | Description | Done when |
 |---|---|---|
-| 4.5.1 Host store and snapshots | The backend keeps a write-through copy of every editable and new file in the host store (`~/.cerberus/runs/<run>/files/`, content-addressed). Editor saves are copied on write; terminal changes arrive through agent file-watch events. Full snapshot on submit. | After the run volume is deleted, no saved edit is lost. |
-| 4.5.2 Resume a session | Fast path: new container on the same run volume. Slow path (volume lost): fresh container -> apply patch -> remove traces -> restore from the host store -> lock again. | Both paths work; the learner continues where they stopped. |
+| 4.5.1 Host store and snapshots `guided` | The backend keeps a write-through copy of every editable and new file in the host store (`~/.cerberus/runs/<run>/files/`, content-addressed). Editor saves are copied on write; terminal changes arrive through agent file-watch events. Full snapshot on submit. | After the run volume is deleted, no saved edit is lost. |
+| 4.5.2 Resume a session `guided` | Fast path: new container on the same run volume. Slow path (volume lost): fresh container -> apply patch -> remove traces -> restore from the host store -> lock again. | Both paths work; the learner continues where they stopped. |
 | 4.5.3 SnapshotStore interface | Uses the #190 store interface: local folder (local mode) or object storage (hosted). | Same code in both modes. |
 
 ## Epic 4.6 — Throwaway test runs
@@ -80,9 +80,9 @@ Clean-copy test execution for the #3 validator and #6 grading.
 
 | Story | Description | Done when |
 |---|---|---|
-| 4.6.1 Clean-copy runner | Fresh container, `--network none` -> apply patches -> copy in only allowed editable files from the host store -> keep `grading_tests` (#6.1.2) -> `run-tests` -> collect JUnit -> destroy. | Returns JUnit report, exit code, runtime. |
-| 4.6.2 Test run modes | `baseline` (no patch), `patched`, `reversed`, `learner` (patch + learner edits). | All four modes work. |
-| 4.6.3 Test run limits and queue | One at a time locally; timeout (`run-tests` <= 120 s + overhead). | Queue and timeout are enforced. |
+| 4.6.1 Clean-copy runner `guided` | Fresh container, `--network none` -> apply patches -> copy in only allowed editable files from the host store -> keep `grading_tests` (#6.1.2) -> `run-tests` -> collect JUnit -> destroy. | Returns JUnit report, exit code, runtime. |
+| 4.6.2 Test run modes `guided` | `baseline` (no patch), `patched`, `reversed`, `learner` (patch + learner edits). | All four modes work. |
+| 4.6.3 Test run limits and queue `guided` | One at a time locally; timeout (`run-tests` <= 120 s + overhead). | Queue and timeout are enforced. |
 
 ## Epic 4.7 — Hosted executor (parked)
 
