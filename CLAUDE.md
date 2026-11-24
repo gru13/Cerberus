@@ -42,6 +42,12 @@ Status: design complete; build not started. Design index: `docs/README.md`. Agre
 - When a PR opens, move its issue to In review and assign gru13. When it merges, move it to Done.
 - Initiative details live in `docs/initiatives/` and in the issue body. Keep both in sync.
 
+## Dev tasks (mandatory)
+
+- `.vscode/tasks.json` lists every developer command: CLI commands, checks, and scripts.
+- When a PR adds or changes a command, add or update its task in the same PR. Name tasks `<area>: <action>` (for example `api: test`).
+- Keep `<area>: check` equal to the CI steps for that area.
+
 ## Guided work (label `guided`)
 
 - The owner builds `guided` stories personally to learn: security, performance, and core systems (about 40% of the effort). The list is in `docs/README.md` (Ownership): sandbox and Rust agent, realtime and persistence, AI safety, data integrity and the bug generator, platform security.
@@ -58,6 +64,7 @@ Status: design complete; build not started. Design index: `docs/README.md`. Agre
   - `pre-commit`: blocks commits on main and staged secrets (API keys, tokens, private keys, `.env` files).
   - `pre-push`: blocks pushes to main.
 - Never use `--no-verify`, `--force`, or `git push origin main`.
+- Keep local branches clean: after a PR merges, run the `repo: prune-branches` task (fetch with prune, then `git branch -d` for merged branches). Never force-delete a branch until `git cherry` shows it has no unique commits.
 - Never commit secrets. Use `.env` (ignored) and `.env.example` (placeholders only).
 - Every PR must link an open issue with `Closes #<n>` in the body. The required check `linked-issue` fails otherwise. Create the issue first.
 - Only the owner (gru13) has write access. Others contribute from a fork through a PR; the owner reviews (CODEOWNERS) and merges.

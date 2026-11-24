@@ -1,0 +1,91 @@
+{
+  // Developer tasks for this repository. Rule (CLAUDE.md "Dev tasks"):
+  // every new command (CLI command, check, or script) gets a task here in the same PR.
+  "version": "2.0.0",
+  "options": {
+    "cwd": "${workspaceFolder}/api"
+  },
+  "tasks": [
+    {
+      "label": "api: sync",
+      "detail": "Install Python and dependencies (uv sync).",
+      "type": "shell",
+      "command": "uv sync",
+      "problemMatcher": []
+    },
+    {
+      "label": "api: run",
+      "detail": "Start the API on http://127.0.0.1:8000 with reload.",
+      "type": "shell",
+      "command": "uv run cerberus api --reload",
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "api: doctor",
+      "detail": "Check that this machine can run Cerberus.",
+      "type": "shell",
+      "command": "uv run cerberus doctor",
+      "problemMatcher": []
+    },
+    {
+      "label": "api: lint",
+      "detail": "Ruff lint.",
+      "type": "shell",
+      "command": "uv run ruff check .",
+      "problemMatcher": []
+    },
+    {
+      "label": "api: format",
+      "detail": "Ruff format (writes changes).",
+      "type": "shell",
+      "command": "uv run ruff format .",
+      "problemMatcher": []
+    },
+    {
+      "label": "api: format-check",
+      "detail": "Ruff format check (no changes, same as CI).",
+      "type": "shell",
+      "command": "uv run ruff format --check .",
+      "problemMatcher": []
+    },
+    {
+      "label": "api: typecheck",
+      "detail": "ty type check.",
+      "type": "shell",
+      "command": "uv run ty check",
+      "problemMatcher": []
+    },
+    {
+      "label": "api: test",
+      "detail": "Run pytest.",
+      "type": "shell",
+      "command": "uv run pytest",
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "repo: prune-branches",
+      "detail": "Fetch with prune, then delete local branches already merged into origin/main.",
+      "type": "shell",
+      "command": "git fetch --prune origin && git branch --merged origin/main --format='%(refname:short)' | grep -vE '^main$' | xargs -r git branch -d",
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "GIT_CONFIG_COUNT": "1",
+          "GIT_CONFIG_KEY_0": "safe.directory",
+          "GIT_CONFIG_VALUE_0": "${workspaceFolder}"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "api: check",
+      "detail": "All CI checks in order: lint, format-check, typecheck, test.",
+      "dependsOrder": "sequence",
+      "dependsOn": ["api: lint", "api: format-check", "api: typecheck", "api: test"],
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": []
+    }
+  ]
+}

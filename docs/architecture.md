@@ -29,6 +29,7 @@ Cerberus/
 ├── docker-compose.yml          # local mode: db + api + worker + web + caddy + socket proxy
 ├── .env.example                # placeholders only
 ├── .githooks/                  # pre-commit, pre-push
+├── .vscode/tasks.json          # one task per developer command (api: run, api: test, api: check, ...)
 ├── .github/                    # workflows (linked-issue, ci-web, ci-api, ci-agent), CODEOWNERS, PR template
 ├── docs/                       # decisions/, initiatives/, ontology.md, architecture.md
 ├── logs/build.jsonl
