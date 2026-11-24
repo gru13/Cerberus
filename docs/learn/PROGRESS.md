@@ -154,3 +154,4 @@ web_access: BLOCKED. WebFetch fails with ENOTFOUND for docs.rs and man7.org (ses
 ## Run log
 - 2026-11-24 (UTC): First run. Sent the started email. Created this file. Extracted the concept list (STEP 3).
 - 2026-11-24 (UTC): Built tooling (api/scripts/learn_index.py, learn_models.py, tests, tasks, CI step) and an empty sources.yaml. Local checks pass. Web fetch blocked, so STEP 4 did not start.
+- 2026-11-24 (UTC): Run 3. Web fetch still blocked (man7.org ENOTFOUND, proxy 403). No concept verified. Waiting for network allowlist.
