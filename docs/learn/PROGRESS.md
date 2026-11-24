@@ -3,7 +3,7 @@
 started_email_sent: yes
 concepts_total: 138
 concepts_done: 130
-pr_url: none
+pr_url: https://github.com/gru13/Cerberus/pull/393
 report_email_sent: no
 
 ## Checklist
