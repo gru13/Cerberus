@@ -43,6 +43,8 @@ jobs:
         run: uv run ty check
       - name: Style check
         run: uv run python scripts/style_check.py
+      - name: Learning index check
+        run: uv run python scripts/learn_index.py check
       - name: Tests
         run: uv run pytest
       - name: CLI smoke test

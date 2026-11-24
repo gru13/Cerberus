@@ -148,5 +148,9 @@ Format: `[ ] id (stories)`. Mark `[x]` when the concept is in `sources.yaml` wit
 - [ ] build.mimalloc (8.10.4)
 - [ ] build.reproducible-builds (8.10.4)
 
+## Blocker
+web_access: BLOCKED. WebFetch fails with ENOTFOUND for docs.rs and man7.org (session network policy). No source URL can be opened, so no concept has a verified source. Allow the domains in the session network settings, then the next run continues at STEP 4.
+
 ## Run log
 - 2026-11-24 (UTC): First run. Sent the started email. Created this file. Extracted the concept list (STEP 3).
+- 2026-11-24 (UTC): Built tooling (api/scripts/learn_index.py, learn_models.py, tests, tasks, CI step) and an empty sources.yaml. Local checks pass. Web fetch blocked, so STEP 4 did not start.

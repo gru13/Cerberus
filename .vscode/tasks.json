@@ -29,6 +29,27 @@
       "problemMatcher": []
     },
     {
+      "label": "learn: build",
+      "detail": "Generate docs/learn pages from docs/learn/sources.yaml.",
+      "type": "shell",
+      "command": "uv run python scripts/learn_index.py build",
+      "problemMatcher": []
+    },
+    {
+      "label": "learn: check",
+      "detail": "Check docs/learn/sources.yaml offline (schema, domains, primary sources).",
+      "type": "shell",
+      "command": "uv run python scripts/learn_index.py check",
+      "problemMatcher": []
+    },
+    {
+      "label": "learn: check-links",
+      "detail": "Check the learning index offline rules, then request every source URL.",
+      "type": "shell",
+      "command": "uv run python scripts/learn_index.py check --online",
+      "problemMatcher": []
+    },
+    {
       "label": "api: lint",
       "detail": "Ruff lint.",
       "type": "shell",
@@ -95,9 +116,9 @@
     },
     {
       "label": "api: check",
-      "detail": "All CI checks in order: lint, format-check, typecheck, style-check, test.",
+      "detail": "All CI checks in order: lint, format-check, typecheck, style-check, learn-check, test.",
       "dependsOrder": "sequence",
-      "dependsOn": ["api: lint", "api: format-check", "api: typecheck", "api: style-check", "api: test"],
+      "dependsOn": ["api: lint", "api: format-check", "api: typecheck", "api: style-check", "learn: check", "api: test"],
       "group": { "kind": "build", "isDefault": true },
       "problemMatcher": []
     }
