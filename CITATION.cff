@@ -4,9 +4,11 @@ title: "Cerberus: a debugging practice and exam platform"
 type: software
 authors:
   - alias: gru13
+    email: guruprasath1302@gmail.com
     website: "https://github.com/gru13"
 repository-code: "https://github.com/gru13/Cerberus"
 license: Apache-2.0
+date-released: "2026-11-25"
 keywords:
   - debugging
   - education

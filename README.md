@@ -40,7 +40,7 @@ Design phase is complete: 8 initiatives, 65 epics, 283 stories on the [workboard
 
 - **Code:** [Apache License 2.0](LICENSE).
 - **Docs and the public issue dataset:** [CC BY 4.0](LICENSE-docs).
-- If you use or build on Cerberus, keep the [NOTICE](NOTICE) file and credit it: *"Based on Cerberus by gru13 (https://github.com/gru13/Cerberus)"*. GitHub's "Cite this repository" button uses [CITATION.cff](CITATION.cff).
+- If you use or build on Cerberus, keep the [NOTICE](NOTICE) file and credit it: *"Based on Cerberus © 2026 gru13 (https://github.com/gru13/Cerberus)"*. Contact: guruprasath1302@gmail.com. GitHub's "Cite this repository" button uses [CITATION.cff](CITATION.cff).
 
 ## Contributing
 
