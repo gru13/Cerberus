@@ -4,7 +4,7 @@ started_email_sent: yes
 concepts_total: 138
 concepts_done: 130
 pr_url: https://github.com/gru13/Cerberus/pull/393
-report_email_sent: no
+report_email_sent: yes
 
 ## Checklist
 Format: `[ ] id (stories)`. Mark `[x]` when the concept is in `sources.yaml` with verified sources.
@@ -153,6 +153,7 @@ Format: `[ ] id (stories)`. Mark `[x]` when the concept is in `sources.yaml` wit
 - 2026-11-24 (UTC): Built tooling (api/scripts/learn_index.py, learn_models.py, tests, tasks, CI step) and an empty sources.yaml. Local checks pass. Web fetch blocked, so STEP 4 did not start.
 - 2026-11-24 (UTC): Run 3. Web fetch still blocked (man7.org ENOTFOUND, proxy 403). No concept verified. Waiting for network allowlist.
 - 2026-11-24 (UTC): Run 4. Web fetch works. Sourced 130 of 138 concepts with 7 parallel agents; 8 need a source. Offline check passes.
+- 2026-11-24 (UTC): Opened PR #393 and sent the report email. Nothing left to do.
 
 ## needs_source (8 concepts left out of sources.yaml, plus 1 partial)
 - persistence.fencing-token: no allowed-domain source defines fencing tokens (Kleppmann blog not allowed); proposed official domain: none found (maybe a Postgres or etcd doc page)
