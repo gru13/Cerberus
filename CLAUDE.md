@@ -34,8 +34,12 @@ Status: design complete; build not started. Design index: `docs/README.md`. Agre
 ## Work tracking
 
 - Board: GitHub Project "Cerberus Workboard" (https://github.com/users/gru13/projects/4).
-- Hierarchy: Initiative → Epic → Story (labels `initiative`, `epic`, `story`; epics are sub-issues of initiatives, stories of epics).
-- Status columns: Backlog → Designing → Designed → Building → Done.
+- Hierarchy: Initiative → Epic → Story (labels `initiative`, `epic`, `story`; epics are sub-issues of initiatives, stories of epics). Every item except an initiative has a parent. Chores and design records go under Initiative 0 "Project management" (#377).
+- Status (same meaning at every level): Designing (owner decides) → Backlog (designed, not scheduled) → Ready (current phase) → In progress → In review (PR open, owner merges) → Done. Parked = hosted mode or later.
+- Fields: `Initiative` (0–8) and `Phase` (P0–P6, Later; from the build order in `docs/README.md`). Set both on every new item.
+- Assignee = needs the owner: assign gru13 to `guided` stories, items In review, and items that need an owner decision. Leave other items unassigned.
+- Views: **My work** (assigned to the owner, not Done or Parked), **Roadmap** (all open work), **Done**.
+- When a PR opens, move its issue to In review and assign gru13. When it merges, move it to Done.
 - Initiative details live in `docs/initiatives/` and in the issue body. Keep both in sync.
 
 ## Guided work (label `guided`)

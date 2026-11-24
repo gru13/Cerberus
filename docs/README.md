@@ -3,7 +3,7 @@
 The master index for the Cerberus design. Start here.
 
 - **Status:** design phase is complete. All 8 initiatives are designed. No application code yet.
-- **Board:** [Cerberus Workboard](https://github.com/users/gru13/projects/4) (Initiative → Epic → Story; Backlog → Designing → Designed → Building → Done)
+- **Board:** [Cerberus Workboard](https://github.com/users/gru13/projects/4). Views: **My work** (what needs the owner), **Roadmap** (open work by initiative and phase), **Done**. Status: Designing → Backlog → Ready → In progress → In review → Done, plus Parked. Fields: Initiative, Phase.
 - **Rules for contributors and AI sessions:** [`CLAUDE.md`](../CLAUDE.md) (logging in ASD-STE100, build log, git safety, guided work)
 
 ## What Cerberus is
@@ -23,6 +23,7 @@ A debugging practice and exam platform. A web IDE opens a correct base project w
 
 | # | Initiative | Issue | Epics | Stories (parked) | Design doc |
 |---|---|---|---|---|---|
+| 0 | Project management | #377 | 2 | repo setup, design records | [00-project-management.md](initiatives/00-project-management.md) |
 | 1 | Web IDE | #1 | 12 | 46 (3) | [01-web-ide.md](initiatives/01-web-ide.md) |
 | 2 | Project repository | #2 | 4 | 20 (1) | [02-project-repository.md](initiatives/02-project-repository.md) |
 | 3 | Issue engine | #3 | 10 | 47 (1) | [03-issue-engine.md](initiatives/03-issue-engine.md) |
@@ -60,7 +61,9 @@ Browser (#1) ──REST + WebSocket──► API (#190) ──► Postgres (data
 Accounts, exams, tokens (#7) and run orchestration (#190) tie a run together.
 ```
 
-## Proposed build order (to confirm before building)
+## Build order
+
+Each story has a `Phase` field on the board with these values. Stories in the current phase are `Ready`.
 
 | Phase | Goal | Main stories |
 |---|---|---|
