@@ -66,18 +66,18 @@
     Use it to check signatures and token hashes.
     The secrets module re-exports the same function.
   sources:
-  - url: https://docs.python.org/3.13/library/hmac.html
+  - url: https://docs.python.org/3.14/library/hmac.html
     title: hmac - Keyed-Hashing for Message Authentication
     kind: official-docs
     publisher: Python Software Foundation
-    version: Python 3.13 docs
+    version: Python 3.14 docs
     primary: true
     checked: &id001 2026-11-25
-  - url: https://docs.python.org/3.13/library/secrets.html
+  - url: https://docs.python.org/3.14/library/secrets.html
     title: secrets - Generate secure random numbers
     kind: official-docs
     publisher: Python Software Foundation
-    version: Python 3.13 docs
+    version: Python 3.14 docs
     primary: false
     checked: *id001
 - id: security.csrf-defenses
@@ -412,11 +412,11 @@
     Pair with a jti and an atomic consume for single use.
     Use a digest name explicitly; digestmod is required.
   sources:
-  - url: https://docs.python.org/3.13/library/hmac.html
+  - url: https://docs.python.org/3.14/library/hmac.html
     title: hmac - Keyed-Hashing for Message Authentication
     kind: official-docs
     publisher: Python Software Foundation
-    version: Python 3.13 docs
+    version: Python 3.14 docs
     primary: true
     checked: *id001
   - url: https://www.rfc-editor.org/rfc/rfc2104
@@ -517,11 +517,11 @@
     A background job has no request context, so set it explicitly.
     Fail closed when the variable is unset.
   sources:
-  - url: https://docs.python.org/3.13/library/contextvars.html
+  - url: https://docs.python.org/3.14/library/contextvars.html
     title: contextvars - Context Variables
     kind: official-docs
     publisher: Python Software Foundation
-    version: Python 3.13 docs
+    version: Python 3.14 docs
     primary: true
     checked: *id001
 - id: security.python-secrets
@@ -539,11 +539,11 @@
     Do not use the random module for tokens.
     It also offers compare_digest.
   sources:
-  - url: https://docs.python.org/3.13/library/secrets.html
+  - url: https://docs.python.org/3.14/library/secrets.html
     title: secrets - Generate secure random numbers
     kind: official-docs
     publisher: Python Software Foundation
-    version: Python 3.13 docs
+    version: Python 3.14 docs
     primary: true
     checked: *id001
 - id: security.samesite-cookies
@@ -723,10 +723,10 @@
     version: undated (current)
     primary: true
     checked: 2026-11-24
-  - url: https://docs.python.org/3.13/library/secrets.html
+  - url: https://docs.python.org/3.14/library/secrets.html
     title: secrets - Generate secure random numbers
     kind: official-docs
     publisher: Python Software Foundation
-    version: Python 3.13 docs
+    version: Python 3.14 docs
     primary: false
     checked: *id001

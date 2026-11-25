@@ -20,11 +20,11 @@
     Catch TimeoutError outside the async with block.
     Code that swallows CancelledError breaks it.
   sources:
-  - url: https://docs.python.org/3.13/library/asyncio-task.html
+  - url: https://docs.python.org/3.14/library/asyncio-task.html
     title: 'Coroutines and Tasks: Timeouts'
     kind: official-docs
     publisher: Python Software Foundation
-    version: Python 3.13 docs
+    version: Python 3.14 docs
     primary: true
     checked: &id001 2026-11-25
 - id: sandbox.caddy-admin-api
@@ -213,11 +213,11 @@
     version: 0.7.1 (PyPI)
     primary: true
     checked: *id001
-  - url: https://docs.python.org/3.13/library/xml.html
+  - url: https://docs.python.org/3.14/library/xml.html
     title: 'XML Processing Modules: XML security'
     kind: official-docs
     publisher: Python Software Foundation
-    version: Python 3.13 docs
+    version: Python 3.14 docs
     primary: false
     checked: *id001
 - id: sandbox.docker-embedded-dns
@@ -864,11 +864,11 @@
     Hash-based pyc files exist and do not use mtime.
     Remove __pycache__ to avoid leaking patched file times.
   sources:
-  - url: https://docs.python.org/3.13/reference/import.html
+  - url: https://docs.python.org/3.14/reference/import.html
     title: 'The import system: cached bytecode invalidation'
     kind: official-docs
     publisher: Python Software Foundation
-    version: Python 3.13 docs
+    version: Python 3.14 docs
     primary: true
     checked: *id001
   - url: https://peps.python.org/pep-0552/
@@ -918,11 +918,11 @@
     Python 3.14 made data the default filter.
     Filters do not stop disk or memory exhaustion. Extract to a fresh directory.
   sources:
-  - url: https://docs.python.org/3.13/library/tarfile.html
+  - url: https://docs.python.org/3.14/library/tarfile.html
     title: tarfile - Read and write tar archive files
     kind: official-docs
     publisher: Python Software Foundation
-    version: Python 3.13 docs
+    version: Python 3.14 docs
     primary: true
     checked: *id001
 - id: sandbox.rename-atomic
