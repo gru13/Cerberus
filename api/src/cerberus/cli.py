@@ -14,7 +14,7 @@ app = typer.Typer(
     add_completion=False,
 )
 
-MIN_PYTHON = (3, 13)
+MIN_PYTHON = (3, 14)
 
 
 def _version_callback(value: bool) -> None:
@@ -83,7 +83,7 @@ def doctor() -> None:
     else:
         ok = False
         typer.echo(
-            f"FAIL The Python version must be 3.13 or later. It is {sys.version.split()[0]}."
+            f"FAIL The Python version must be 3.14 or later. It is {sys.version.split()[0]}."
         )
     try:
         from cerberus.main import create_app

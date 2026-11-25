@@ -16,7 +16,7 @@ guided-stories study guide, `docs/guided-study-guide.md`; a concept's `stories` 
 - Policy: official sources only, https only, on the `allowed_domains` in `index.yaml`.
 - Every concept has at least one primary source.
 - A project's GitHub README or spec file may be the primary source when the project has no docs site.
-- Pin versions: Python sources cite the 3.13 docs (the project's Python); tools cite a release, not a branch.
+- Pin versions: Python sources cite the 3.14 docs; tools cite a release, not a branch.
 
 ## Commands
 

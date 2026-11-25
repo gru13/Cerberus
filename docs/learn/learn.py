@@ -1,5 +1,5 @@
 # /// script
-# requires-python = ">=3.13"
+# requires-python = ">=3.14"
 # dependencies = ["pydantic>=2.12", "pyyaml>=6.0.2"]
 # ///
 """Intent: One tool for the learning index YAML: check it, check its links, edit it in a browser.

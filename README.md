@@ -12,7 +12,7 @@ Design phase is complete: 8 initiatives, 65 epics, 283 stories on the [workboard
 
 ## Key decisions
 
-- **Stack:** Next.js + Monaco + xterm.js (web), FastAPI on Python 3.13 (api), Rust (in-container agent, built by the owner), Postgres only (data, job queue, events). No Kafka or Redis.
+- **Stack:** Next.js + Monaco + xterm.js (web), FastAPI on Python 3.14 (api), Rust (in-container agent, built by the owner), Postgres only (data, job queue, events). No Kafka or Redis.
 - **Install:** `docker compose up` (local mode). Hosted mode for colleges and companies is designed and parked ([decision 0001](docs/decisions/0001-deployment-modes.md)).
 - **Projects:** any stack. Each project gives a Dockerfile and `tasks.json` with `run-project` and `run-tests`. A merge to `cerberus-content` builds a new version (commit SHA).
 - **Issues:** a versioned diff on one project version. Created in the UI or through MCP, validated (tests fail before the fix, pass after), and reviewed before use.

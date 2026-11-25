@@ -1,6 +1,6 @@
 # Cerberus API
 
-FastAPI backend for Cerberus (initiative 8, #190). Python 3.13, managed with [uv](https://docs.astral.sh/uv/).
+FastAPI backend for Cerberus (initiative 8, #190). Python 3.14, managed with [uv](https://docs.astral.sh/uv/).
 
 ## Commands
 
