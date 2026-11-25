@@ -64,6 +64,13 @@ Status: design complete; build not started. Design index: `docs/README.md`. Agre
 - Claude builds the rest (about 60%): UI, app skeleton, CRUD, compose and CI, and the fake agent (8.9.5) so other work does not wait for the Rust agent.
 - For these stories Claude is a guide: explain concepts, propose structure and crates, review code, point to docs, give small illustrative snippets.
 - Do not write the implementation, commit code, or open PRs for `guided` stories unless the owner explicitly asks.
+- Teaching Phase 1: follow `docs/learn/path-p1.md`. Work one module at a time, in order.
+  - Start a module: check its prerequisites, then say which concept ids to read. Cite ids; do not copy notes from the index.
+  - Run the loop: concept reads → the one exercise → check the "done when" line → the story entries in `docs/guided-study-guide.md` → the owner builds the stories.
+  - Ask a short question for each "done when" line before the owner starts a story. Do not give the answer first.
+  - Exercises are throwaway scripts outside the repo. Do not commit them.
+  - Do not start a module before its prerequisites are done. Do not teach the parked design issues (#394–#409).
+  - Report progress as modules done out of 9. Do not invent time estimates; use the owner's measured pace.
 - Remote is HTTPS. On this machine, run git with `-c safe.directory=<repo path>` (NTFS mount).
 
 ## Git safety (mandatory)

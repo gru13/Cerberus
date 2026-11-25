@@ -267,6 +267,13 @@ Each Phase 1 story appears in the module that first teaches what it needs. Build
 | 4.3.4 #110, 4.3.5 #111, 4.3.6 #112 | 8 |
 | 8.5.2 #218, 4.6.1 #124, 4.6.2 #125, 4.6.3 #126 | 9 |
 
+## How much this path covers
+
+- **Learning index:** 114 of 138 concepts (83%). That is 111 P1 concepts and 3 P0 read-ahead concepts (`security.docker-image-inspect`, `security.cswsh`, `realtime.origin-check-websocket`).
+- **Not covered (24):** 21 other P0 concepts (8.1.5, 8.2.2, 8.10.2 and 2.2.3 areas) and the 3 preview-only concepts listed in Scope.
+- **Areas:** sandbox 56 of 59 (the 3 preview concepts are left out), realtime 18 of 18, persistence 14 of 14, protocol 13 of 13, build 6 of 6, security 7 of 28.
+- **Guided stories:** 27 of 61 (44%). The other 34 belong to P0 and P2 to P6.
+
 ## Known gaps
 
 - The design questions in `docs/design-issues.md` (#394–#409) are parked. This path does not resolve them. Some stories, such as 4.3.3, still carry open questions in the study guide.
