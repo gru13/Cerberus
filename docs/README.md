@@ -63,7 +63,7 @@ Accounts, exams, tokens (#7) and run orchestration (#190) tie a run together.
 
 ## Ownership
 
-The owner builds the `guided` stories to learn (security, performance, core systems; about 40% of the effort). Claude explains and reviews these, and builds everything else (about 60%: UI, app skeleton, CRUD, compose and CI). On the board, `guided` stories are assigned to the owner.
+The owner builds the `guided` stories to learn (security, performance, core systems; about 40% of the effort). Claude explains and reviews these, and builds everything else (about 60%: UI, app skeleton, CRUD, compose and CI). On the board, `guided` stories are assigned to the owner. Study guide for these stories: [guided-study-guide.md](guided-study-guide.md); official sources: [learn/](learn/README.md).
 
 | Area | Owner stories (`guided`) |
 |---|---|

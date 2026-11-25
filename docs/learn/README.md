@@ -8,9 +8,9 @@ notes in our own words and official sources. There are no generated pages.
 | `index.yaml` | Settings: `version`, `stale_after_days`, `allowed_domains`. No concepts. |
 | `concepts/<area>.yaml` | The concepts of one area, as a list. The file name gives the area, so entries have no `area` key. Areas: sandbox, realtime, persistence, security, protocol, build. |
 | `learn.py` | The one tool: check, link check, and the browser editor (single file, standalone). |
-| `guided-study-guide.md` | The study guide that lists the concepts each guided story needs. |
 
-Each YAML file starts with a comment that explains its fields.
+Each YAML file starts with a comment that explains its fields. The concepts come from the
+guided-stories study guide, `docs/guided-study-guide.md`; a concept's `stories` field names them.
 
 - Cite a concept by its id, for example `sandbox.openat2` (in `concepts/sandbox.yaml`).
 - Policy: official sources only, https only, on the `allowed_domains` in `index.yaml`.
