@@ -29,15 +29,8 @@
       "problemMatcher": []
     },
     {
-      "label": "learn: build",
-      "detail": "Generate docs/learn pages from docs/learn/sources.yaml.",
-      "type": "shell",
-      "command": "uv run python scripts/learn_index.py build",
-      "problemMatcher": []
-    },
-    {
       "label": "learn: check",
-      "detail": "Check docs/learn/sources.yaml offline (schema, domains, primary sources).",
+      "detail": "Check docs/learn/sources.yaml offline (schema, ids, https, domains, primary sources).",
       "type": "shell",
       "command": "uv run python scripts/learn_index.py check",
       "problemMatcher": []
@@ -47,6 +40,14 @@
       "detail": "Check the learning index offline rules, then request every source URL.",
       "type": "shell",
       "command": "uv run python scripts/learn_index.py check --online",
+      "problemMatcher": []
+    },
+    {
+      "label": "learn: edit",
+      "detail": "Start the learning index editor on http://127.0.0.1:8765.",
+      "type": "shell",
+      "command": "uv run python scripts/learn_editor.py",
+      "isBackground": true,
       "problemMatcher": []
     },
     {

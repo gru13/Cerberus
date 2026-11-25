@@ -81,11 +81,30 @@ def host_of(url: str) -> str:
     return urlparse(url).hostname or ""
 
 
+def concept_urls(concept: Concept) -> list[str]:
+    """Return every URL of a concept: its sources and its llms.txt link."""
+    return [s.url for s in concept.sources] + ([concept.llms_txt] if concept.llms_txt else [])
+
+
+def url_problem(url: str, allowed: set[str]) -> str | None:
+    """Return the rule that a URL breaks, or None when it is valid.
+
+    Functional: Accepts only https links on an allowed host.
+    Technical: Parses the URL with `urlparse`; compares scheme and host.
+    """
+    parts = urlparse(url)
+    if parts.scheme != "https":
+        return f"{url} does not use https"
+    if (parts.hostname or "") not in allowed:
+        return f"host {parts.hostname} is not allowed"
+    return None
+
+
 def validate_index(index: LearnIndex) -> list[str]:
-    """Return rule violations: repeated ids and hosts outside the allowed list.
+    """Return rule violations: repeated ids, non-https links, and hosts not allowed.
 
     Functional: Lists every problem so a person can fix them in one pass.
-    Technical: Compares each source host with `allowed_domains`; counts ids.
+    Technical: Checks each source and llms.txt URL with `url_problem`; counts ids.
     """
     problems: list[str] = []
     seen: set[str] = set()
@@ -94,12 +113,10 @@ def validate_index(index: LearnIndex) -> list[str]:
         if concept.id in seen:
             problems.append(f"{concept.id}: id repeats")
         seen.add(concept.id)
-        urls = [s.url for s in concept.sources] + ([concept.llms_txt] if concept.llms_txt else [])
-        problems.extend(
-            f"{concept.id}: host {host_of(u)} is not allowed"
-            for u in urls
-            if host_of(u) not in allowed
-        )
+        for url in concept_urls(concept):
+            problem = url_problem(url, allowed)
+            if problem:
+                problems.append(f"{concept.id}: {problem}")
     return problems
 
 

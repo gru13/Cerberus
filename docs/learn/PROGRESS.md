@@ -2,7 +2,7 @@
 
 started_email_sent: yes
 concepts_total: 138
-concepts_done: 130
+concepts_done: 138
 pr_url: https://github.com/gru13/Cerberus/pull/393
 report_email_sent: yes
 
@@ -30,7 +30,7 @@ Format: `[ ] id (stories)`. Mark `[x]` when the concept is in `sources.yaml` wit
 - [x] sandbox.tokio-spawn-blocking (4.3.3)
 - [x] sandbox.governor (4.3.3)
 - [x] sandbox.tokio-process (4.3.4)
-- [ ] sandbox.vscode-tasks (4.3.4)
+- [x] sandbox.vscode-tasks (4.3.4)
 - [x] sandbox.jsonc-parsing (4.3.4)
 - [x] sandbox.proc-net-tcp (4.3.5)
 - [x] sandbox.procfs-crate (4.3.5)
@@ -49,7 +49,7 @@ Format: `[ ] id (stories)`. Mark `[x]` when the concept is in `sources.yaml` wit
 - [x] sandbox.docker-sdk-engine (4.1.2,4.6.1)
 - [x] sandbox.inode-timestamps (4.2.2)
 - [x] sandbox.utimensat (4.2.2)
-- [ ] sandbox.gnu-patch-reverse (4.2.2,4.6.2)
+- [x] sandbox.gnu-patch-reverse (4.2.2,4.6.2)
 - [x] sandbox.pyc-files (4.2.2)
 - [x] sandbox.sticky-bit-permissions (4.2.3)
 - [x] sandbox.protected-links-sysctl (4.2.3)
@@ -65,7 +65,7 @@ Format: `[ ] id (stories)`. Mark `[x]` when the concept is in `sources.yaml` wit
 - [x] sandbox.docker-network-none (4.6.1)
 - [x] sandbox.python-tarfile (4.6.1)
 - [x] sandbox.defusedxml (4.6.1)
-- [ ] sandbox.junit-xml (4.6.1)
+- [x] sandbox.junit-xml (4.6.1)
 - [x] sandbox.asyncio-timeout (4.6.3)
 - [x] sandbox.procrastinate-queues-locks (4.6.3,8.5.2)
 - [x] realtime.starlette-websocket (8.4.1)
@@ -73,23 +73,23 @@ Format: `[ ] id (stories)`. Mark `[x]` when the concept is in `sources.yaml` wit
 - [x] realtime.websocket-ping-pong (8.4.1)
 - [x] realtime.asyncio-queue-bounded (8.4.1)
 - [x] realtime.asyncio-unix-connection (8.4.2)
-- [ ] realtime.backoff-full-jitter (8.4.2)
+- [x] realtime.backoff-full-jitter (8.4.2)
 - [x] realtime.asyncio-future-timeouts (8.4.2)
-- [ ] realtime.xterm-flow-control (8.4.3)
+- [x] realtime.xterm-flow-control (8.4.3)
 - [x] realtime.tcp-nodelay (8.4.3)
 - [x] realtime.caddy-flush-interval (8.4.3)
 - [x] realtime.pg-notify (8.4.4)
 - [x] realtime.pg-listen (8.4.4)
 - [x] realtime.asyncpg-add-listener (8.4.4)
-- [ ] realtime.psycopg3-notifies (8.4.4)
-- [ ] realtime.outbox-pattern (8.4.4)
+- [x] realtime.psycopg3-notifies (8.4.4)
+- [x] realtime.outbox-pattern (8.4.4)
 - [x] realtime.pg-transaction-visibility (8.4.1)
 - [x] realtime.uuid-v7 (8.4.1)
 - [x] realtime.pg-terminate-backend (8.4.4)
 - [x] persistence.skip-locked (8.5.2)
 - [x] persistence.pg-advisory-locks (8.5.2,8.8.4)
 - [x] persistence.procrastinate-retry (8.5.2)
-- [ ] persistence.fencing-token (8.5.2)
+- [x] persistence.fencing-token (8.5.2)
 - [x] persistence.durable-write-fsync (8.8.1)
 - [x] persistence.sha256-content-addressing (8.8.1)
 - [x] persistence.python-hashlib (8.8.1)
@@ -154,17 +154,14 @@ Format: `[ ] id (stories)`. Mark `[x]` when the concept is in `sources.yaml` wit
 - 2026-11-24 (UTC): Run 3. Web fetch still blocked (man7.org ENOTFOUND, proxy 403). No concept verified. Waiting for network allowlist.
 - 2026-11-24 (UTC): Run 4. Web fetch works. Sourced 130 of 138 concepts with 7 parallel agents; 8 need a source. Offline check passes.
 - 2026-11-24 (UTC): Opened PR #393 and sent the report email. Nothing left to do.
+- 2026-11-25 (UTC): Review. YAML only: removed the build command and generated pages. Added the 8 missing concepts (138 of 138). Added the local editor.
 
-## needs_source (8 concepts left out of sources.yaml, plus 1 partial)
-- persistence.fencing-token: no allowed-domain source defines fencing tokens (Kleppmann blog not allowed); proposed official domain: none found (maybe a Postgres or etcd doc page)
-- realtime.backoff-full-jitter: only source found is the AWS Architecture Blog (aws.amazon.com, not allowed); proposed official domain: aws.amazon.com/builders-library or the tenacity docs (tenacity.readthedocs.io)
-- realtime.xterm-flow-control: flow control guide lives on xtermjs.org (not allowed, host did not resolve); proposed official domain: xtermjs.org
-- realtime.psycopg3-notifies: psycopg 3 docs are on www.psycopg.org (not allowed); proposed official domain: www.psycopg.org
-- realtime.outbox-pattern: no official standard source on an allowed domain; proposed official domain: microservices.io (pattern page) or learn.microsoft.com
-- sandbox.vscode-tasks: tasks.json is documented only on code.visualstudio.com; proposed official domain code.visualstudio.com (or github.com/microsoft/vscode-docs)
-- sandbox.gnu-patch-reverse: GNU patch manual is on gnu.org and man7 has no patch page; proposed official domain www.gnu.org/software/patch
-- sandbox.junit-xml: no JUnit XML schema doc on allowed hosts; proposed official domain docs.junit.org (or github.com/testmoapp/junitxml is not official)
-- security.dns-rebinding: no dedicated allowed-domain DNS rebinding page found; used the OWASP SSRF sheet (mentions rebinding) plus Starlette TrustedHost. Proposed: community.owasp.org/attacks/DNS_Rebinding
+## needs_source (resolved 2026-11-25)
+- The 8 concepts above are added. gru13 allowed these domains: code.visualstudio.com, www.gnu.org,
+  docs.pytest.org, aws.amazon.com, builder.aws.com, xtermjs.org, www.psycopg.org, microservices.io, etcd.io.
+- persistence.fencing-token cites the etcd docs, which name the fencing token as the etcd revision.
+- sandbox.junit-xml cites the pytest reference (junit_family, --junitxml) instead of docs.junit.org.
+- security.dns-rebinding stays partial (OWASP SSRF sheet plus Starlette TrustedHost).
 
 ## Contradictions with the study guide
 - sandbox.tokio-unixlistener (4.3.1): tokio UnixListener page does not mention unlinking a stale socket; guide's advice rests on OS behaviour (unix(7)), not that page
