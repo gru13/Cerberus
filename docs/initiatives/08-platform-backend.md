@@ -20,7 +20,7 @@ Project setup, config, errors, health, and local security.
 
 | Story | Description | Done when |
 |---|---|---|
-| 8.1.1 Project setup | `api/` with Python 3.13, uv, FastAPI, ruff, ty (type checker), pytest. `cerberus` CLI: `api`, `worker`, `migrate`, `doctor`. CI workflow `ci-api`. | A hello endpoint works; CI passes. |
+| 8.1.1 Project setup | `api/` with Python 3.14, uv, FastAPI, ruff, ty (type checker), pytest. `cerberus` CLI: `api`, `worker`, `migrate`, `doctor`. CI workflow `ci-api`. | A hello endpoint works; CI passes. |
 | 8.1.2 Config | Deploy config from env with pydantic-settings (`CERBERUS_MODE`, DB URL, data dir). User settings in the DB. | A bad config stops start with a clear STE100 message. |
 | 8.1.3 Error format | problem+json (RFC 9457), error code registry, request id. | All errors have the same shape. |
 | 8.1.4 Health | `/healthz` (live) and `/readyz` (DB, Docker, free disk, data dir writable). | The UI status page uses them. |
@@ -169,7 +169,7 @@ Placeholders for hosted mode.
 - Run orchestration belongs to #190 (Epic 8.11). Each step stays with its owner (#3, #4, #6).
 - Job queue: procrastinate on Postgres, in a separate worker process.
 - No Kafka or other broker. `EventBus` interface: `PostgresBus` now, `NatsBus` for hosted later.
-- Backend tooling: Python 3.13, uv, ruff, ty (backend only; content projects choose their own).
+- Backend tooling: Python 3.14, uv, ruff, ty (backend only; content projects choose their own).
 - Docker access through a socket proxy.
 - Release images on GHCR; local build for development.
 - Decision 0001 gets two new interfaces: `BlobStore` and `EventBus`.

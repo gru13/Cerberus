@@ -125,7 +125,7 @@ Generated from `logs/build.jsonl`. Newer decisions win.
 | 2026-11-22 | `run-orchestration` | Initiative 8 owns the run state machine. Each run step stays with its owner. |  |
 | 2026-11-22 | `no-broker` | Postgres holds the data, the job queue, and the event bus. Cerberus uses no Kafka. |  |
 | 2026-11-22 | `backend-runtime` | A separate worker runs jobs with procrastinate. Docker access goes through a socket proxy. |  |
-| 2026-11-22 | `backend-tooling` | The backend uses Python 3.13, uv, ruff, and ty. Release images go to GHCR. |  |
+| 2026-11-22 | `backend-tooling` | The backend uses Python 3.14 (was 3.13 until 2026-11-25), uv, ruff, and ty. Release images go to GHCR. |  |
 | 2026-11-22 | `0001-deployment-modes` | Decision 0001 adds the BlobStore and EventBus interfaces. |  |
 | 2026-11-22 | `preview-contract` | Project servers bind to 0.0.0.0. Frontends call backends by a relative path through the dev-server proxy. |  |
 | 2026-11-22 | `tutor-exam-mode` | Exam mode keeps code and tools. Server checks block fix code, rewritten project code, and direct answers. |  |

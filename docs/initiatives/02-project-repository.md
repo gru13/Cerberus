@@ -63,7 +63,7 @@ projects/<name>/
 | Story | Description | Done when |
 |---|---|---|
 | 2.4.1 Specs | `SPEC.md` per project: features, modules, size, bug areas | Specs approved |
-| 2.4.2 A — `flask-notes` (Python) | Python 3.13, uv, Flask, Jinja, SQLAlchemy, SQLite. List, create, edit, delete, search, tags, dates, JSON API, health. ~600–800 lines, 40–60 pytest tests | Passes validator; builds and runs locally |
+| 2.4.2 A — `flask-notes` (Python) | Python 3.14, uv, Flask, Jinja, SQLAlchemy, SQLite. List, create, edit, delete, search, tags, dates, JSON API, health. ~600–800 lines, 40–60 pytest tests | Passes validator; builds and runs locally |
 | 2.4.3 C — `shop-api` (Node) | Node 22, TypeScript, pnpm, Fastify/Express, vitest. Products, cart, orders, stock, discounts | Passes validator |
 | 2.4.4 B — `taskboard` (full stack) | FastAPI + React/Vite. Boards, columns, cards, drag to move, labels, due dates. Compound `run-project`, pytest + vitest, several JUnit files. Vite proxies `/api` to the backend; `preview_port: 5173` | Passes validator; the app works in the preview with no CORS setup |
 
