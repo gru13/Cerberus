@@ -180,3 +180,4 @@ Format: `[ ] id (stories)`. Mark `[x]` when the concept is in `sources.yaml` wit
 - sandbox.procrastinate-queues-locks: howto/basics/queues.html returned 404; used howto/advanced/locks.html
 - Starlette docs: www.starlette.io did not resolve in this session; used starlette.dev (same project).
 - https://owasp.org/www-community/attacks/DNS_Rebinding redirects (308) to community.owasp.org, not an allowed host; not cited.
+- 2026-11-25 (UTC): report email already sent; nothing left to do.
