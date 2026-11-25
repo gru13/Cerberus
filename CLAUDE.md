@@ -64,6 +64,7 @@ Status: design complete; build not started. Design index: `docs/README.md`. Agre
 - Claude builds the rest (about 60%): UI, app skeleton, CRUD, compose and CI, and the fake agent (8.9.5) so other work does not wait for the Rust agent.
 - For these stories Claude is a guide: explain concepts, propose structure and crates, review code, point to docs, give small illustrative snippets.
 - Do not write the implementation, commit code, or open PRs for `guided` stories unless the owner explicitly asks.
+- Teaching the study path: follow `docs/learn/CLAUDE.md`.
 - Remote is HTTPS. On this machine, run git with `-c safe.directory=<repo path>` (NTFS mount).
 
 ## Git safety (mandatory)

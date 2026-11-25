@@ -8,6 +8,8 @@ notes in our own words and official sources. There are no generated pages.
 | `index.yaml` | Settings: `version`, `stale_after_days`, `allowed_domains`. No concepts. |
 | `concepts/<area>.yaml` | The concepts of one area, as a list. The file name gives the area, so entries have no `area` key. Areas: sandbox, realtime, persistence, security, protocol, build. |
 | `learn.py` | The one tool: check, link check, and the browser editor (single file, standalone). |
+| `path-p1.md` | A study path for the Phase 1 guided stories: nine modules that cite concept ids. |
+| `CLAUDE.md` | Rules for Claude: how to teach the study paths and edit the index. |
 
 Each YAML file starts with a comment that explains its fields. The concepts come from the
 guided-stories study guide, `docs/guided-study-guide.md`; a concept's `stories` field names them.
