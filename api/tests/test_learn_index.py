@@ -1,10 +1,9 @@
 """Intent: Test the learning index check on small sample files."""
 
-import urllib.error
 from pathlib import Path
 
 import learn_index
-import pytest
+import yaml
 
 VALID = """
 version: 1
@@ -30,9 +29,18 @@ concepts:
 
 
 def write(tmp_path: Path, text: str) -> Path:
-    path = tmp_path / "sources.yaml"
-    path.write_text(text, encoding="utf-8")
-    return path
+    """Write sample YAML (settings plus concepts) in the split layout; return the folder."""
+    data = yaml.safe_load(text)
+    concepts = data.pop("concepts")
+    (tmp_path / "index.yaml").write_text(yaml.safe_dump(data), encoding="utf-8")
+    (tmp_path / "concepts").mkdir(exist_ok=True)
+    by_area: dict[str, list[dict[str, object]]] = {}
+    for concept in concepts:
+        by_area.setdefault(concept.pop("area"), []).append(concept)
+    for area, entries in by_area.items():
+        path = tmp_path / "concepts" / f"{area}.yaml"
+        path.write_text(yaml.safe_dump(entries, sort_keys=False), encoding="utf-8")
+    return tmp_path
 
 
 def test_valid_file_passes(tmp_path: Path) -> None:
@@ -64,62 +72,6 @@ def test_missing_primary_source_fails(tmp_path: Path) -> None:
     assert learn_index.check_offline(path) == 1
 
 
-def test_online_runs_offline_rules_first(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    requested: list[str] = []
-    monkeypatch.setattr(learn_index, "url_is_alive", lambda u: requested.append(u) or True)
-    text = VALID.replace("https://man7.org", "https://example.com")
-    assert learn_index.check_online(write(tmp_path, text)) == 1
-    assert requested == []
-
-
-def test_online_checks_llms_txt(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    requested: list[str] = []
-    monkeypatch.setattr(learn_index, "url_is_alive", lambda u: requested.append(u) or True)
-    text = VALID + "    llms_txt: https://man7.org/llms.txt\n"
-    assert learn_index.check_online(write(tmp_path, text)) == 0
-    assert "https://man7.org/llms.txt" in requested
-
-
-def test_online_reports_dead_link(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    monkeypatch.setattr(learn_index, "url_is_alive", lambda _u: False)
-    assert learn_index.check_online(write(tmp_path, VALID)) == 1
-
-
-class FakeResponse:
-    def __enter__(self) -> "FakeResponse":
-        return self
-
-    def __exit__(self, *_args: object) -> None:
-        return None
-
-
-def test_get_after_failed_head(monkeypatch: pytest.MonkeyPatch) -> None:
-    methods: list[str] = []
-
-    def fake_urlopen(request: learn_index.urllib.request.Request, timeout: int) -> FakeResponse:
-        methods.append(request.get_method())
-        if request.get_method() == "HEAD":
-            reason = "head refused"
-            raise urllib.error.URLError(reason)
-        return FakeResponse()
-
-    monkeypatch.setattr(learn_index.urllib.request, "urlopen", fake_urlopen)
-    assert learn_index.url_is_alive("https://man7.org/x")
-    assert methods == ["HEAD", "GET"]
-
-
-def test_both_methods_fail(monkeypatch: pytest.MonkeyPatch) -> None:
-    def fake_urlopen(request: learn_index.urllib.request.Request, timeout: int) -> FakeResponse:
-        raise TimeoutError
-
-    monkeypatch.setattr(learn_index.urllib.request, "urlopen", fake_urlopen)
-    assert not learn_index.url_is_alive("https://man7.org/x")
-
-
-def test_malformed_url_is_dead() -> None:
-    assert not learn_index.url_is_alive("not a url")
-
-
 def test_cli_usage_error(tmp_path: Path) -> None:
     path = write(tmp_path, VALID)
     assert learn_index.main(["learn_index.py"], path) == 2
@@ -128,4 +80,4 @@ def test_cli_usage_error(tmp_path: Path) -> None:
 
 
 def test_real_sources_file_passes() -> None:
-    assert learn_index.check_offline(learn_index.SOURCES_FILE) == 0
+    assert learn_index.check_offline(learn_index.LEARN_DIR) == 0

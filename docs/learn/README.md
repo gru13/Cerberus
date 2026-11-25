@@ -1,10 +1,15 @@
 # Learning index
 
-`sources.yaml` is the learning index and its single source of truth. Each concept has short
-notes in our own words and official sources. There are no generated pages.
+The learning index is a set of YAML files and is its own single source of truth. Each concept
+has short notes in our own words and official sources. There are no generated pages.
 
-- Cite a concept by its id, for example `sandbox.openat2` in `docs/learn/sources.yaml`.
-- Policy: official sources only, https only, on the `allowed_domains` in `sources.yaml`.
+| File | Holds |
+|---|---|
+| `index.yaml` | Settings: `version`, `stale_after_days`, `allowed_domains`. No concepts. |
+| `concepts/<area>.yaml` | The concepts of one area, as a list. The area comes from the file name, so entries have no `area` key. Areas: sandbox, realtime, persistence, security, protocol, build. |
+
+- Cite a concept by its id, for example `sandbox.openat2` (in `concepts/sandbox.yaml`).
+- Policy: official sources only, https only, on the `allowed_domains` in `index.yaml`.
 - Every concept has at least one primary source.
 
 ## Tasks
@@ -16,7 +21,7 @@ notes in our own words and official sources. There are no generated pages.
 | `learn: edit` | Starts a local editor at http://127.0.0.1:8765 to browse, search, add, change, and delete concepts. |
 
 The editor checks every save with the same rules as `learn: check` and writes nothing when a
-rule fails. It refuses a save when the file changed after the page loaded it (for example after
+rule fails. It refuses a save when any index file changed after the page loaded it (for example after
 a hand edit), so no change is lost. Hand edits to the YAML are also fine.
 
 ## Other files

@@ -1,4 +1,4 @@
-"""Intent: Define the Pydantic models for docs/learn/sources.yaml.
+"""Intent: Define the Pydantic models for the learning index (docs/learn/*.yaml).
 
 Why: One schema keeps the learning index valid for the check, the build, and the tests.
 """
@@ -66,7 +66,7 @@ class Concept(BaseModel):
 
 
 class LearnIndex(BaseModel):
-    """The whole sources.yaml file."""
+    """The whole learning index: settings plus every concept."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
 

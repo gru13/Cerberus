@@ -155,6 +155,7 @@ Format: `[ ] id (stories)`. Mark `[x]` when the concept is in `sources.yaml` wit
 - 2026-11-24 (UTC): Run 4. Web fetch works. Sourced 130 of 138 concepts with 7 parallel agents; 8 need a source. Offline check passes.
 - 2026-11-24 (UTC): Opened PR #393 and sent the report email. Nothing left to do.
 - 2026-11-25 (UTC): Review. YAML only: removed the build command and generated pages. Added the 8 missing concepts (138 of 138). Added the local editor.
+- 2026-11-25 (UTC): Split sources.yaml into index.yaml (settings) and concepts/<area>.yaml (one file per area). Data unchanged.
 
 ## needs_source (resolved 2026-11-25)
 - The 8 concepts above are added. gru13 allowed these domains: code.visualstudio.com, www.gnu.org,

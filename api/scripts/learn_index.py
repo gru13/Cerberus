@@ -1,6 +1,6 @@
-"""Intent: Check the learning index file offline and, on request, check its links online.
+"""Intent: Check the learning index offline and, on request, check its links online.
 
-Why: The YAML file is the single source of truth; there are no generated pages.
+Why: The YAML files (docs/learn/index.yaml, concepts/*.yaml) are the only source; no pages.
 """
 
 import sys
@@ -10,7 +10,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from learn_models import LearnIndexError, concept_urls, stale_warnings, validate_index
-from learn_store import SOURCES_FILE, load_index
+from learn_store import LEARN_DIR, load_index
 from pydantic import ValidationError
 
 TIMEOUT_SECONDS = 10
@@ -18,7 +18,7 @@ USAGE = "Usage: learn_index.py check [--online]"
 
 
 def check_offline(path: Path) -> int:
-    """Check the file offline and return the exit code.
+    """Check the index offline and return the exit code.
 
     Functional: Fails on a bad host, a non-https link, a repeated id, or a missing field.
         Warns on stale dates.
@@ -76,7 +76,7 @@ def check_online(path: Path) -> int:
     return 1 if dead else 0
 
 
-def main(argv: list[str], path: Path = SOURCES_FILE) -> int:
+def main(argv: list[str], path: Path = LEARN_DIR) -> int:
     """Run the subcommand named in argv and return its exit code.
 
     Functional: Gives the `check` and `check --online` commands.

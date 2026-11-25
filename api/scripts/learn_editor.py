@@ -1,4 +1,4 @@
-"""Intent: Serve a local browser editor for docs/learn/sources.yaml.
+"""Intent: Serve a local browser editor for the learning index YAML files.
 
 Why: A small local server lets the page save; every save passes the same rules as the check.
 """
@@ -12,7 +12,7 @@ import uvicorn
 from fastapi import FastAPI, Header, Request
 from fastapi.responses import FileResponse, JSONResponse, Response
 from learn_models import LearnIndex, LearnIndexError, stale_warnings, validate_index
-from learn_store import SOURCES_FILE, file_tag, load_index, save_index
+from learn_store import LEARN_DIR, index_tag, load_index, save_index
 from pydantic import BaseModel, ConfigDict
 
 PAGE_FILE = Path(__file__).with_name("learn_editor.html")
@@ -43,7 +43,7 @@ class StaleTagError(LearnIndexError):
     """The file changed after the page loaded it."""
 
     code: ClassVar[str] = "learn.index.stale"
-    message: ClassVar[str] = "The file changes after you load it. Load it again."
+    message: ClassVar[str] = "The index files change after you load them. Load them again."
 
 
 def problem_response(status: int, problems: list[str]) -> JSONResponse:
@@ -51,12 +51,12 @@ def problem_response(status: int, problems: list[str]) -> JSONResponse:
     return JSONResponse(SaveResult(problems=problems).model_dump(), status_code=status)
 
 
-def create_app(path: Path = SOURCES_FILE) -> FastAPI:
-    """Create the editor app for one sources file.
+def create_app(path: Path = LEARN_DIR) -> FastAPI:
+    """Create the editor app for one learning index folder.
 
     Functional: GET / gives the page; GET /api/index gives the data; PUT /api/index saves.
     Technical: PUT needs the `If-Match` tag from the last GET (optimistic lock on the file
-        hash). It validates with Pydantic and `validate_index`, then writes atomically.
+        hashes). It validates with Pydantic and `validate_index`, then writes atomically.
     Errors: 409 when the tag is old; 422 when a rule fails.
     """
     app = FastAPI(title="Cerberus learning index editor", docs_url=None, redoc_url=None)
@@ -77,7 +77,7 @@ def create_app(path: Path = SOURCES_FILE) -> FastAPI:
         """Return the index, its version tag, and its stale warnings."""
         index = load_index(path)
         warnings = stale_warnings(index, datetime.now(UTC).date())
-        return IndexView(tag=file_tag(path), warnings=warnings, index=index)
+        return IndexView(tag=index_tag(path), warnings=warnings, index=index)
 
     @app.put("/api/index", response_model=None)
     async def write_index(
@@ -89,13 +89,13 @@ def create_app(path: Path = SOURCES_FILE) -> FastAPI:
         Technical: Compares `If-Match` with the file hash, then runs `validate_index`.
         Errors: StaleTagError (old tag, 409); LearnIndexError (concept rule, 422).
         """
-        if if_match != file_tag(path):
+        if if_match != index_tag(path):
             raise StaleTagError(details={"rule": "if-match"})
         problems = validate_index(index)
         if problems:
             return problem_response(422, problems)
         save_index(path, index)
-        return SaveResult(tag=file_tag(path))
+        return SaveResult(tag=index_tag(path))
 
     return app
 

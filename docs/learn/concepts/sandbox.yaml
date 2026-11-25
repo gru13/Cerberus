@@ -1,0 +1,1496 @@
+- id: sandbox.asyncio-timeout
+  title: asyncio.timeout
+  stories:
+  - 4.6.3
+  phase: P1
+  keywords:
+  - asyncio.timeout
+  - TimeoutError
+  - wait_for
+  - cancellation
+  notes: |
+    asyncio.timeout is an async context manager added in Python 3.11.
+    At the deadline it cancels the task and raises TimeoutError.
+    Catch TimeoutError outside the async with block.
+    Code that swallows CancelledError breaks it.
+  sources:
+  - url: https://docs.python.org/3/library/asyncio-task.html
+    title: 'Coroutines and Tasks: Timeouts'
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15 docs
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.caddy-admin-api
+  title: Caddy admin API
+  stories:
+  - 4.4.2
+  phase: P1
+  keywords:
+  - admin API
+  - POST /load
+  - /config/ path
+  - localhost:2019
+  notes: |
+    The admin endpoint listens on localhost:2019 by default.
+    POST /load replaces the whole config and rolls back on error.
+    /config/[path] reads or patches one part of the config.
+    Bind it to a Unix socket if untrusted code runs nearby.
+  sources:
+  - url: https://caddyserver.com/docs/api
+    title: API
+    kind: official-docs
+    publisher: Caddy project
+    version: Caddy 2.x docs, no version shown
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.caddy-forward-auth
+  title: Caddy forward_auth
+  stories:
+  - 4.4.2
+  phase: P1
+  keywords:
+  - forward_auth
+  - copy_headers
+  - session token check
+  - auth gateway
+  notes: |
+    Caddy sends a copy of each request to an auth gateway.
+    A 2xx answer lets the request continue.
+    Any other answer goes back to the client.
+    copy_headers passes chosen gateway headers to the app.
+  sources:
+  - url: https://caddyserver.com/docs/caddyfile/directives/forward_auth
+    title: forward_auth (Caddyfile directive)
+    kind: official-docs
+    publisher: Caddy project
+    version: Caddy 2.x docs, no version shown
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.caddy-reverse-proxy
+  title: Caddy reverse_proxy
+  stories:
+  - 4.4.2
+  phase: P1
+  keywords:
+  - reverse_proxy
+  - dynamic upstreams
+  - WebSocket upgrade
+  - SSRF
+  notes: |
+    The directive proxies requests to one or more backends.
+    Dynamic upstreams come from modules, for example A or SRV records.
+    WebSocket upgrades are tunneled both ways.
+    Map the upstream yourself. Do not trust the Host header.
+  sources:
+  - url: https://caddyserver.com/docs/caddyfile/directives/reverse_proxy
+    title: reverse_proxy (Caddyfile directive)
+    kind: official-docs
+    publisher: Caddy project
+    version: Caddy 2.11.x docs
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.caddy-stream-close-delay
+  title: Caddy stream_close_delay
+  stories:
+  - 4.4.2
+  phase: P1
+  keywords:
+  - stream_close_delay
+  - config reload
+  - WebSocket close
+  - stream_timeout
+  notes: |
+    By default a config reload closes WebSocket connections.
+    stream_close_delay keeps them open for a set time.
+    The docs suggest a value such as 5m as a start.
+    This confirms the study guide pitfall about terminals.
+  sources:
+  - url: https://caddyserver.com/docs/caddyfile/directives/reverse_proxy
+    title: reverse_proxy (Caddyfile directive)
+    kind: official-docs
+    publisher: Caddy project
+    version: Caddy 2.11.x docs
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.capabilities
+  title: Linux capabilities
+  stories:
+  - 4.1.2
+  - 4.2.2
+  phase: P1
+  keywords:
+  - CAP_CHOWN
+  - CAP_FOWNER
+  - CAP_DAC_OVERRIDE
+  - cap-drop
+  notes: |
+    Root power is split into separate switches.
+    CHOWN changes owners; FOWNER skips owner checks such as chmod and timestamps.
+    DAC_OVERRIDE skips file permission checks.
+    Dropping all caps removes these even for root.
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/capabilities.7.html
+    title: capabilities(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.cgroup-v2-limits
+  title: cgroup v2 resource limits
+  stories:
+  - 4.1.2
+  phase: P1
+  keywords:
+  - memory.max
+  - pids.max
+  - cpu.max
+  - memory.high
+  - OOM
+  notes: |
+    memory.max is a hard cap that can trigger the OOM killer.
+    memory.high only throttles.
+    pids.max makes fork fail with EAGAIN.
+    cpu.max holds quota and period in microseconds.
+  sources:
+  - url: https://docs.kernel.org/admin-guide/cgroup-v2.html
+    title: Control Group v2
+    kind: official-docs
+    publisher: The Linux kernel documentation
+    version: kernel docs (current)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.csp-frame-ancestors
+  title: CSP frame-ancestors
+  stories:
+  - 4.4.2
+  phase: P1
+  keywords:
+  - frame-ancestors
+  - Content-Security-Policy
+  - X-Frame-Options
+  - clickjacking
+  notes: |
+    The directive says which parents may embed a page.
+    It replaces X-Frame-Options and does not fall back to default-src.
+    It works only as an HTTP header, not in a meta tag.
+    Set it so the IDE origin may frame the preview.
+  sources:
+  - url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/frame-ancestors
+    title: 'CSP: frame-ancestors'
+    kind: official-docs
+    publisher: MDN Web Docs (Mozilla)
+    version: CSP Level 3; MDN live docs
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.defusedxml
+  title: defusedxml for untrusted XML
+  stories:
+  - 4.6.1
+  phase: P1
+  keywords:
+  - defusedxml
+  - XXE
+  - billion laughs
+  - JUnit XML
+  notes: |
+    defusedxml replaces stdlib XML parsers with hardened ones.
+    It covers entity expansion, external entities and DTD retrieval.
+    JUnit files come from learner code, so parse them with it.
+    The README shows the last release as 0.8.0.
+  sources:
+  - url: https://github.com/tiran/defusedxml/blob/main/README.md
+    title: defusedxml README
+    kind: project-repo
+    publisher: Christian Heimes (project maintainer)
+    version: 0.8.0 (latest changelog entry)
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.python.org/3/library/xml.html
+    title: 'XML Processing Modules: XML security'
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15 docs
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.docker-embedded-dns
+  title: Docker embedded DNS server
+  stories:
+  - 4.4.1
+  phase: P1
+  keywords:
+  - 127.0.0.11
+  - embedded DNS
+  - container name resolution
+  - DNS forwarding
+  notes: |
+    User-defined networks use a DNS server at 127.0.0.11.
+    It resolves container names and aliases on that network.
+    It forwards other names to the host DNS servers.
+    Check whether an internal network still leaks names this way.
+  sources:
+  - url: https://docs.docker.com/engine/network/
+    title: Networking overview
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker Engine docs, no version shown
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.docker-internal-network
+  title: Docker internal networks
+  stories:
+  - 4.4.1
+  phase: P1
+  keywords:
+  - --internal
+  - network create
+  - no default route
+  - isolation
+  notes: |
+    An internal network has no default route and no outside traffic.
+    Containers on it still reach each other and the gateway IP.
+    The host can reach every container IP directly.
+    Attach only the proxy, never the API or database.
+  sources:
+  - url: https://docs.docker.com/reference/cli/docker/network/create/
+    title: docker network create
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker Engine docs, no version shown
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.docker-network-none
+  title: Docker none network driver
+  stories:
+  - 4.6.1
+  phase: P1
+  keywords:
+  - --network none
+  - loopback only
+  - network isolation
+  notes: |
+    With --network none the container has only a loopback interface.
+    It has no other network access.
+    Use it for the clean-copy test runner.
+  sources:
+  - url: https://docs.docker.com/engine/network/drivers/none/
+    title: None network driver
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker Engine docs, no version shown
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.docker-run-hardening-flags
+  title: docker run hardening flags
+  stories:
+  - 4.1.2
+  phase: P1
+  keywords:
+  - --cap-drop
+  - no-new-privileges
+  - --read-only
+  - --pids-limit
+  - --tmpfs
+  - --user
+  notes: |
+    Flags combine to shrink what a container can do.
+    Drop caps, set no-new-privileges, make the rootfs read-only.
+    Add pids and memory limits and a non-root user.
+    Use tmpfs for the paths that must be writable.
+  sources:
+  - url: https://docs.docker.com/reference/cli/docker/container/run/
+    title: docker container run
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker Engine docs (current)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.docker-sdk-engine
+  title: Docker Engine API and SDKs
+  stories:
+  - 4.1.2
+  - 4.6.1
+  phase: P1
+  keywords:
+  - Engine API
+  - SDK
+  - version negotiation
+  - docker-py
+  notes: |
+    The daemon exposes a REST API; official SDKs exist for Go and Python.
+    Pin or negotiate the API version in code.
+    The API is the way to start and limit containers from the platform.
+  sources:
+  - url: https://docs.docker.com/reference/api/engine/sdk/
+    title: Develop with Docker Engine SDKs
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker Engine docs (current)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.docker-volume-copyup
+  title: Docker volume copy-up
+  stories:
+  - 4.1.2
+  - 4.5.2
+  phase: P1
+  keywords:
+  - named volume
+  - copy-up
+  - volume-nocopy
+  - mount over existing files
+  notes: |
+    An empty named volume gets the image files at the mount path on first use.
+    A non-empty volume hides existing files instead.
+    The volume-nocopy option stops the copy.
+    This affects shared code and socket volumes.
+  sources:
+  - url: https://docs.docker.com/engine/storage/volumes/
+    title: Volumes
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker Engine docs (current)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.execve-argv
+  title: execve with an argv array
+  stories:
+  - 4.3.6
+  phase: P1
+  keywords:
+  - execve
+  - argv
+  - no shell
+  - E2BIG
+  - command injection
+  notes: |
+    execve takes the program, an argv array and an envp array.
+    Both arrays end with a null pointer.
+    No shell parses the strings, so no injection through them.
+    Total size is capped; too much gives E2BIG.
+  sources:
+  - url: https://man7.org/linux/man-pages/man2/execve.2.html
+    title: execve(2)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  - url: https://doc.rust-lang.org/std/process/struct.Command.html
+    title: std::process::Command
+    kind: api-reference
+    publisher: The Rust project
+    version: Rust 1.100.0
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.globset
+  title: globset glob matching
+  stories:
+  - 4.3.2
+  - 4.2.3
+  phase: P1
+  keywords:
+  - glob
+  - globset
+  - literal_separator
+  - gitignore semantics
+  notes: |
+    globset matches paths against one glob or a set of globs.
+    It reports all matching patterns.
+    ** is valid only as a whole path component.
+    literal_separator controls whether * crosses slashes; this causes dialect mismatch with Python.
+  sources:
+  - url: https://docs.rs/globset/latest/globset/
+    title: globset
+    kind: api-reference
+    publisher: ripgrep project (BurntSushi)
+    version: globset 0.4.22
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.governor
+  title: governor rate limiter
+  stories:
+  - 4.3.3
+  phase: P1
+  keywords:
+  - governor
+  - rate limit
+  - GCRA
+  - token check
+  notes: |
+    governor is a fast Rust rate limiting library.
+    It uses the Generic Cell Rate Algorithm.
+    The terminal listener can limit connection and message rates per key.
+    Pair it with token checks.
+  sources:
+  - url: https://docs.rs/governor/latest/governor/
+    title: governor
+    kind: api-reference
+    publisher: governor project
+    version: governor 0.10.4
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.grep-searcher
+  title: grep-searcher crate
+  stories:
+  - 4.3.2
+  - 4.3.6
+  phase: P1
+  keywords:
+  - ripgrep internals
+  - grep-searcher
+  - grep-regex
+  - in-process search
+  notes: |
+    grep-searcher is ripgrep's line-oriented search library.
+    It reads input, applies a matcher and sends results to a sink.
+    It pairs with grep-regex.
+    Using it avoids a subprocess and the risks of flags like --pre.
+  sources:
+  - url: https://docs.rs/grep-searcher/latest/grep_searcher/
+    title: grep_searcher
+    kind: api-reference
+    publisher: ripgrep project (BurntSushi)
+    version: grep-searcher 0.1.18
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.iframe-sandbox
+  title: iframe sandbox attribute
+  stories:
+  - 4.4.2
+  phase: P1
+  keywords:
+  - iframe sandbox
+  - allow-scripts
+  - allow-same-origin
+  - separate origin
+  notes: |
+    An empty sandbox value applies all restrictions.
+    Tokens lift single restrictions, for example allow-scripts.
+    allow-scripts with allow-same-origin on same-origin content defeats the sandbox.
+    Serve untrusted content from a separate origin.
+  sources:
+  - url: https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/iframe
+    title: '<iframe>: The Inline Frame element'
+    kind: official-docs
+    publisher: MDN Web Docs (Mozilla)
+    version: MDN live docs, no version shown
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.inode-timestamps
+  title: Inode timestamps
+  stories:
+  - 4.2.2
+  phase: P1
+  keywords:
+  - atime
+  - mtime
+  - ctime
+  - stat
+  - trace removal
+  notes: |
+    Each inode holds atime, mtime and ctime.
+    ctime changes on any metadata change such as chmod or chown.
+    So ctime can show that a file was touched later.
+    Writing a file also updates mtime.
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/inode.7.html
+    title: inode(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.inotify
+  title: inotify and IN_Q_OVERFLOW
+  stories:
+  - 4.3.2
+  phase: P1
+  keywords:
+  - inotify
+  - IN_Q_OVERFLOW
+  - max_user_watches
+  - file watch
+  notes: |
+    inotify reports file events through a queue.
+    If the queue overflows, an IN_Q_OVERFLOW event arrives and events are lost, so rescan.
+    max_user_watches limits watches per user.
+    Rename produces paired events.
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/inotify.7.html
+    title: inotify(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.jsonc-parsing
+  title: Parsing JSON with comments
+  stories:
+  - 4.3.4
+  phase: P1
+  keywords:
+  - jsonc
+  - comments
+  - tasks.json
+  - jsonc-parser
+  notes: |
+    The task file allows comments and may end lists with commas.
+    Plain JSON parsers reject such files.
+    The jsonc-parser crate accepts comments by default; a flag turns that off.
+    Pick strictness on purpose.
+  sources:
+  - url: https://docs.rs/jsonc-parser/latest/jsonc_parser/
+    title: jsonc_parser
+    kind: api-reference
+    publisher: dprint (docs.rs)
+    version: jsonc-parser 0.34.0
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.length-delimited-codec
+  title: LengthDelimitedCodec framing
+  stories:
+  - 4.3.1
+  phase: P1
+  keywords:
+  - framing
+  - length prefix
+  - tokio-util codec
+  - max frame length
+  notes: |
+    Length-delimited framing turns a byte stream into whole frames.
+    Each frame has a length prefix, so readers need no manual buffering.
+    Set a maximum frame length to reject oversized input.
+    Combine with serde for the agent protocol.
+  sources:
+  - url: https://docs.rs/tokio-util/latest/tokio_util/codec/length_delimited/index.html
+    title: tokio_util::codec::length_delimited
+    kind: api-reference
+    publisher: Tokio project
+    version: tokio-util 0.7.20
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.notify-crate
+  title: notify crate and debouncer
+  stories:
+  - 4.3.2
+  phase: P1
+  keywords:
+  - notify
+  - file watcher
+  - debouncer
+  - rename events
+  notes: |
+    notify is the cross-platform file watcher crate.
+    notify-debouncer-full groups bursts, joins rename chains and drops duplicate events.
+    The page lists platform limits, such as inotify watch counts.
+    Exclude big dirs like node_modules.
+  sources:
+  - url: https://docs.rs/notify/latest/notify/
+    title: notify
+    kind: api-reference
+    publisher: notify-rs project
+    version: notify 9.0.0
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.rs/notify-debouncer-full/latest/notify_debouncer_full/
+    title: notify_debouncer_full
+    kind: api-reference
+    publisher: notify-rs project
+    version: notify-debouncer-full 0.8.0
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.openat2
+  title: openat2 and RESOLVE_BENEATH
+  stories:
+  - 4.3.2
+  phase: P1
+  keywords:
+  - path traversal
+  - symlink escape
+  - RESOLVE_BENEATH
+  - RESOLVE_NO_SYMLINKS
+  notes: |
+    openat2 opens a path relative to a directory fd with resolve flags.
+    RESOLVE_BENEATH blocks any escape from that directory, including absolute symlinks.
+    RESOLVE_NO_SYMLINKS rejects symlinks in every component.
+    The call dates from Linux 5.6.
+  sources:
+  - url: https://man7.org/linux/man-pages/man2/openat2.2.html
+    title: openat2(2)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.pid1-zombie-reaping
+  title: PID 1 duties and docker --init
+  stories:
+  - 4.3.1
+  phase: P1
+  keywords:
+  - PID 1
+  - zombie
+  - docker run --init
+  - signal handling
+  notes: |
+    A container's first process acts as init.
+    It must reap exited children, or zombies pile up, and handle signals.
+    docker run --init puts a small init at PID 1 to do this.
+    The agent can use it or implement reaping itself.
+  sources:
+  - url: https://docs.docker.com/reference/cli/docker/container/run/
+    title: docker container run
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker docs (current)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.portable-pty
+  title: portable-pty crate
+  stories:
+  - 4.3.3
+  phase: P1
+  keywords:
+  - portable-pty
+  - PTY
+  - spawn_blocking
+  - cross-platform
+  notes: |
+    portable-pty offers traits for PTY work across platforms.
+    The docs page does not say if I/O blocks; the guide says it does, so test it.
+    Wrap its readers and writers in spawn_blocking.
+    Alternatives are pty-process and AsyncFd.
+  sources:
+  - url: https://docs.rs/portable-pty/latest/portable_pty/
+    title: portable_pty
+    kind: api-reference
+    publisher: WezTerm project
+    version: portable-pty 0.9.0
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.proc-net-tcp
+  title: /proc/net/tcp socket table
+  stories:
+  - 4.3.5
+  phase: P1
+  keywords:
+  - listening ports
+  - proc net tcp
+  - hex address
+  - socket inode
+  notes: |
+    The file lists TCP sockets, listeners first.
+    Addresses and ports are in hex.
+    A two-digit hex state code marks listen or established.
+    The inode column links a socket to the owning process.
+    The kernel page marks the file as deprecated.
+  sources:
+  - url: https://docs.kernel.org/networking/proc_net_tcp.html
+    title: The proc/net/tcp and proc/net/tcp6 variables
+    kind: official-docs
+    publisher: The Linux kernel documentation
+    version: kernel docs (current)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.proc-status-fields
+  title: /proc/PID/status fields
+  stories:
+  - 4.1.2
+  phase: P1
+  keywords:
+  - CapEff
+  - CapBnd
+  - NoNewPrivs
+  - Seccomp
+  - verify hardening
+  notes: |
+    Shows capability masks: CapEff, CapPrm, CapBnd and others.
+    Seccomp field: 0 off, 1 strict, 2 filter.
+    NoNewPrivs shows the no_new_privs bit.
+    Use it to check a hardened container from inside.
+  sources:
+  - url: https://man7.org/linux/man-pages/man5/proc_pid_status.5.html
+    title: proc_pid_status(5)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.process-groups-killpg
+  title: Process groups and killpg
+  stories:
+  - 4.3.3
+  - 4.3.4
+  phase: P1
+  keywords:
+  - killpg
+  - process group
+  - SIGTERM
+  - SIGKILL
+  notes: |
+    killpg sends a signal to every process in a group.
+    On Linux it calls kill with a negated group id.
+    Start each task in its own group, send SIGTERM, then SIGKILL after a grace period.
+    This stops orphaned dev servers.
+  sources:
+  - url: https://man7.org/linux/man-pages/man3/killpg.3.html
+    title: killpg(3)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.procfs-crate
+  title: procfs crate for port detection
+  stories:
+  - 4.3.5
+  phase: P1
+  keywords:
+  - procfs
+  - TcpNetEntry
+  - net::tcp
+  - Linux /proc
+  notes: |
+    Rust crate that reads /proc as typed data.
+    The net module has tcp() and tcp6() with TcpNetEntry rows.
+    This avoids hand parsing of the text tables.
+    Linux only.
+  sources:
+  - url: https://docs.rs/procfs/latest/procfs/net/index.html
+    title: procfs::net
+    kind: api-reference
+    publisher: procfs crate (docs.rs)
+    version: procfs 0.18.0
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.rs/procfs/latest/procfs/
+    title: procfs
+    kind: api-reference
+    publisher: procfs crate (docs.rs)
+    version: procfs 0.18.0
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.procrastinate-queues-locks
+  title: Procrastinate queues and locks
+  stories:
+  - 4.6.3
+  - 8.5.2
+  phase: P1
+  keywords:
+  - procrastinate
+  - lock
+  - queue
+  - lock_mode
+  notes: |
+    Jobs with the same lock never run at the same time.
+    The default ordered mode also keeps lock order.
+    If no worker reads a queue, jobs on the same lock stay blocked.
+    mutex mode does not fix that blocked-queue case.
+  sources:
+  - url: https://procrastinate.readthedocs.io/en/stable/howto/advanced/locks.html
+    title: Use locks
+    kind: official-docs
+    publisher: Procrastinate project
+    version: stable docs, no version shown
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.protected-links-sysctl
+  title: fs.protected_hardlinks and protected_symlinks
+  stories:
+  - 4.2.3
+  phase: P1
+  keywords:
+  - protected_hardlinks
+  - protected_symlinks
+  - sysctl
+  - TOCTOU
+  notes: |
+    Both are host sysctls under /proc/sys/fs.
+    protected_hardlinks stops links to files the user does not own or access.
+    protected_symlinks limits following links in sticky world-writable directories.
+    A container cannot set them. The host kernel decides.
+  sources:
+  - url: https://docs.kernel.org/admin-guide/sysctl/fs.html
+    title: Documentation for /proc/sys/fs
+    kind: official-docs
+    publisher: The Linux Kernel documentation
+    version: Linux 7.4.0-rc4 docs
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.pty-session
+  title: pseudoterminals (pty(7))
+  stories:
+  - 4.3.3
+  phase: P1
+  keywords:
+  - pty
+  - master slave
+  - terminal
+  - session
+  notes: |
+    A pseudoterminal is a linked master and slave device pair.
+    The slave acts like a terminal; the program on the master drives it.
+    The agent holds the master and runs bash on the slave.
+    Session setup uses setsid and a controlling terminal.
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/pty.7.html
+    title: pty(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.pyc-files
+  title: pyc cache files and source mtime
+  stories:
+  - 4.2.2
+  phase: P1
+  keywords:
+  - pyc
+  - __pycache__
+  - bytecode cache
+  - source mtime
+  notes: |
+    The pyc header stores the source mtime and size by default.
+    Python compares them with the source before it loads the cache.
+    Hash-based pyc files exist and do not use mtime.
+    Remove __pycache__ to avoid leaking patched file times.
+  sources:
+  - url: https://docs.python.org/3/reference/import.html
+    title: 'The import system: cached bytecode invalidation'
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2
+    primary: true
+    checked: 2026-11-24
+  - url: https://peps.python.org/pep-0552/
+    title: PEP 552 - Deterministic pycs
+    kind: spec
+    publisher: Python Software Foundation
+    version: Final
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.python-pathspec
+  title: pathspec gitignore matching
+  stories:
+  - 4.2.3
+  - 4.3.2
+  phase: P1
+  keywords:
+  - pathspec
+  - gitignore
+  - glob patterns
+  - GitIgnoreSpec
+  notes: |
+    The pathspec library matches paths with gitignore-style patterns.
+    PathSpec follows the documented rules. GitIgnoreSpec copies real git behavior.
+    Use match_file or match_files to test paths.
+    The Python side must agree with Rust globset.
+  sources:
+  - url: https://github.com/cpburnz/python-pathspec
+    title: python-pathspec
+    kind: project-repo
+    publisher: cpburnz (project maintainer)
+    version: README, no version shown
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.python-tarfile
+  title: tarfile extraction filters
+  stories:
+  - 4.6.1
+  phase: P1
+  keywords:
+  - tarfile
+  - extractall filter
+  - data filter
+  - path traversal
+  notes: |
+    The data filter blocks absolute paths and paths outside the target.
+    It blocks links that point outside and device files.
+    Python 3.14 made data the default filter.
+    Filters do not stop disk or memory exhaustion. Extract to a fresh directory.
+  sources:
+  - url: https://docs.python.org/3/library/tarfile.html
+    title: tarfile - Read and write tar archive files
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.rename-atomic
+  title: rename(2) atomic replace
+  stories:
+  - 4.3.2
+  phase: P1
+  keywords:
+  - atomic write
+  - rename
+  - EXDEV
+  - temp file
+  notes: |
+    rename atomically replaces the target, so readers never see it missing.
+    Source and target must be on one filesystem, or it fails with EXDEV.
+    The new inode is owned by the writer, which affects lock invariants.
+    Write a temp file, fsync, then rename.
+  sources:
+  - url: https://man7.org/linux/man-pages/man2/rename.2.html
+    title: rename(2)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.rustix
+  title: rustix syscall bindings
+  stories:
+  - 4.3.1
+  - 4.3.2
+  phase: P1
+  keywords:
+  - rustix
+  - syscalls
+  - safe bindings
+  - POSIX
+  notes: |
+    rustix gives safe Rust wrappers for POSIX, Unix and Linux syscalls.
+    It can replace nix for peercred, signals and openat2.
+    It avoids libc in its default backend.
+    Check feature flags for each module.
+  sources:
+  - url: https://docs.rs/rustix/latest/rustix/
+    title: rustix
+    kind: api-reference
+    publisher: Bytecode Alliance
+    version: rustix 1.1.6
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.seccomp
+  title: seccomp syscall filtering
+  stories:
+  - 4.1.2
+  phase: P1
+  keywords:
+  - seccomp-bpf
+  - syscall filter
+  - no_new_privs
+  - default profile
+  notes: |
+    Seccomp limits which system calls a thread may make.
+    Filter mode uses a BPF program that can check arguments.
+    A filter needs no_new_privs or CAP_SYS_ADMIN.
+    Docker applies a default profile; a custom one comes via --security-opt.
+  sources:
+  - url: https://man7.org/linux/man-pages/man2/seccomp.2.html
+    title: seccomp(2)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.docker.com/engine/security/seccomp/
+    title: Seccomp security profiles for Docker
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker Engine docs (current)
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.setrlimit
+  title: setrlimit resource limits
+  stories:
+  - 4.3.6
+  phase: P1
+  keywords:
+  - RLIMIT_NPROC
+  - RLIMIT_AS
+  - RLIMIT_FSIZE
+  - RLIMIT_CPU
+  - prlimit
+  notes: |
+    Each limit has a soft value and a hard cap.
+    NPROC makes fork fail with EAGAIN; root and some capabilities are exempt.
+    FSIZE sends SIGXFSZ; CPU sends SIGXCPU, then SIGKILL at the hard limit.
+    AS makes memory calls fail with ENOMEM.
+  sources:
+  - url: https://man7.org/linux/man-pages/man2/setrlimit.2.html
+    title: getrlimit(2)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.shell-command-capture
+  title: Capturing command output
+  stories:
+  - 4.3.7
+  phase: P1
+  keywords:
+  - stdout stderr capture
+  - Command::output
+  - Stdio
+  - exit status
+  notes: |
+    output() waits and captures stdout and stderr.
+    spawn() returns a handle and inherits stdio by default.
+    A non-zero exit is not an Err; read the status.
+    No shell is used unless you start one.
+  sources:
+  - url: https://doc.rust-lang.org/std/process/struct.Command.html
+    title: std::process::Command
+    kind: api-reference
+    publisher: The Rust project
+    version: Rust 1.100.0
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.rs/tokio/latest/tokio/process/index.html
+    title: tokio::process
+    kind: api-reference
+    publisher: Tokio project (docs.rs)
+    version: tokio 1.54.1
+    primary: false
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.sock-diag
+  title: sock_diag netlink socket query
+  stories:
+  - 4.3.5
+  phase: P1
+  keywords:
+  - sock_diag
+  - netlink
+  - socket listing
+  - ss
+  notes: |
+    A netlink interface to ask the kernel about sockets.
+    It covers UNIX, IPv4 and IPv6 sockets.
+    It is an alternative to parsing /proc/net/tcp.
+    The ss tool uses it.
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/sock_diag.7.html
+    title: sock_diag(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.sticky-bit-permissions
+  title: Sticky bit and file permissions
+  stories:
+  - 4.2.3
+  phase: P1
+  keywords:
+  - sticky bit
+  - S_ISVTX
+  - delete rename
+  - directory owner
+  notes: |
+    On a directory the sticky bit limits delete and rename.
+    Only the file owner, the directory owner, or a privileged process may do it.
+    So a root-owned sticky directory protects root-owned locked files.
+    A runner-owned directory breaks this protection.
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/inode.7.html
+    title: inode(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.thiserror
+  title: thiserror derive macro
+  stories:
+  - 4.3.1
+  phase: P1
+  keywords:
+  - thiserror
+  - Error derive
+  - error enum
+  - Rust errors
+  notes: |
+    thiserror derives std::error::Error for an enum or struct.
+    It removes the Display and From boilerplate.
+    The project style requires it in Rust, with no unwrap or panic.
+    One enum per module keeps error codes fixed.
+  sources:
+  - url: https://docs.rs/thiserror/latest/thiserror/
+    title: thiserror
+    kind: api-reference
+    publisher: David Tolnay
+    version: thiserror 2.0.21
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.tokio-asyncfd
+  title: tokio AsyncFd
+  stories:
+  - 4.3.3
+  phase: P1
+  keywords:
+  - AsyncFd
+  - readiness
+  - clear_ready
+  - raw fd
+  notes: |
+    AsyncFd registers a raw Unix fd with Tokio's reactor.
+    Tasks can then await read or write readiness.
+    After WouldBlock, clear only the readiness that blocked.
+    Use it with nix::pty master fds.
+  sources:
+  - url: https://docs.rs/tokio/latest/tokio/io/unix/struct.AsyncFd.html
+    title: AsyncFd in tokio::io::unix
+    kind: api-reference
+    publisher: Tokio project
+    version: tokio 1.54.1
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.tokio-mpsc-bounded
+  title: Bounded tokio mpsc channel
+  stories:
+  - 4.3.7
+  phase: P1
+  keywords:
+  - mpsc
+  - backpressure
+  - bounded channel
+  - event stream
+  notes: |
+    Multi-producer, single-consumer queue between tasks.
+    A bounded channel makes senders wait when full.
+    This gives backpressure for the event stream.
+    Use blocking_send from sync code.
+  sources:
+  - url: https://docs.rs/tokio/latest/tokio/sync/mpsc/index.html
+    title: tokio::sync::mpsc
+    kind: api-reference
+    publisher: Tokio project (docs.rs)
+    version: tokio 1.54.1
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.tokio-process
+  title: tokio::process for agent tasks
+  stories:
+  - 4.3.4
+  phase: P1
+  keywords:
+  - tokio process
+  - kill_on_drop
+  - zombie
+  - Child
+  notes: |
+    Async wrapper over std Command for spawning tasks.
+    A dropped Child keeps running unless kill_on_drop is set.
+    Tokio reaps finished children only on a best-effort basis.
+    Await the child to the end for strict cleanup.
+  sources:
+  - url: https://docs.rs/tokio/latest/tokio/process/index.html
+    title: tokio::process
+    kind: api-reference
+    publisher: Tokio project (docs.rs)
+    version: tokio 1.54.1
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.tokio-select-cancel
+  title: tokio select! and cancellation
+  stories:
+  - 4.3.1
+  phase: P1
+  keywords:
+  - select!
+  - cancellation safety
+  - CancellationToken
+  - shutdown
+  notes: |
+    select! waits on several futures and drops the losers.
+    A dropped branch can lose partial work, so branches must be cancellation safe.
+    mpsc recv is safe; read_exact and write_all are not.
+    Use it for the agent's accept loop and shutdown.
+  sources:
+  - url: https://docs.rs/tokio/latest/tokio/macro.select.html
+    title: select in tokio
+    kind: api-reference
+    publisher: Tokio project
+    version: tokio 1.54.1
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.tokio-spawn-blocking
+  title: tokio spawn_blocking
+  stories:
+  - 4.3.3
+  phase: P1
+  keywords:
+  - spawn_blocking
+  - blocking thread pool
+  - abort
+  - runtime shutdown
+  notes: |
+    spawn_blocking runs a closure on a dedicated thread pool.
+    It keeps blocking calls off the async executor.
+    Abort has no effect once the closure runs.
+    Runtime shutdown waits for started blocking tasks.
+  sources:
+  - url: https://docs.rs/tokio/latest/tokio/task/fn.spawn_blocking.html
+    title: spawn_blocking in tokio::task
+    kind: api-reference
+    publisher: Tokio project
+    version: tokio 1.54.1
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.tokio-unixlistener
+  title: tokio UnixListener
+  stories:
+  - 4.3.1
+  phase: P1
+  keywords:
+  - UnixListener
+  - unix socket
+  - bind
+  - accept
+  - stale socket
+  notes: |
+    Tokio's UnixListener binds a socket path and accepts UnixStream connections.
+    A leftover socket file makes bind fail, so the agent removes it first (an OS rule, not stated on this page).
+    The agent serves its protocol on one socket path.
+  sources:
+  - url: https://docs.rs/tokio/latest/tokio/net/struct.UnixListener.html
+    title: UnixListener in tokio::net
+    kind: api-reference
+    publisher: Tokio project
+    version: tokio 1.54.1
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.tracing-json
+  title: tracing-subscriber JSON output
+  stories:
+  - 4.3.1
+  phase: P1
+  keywords:
+  - tracing
+  - JSON lines
+  - structured logs
+  - tracing-subscriber
+  notes: |
+    tracing-subscriber's Json formatter prints one JSON object per line.
+    It fits the project's structured log rule.
+    Fields from events become JSON keys.
+    Custom fields such as event and subject go in as event fields.
+  sources:
+  - url: https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/struct.Json.html
+    title: Json in tracing_subscriber::fmt::format
+    kind: api-reference
+    publisher: Tokio project
+    version: tracing-subscriber 0.3.23
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.unix-socket-peercred
+  title: SO_PEERCRED and unix(7) sockets
+  stories:
+  - 4.3.1
+  - 8.4.2
+  phase: P1
+  keywords:
+  - SO_PEERCRED
+  - ucred
+  - sun_path
+  - peer credentials
+  notes: |
+    SO_PEERCRED returns pid, uid and gid of the peer on a connected unix stream socket.
+    The agent can check who connects.
+    The values are those at connect or listen time.
+    Linux sun_path holds 108 bytes, so keep the socket path short.
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/unix.7.html
+    title: unix(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.userns-rootless
+  title: User namespaces and rootless Docker
+  stories:
+  - 4.1.2
+  phase: P1
+  keywords:
+  - user namespace
+  - uid_map
+  - rootless
+  - subuid
+  notes: |
+    A user namespace maps inner IDs to outer IDs; inner root is unprivileged outside.
+    uid_map lines hold inner start, outer start and length.
+    Rootless Docker runs the daemon as a normal user.
+    It needs newuidmap and subordinate ID ranges.
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/user_namespaces.7.html
+    title: user_namespaces(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.docker.com/engine/security/rootless/
+    title: Rootless mode
+    kind: official-docs
+    publisher: Docker Inc.
+    version: Docker Engine docs (current)
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.utimensat
+  title: utimensat sets file times
+  stories:
+  - 4.2.2
+  phase: P1
+  keywords:
+  - utimensat
+  - UTIME_OMIT
+  - UTIME_NOW
+  - AT_SYMLINK_NOFOLLOW
+  - ctime
+  notes: |
+    Sets atime and mtime with nanosecond precision.
+    Explicit times need ownership or privilege; write access is not enough.
+    UTIME_NOW and UTIME_OMIT are special nanosecond values.
+    The call always sets ctime to now.
+  sources:
+  - url: https://man7.org/linux/man-pages/man2/utimensat.2.html
+    title: utimensat(2)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  llms_txt: null
+- id: sandbox.vscode-tasks
+  title: VS Code tasks.json
+  stories:
+  - 4.3.4
+  phase: P1
+  keywords:
+  - tasks.json
+  - label
+  - dependsOn
+  - isBackground
+  - problemMatcher
+  - shell
+  - process
+  notes: |
+    tasks.json lists tasks; each has a label, a type (shell or process) and a command.
+    dependsOn runs other tasks first; dependsOrder sequence runs them one after another.
+    isBackground marks a long-running task such as a server.
+    The file allows comments, so parse it as JSONC, not strict JSON.
+  sources:
+  - url: https://code.visualstudio.com/docs/debugtest/tasks
+    title: Integrate with External Tools via Tasks
+    kind: official-docs
+    publisher: Microsoft (VS Code)
+    version: docs updated 2026-11-18
+    primary: true
+    checked: &id001 2026-11-25
+  llms_txt: null
+- id: sandbox.gnu-patch-reverse
+  title: patch -R (reversed patches)
+  stories:
+  - 4.2.2
+  - 4.6.2
+  phase: P1
+  keywords:
+  - patch
+  - -R
+  - --reverse
+  - reject
+  - reversibility
+  notes: |
+    patch -R swaps each hunk and applies it, which undoes a patch that was applied.
+    Applying a patch twice makes patch think it is reversed; it then offers to undo it.
+    Use --forward (-N) in scripts so patch never asks and never undoes by guess.
+    A clean apply followed by a clean -R must give the baseline bytes back.
+  sources:
+  - url: https://www.gnu.org/software/diffutils/manual/html_node/Reversed-Patches.html
+    title: Applying Reversed Patches
+    kind: official-docs
+    publisher: GNU Project
+    version: diffutils manual
+    primary: true
+    checked: *id001
+  llms_txt: null
+- id: sandbox.junit-xml
+  title: JUnit XML from pytest
+  stories:
+  - 4.6.1
+  phase: P1
+  keywords:
+  - junitxml
+  - --junitxml
+  - junit_family
+  - xunit2
+  - testcase
+  - failure
+  - error
+  notes: |
+    pytest --junitxml=PATH writes one XML report with a testcase element per test.
+    junit_family selects the dialect; xunit2 is the default in current pytest.
+    The report comes from the test process, so learner code can change it. Cross-check counts and exit code.
+    Parse it with defusedxml, never with the plain XML parsers.
+  sources:
+  - url: https://docs.pytest.org/en/stable/reference/reference.html
+    title: 'API Reference: junit_family and --junitxml'
+    kind: api-reference
+    publisher: pytest-dev
+    version: pytest stable docs
+    primary: true
+    checked: *id001
+  llms_txt: null

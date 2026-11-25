@@ -30,7 +30,7 @@
     },
     {
       "label": "learn: check",
-      "detail": "Check docs/learn/sources.yaml offline (schema, ids, https, domains, primary sources).",
+      "detail": "Check the learning index (docs/learn/index.yaml, concepts/*.yaml) offline (schema, ids, https, domains, primary sources).",
       "type": "shell",
       "command": "uv run python scripts/learn_index.py check",
       "problemMatcher": []
