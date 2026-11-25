@@ -47,7 +47,6 @@ dependencies = [
 dev = [
     { name = "httpx2" },
     { name = "pytest" },
-    { name = "pyyaml" },
     { name = "ruff" },
     { name = "ty" },
 ]
@@ -63,7 +62,6 @@ requires-dist = [
 dev = [
     { name = "httpx2", specifier = ">=2.16.2" },
     { name = "pytest", specifier = ">=9.2.0" },
-    { name = "pyyaml", specifier = ">=6.0.4" },
     { name = "ruff", specifier = ">=0.17.6" },
     { name = "ty", specifier = ">=0.0.109" },
 ]

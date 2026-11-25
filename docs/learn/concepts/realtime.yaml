@@ -1,3 +1,9 @@
+# Learning index: realtime concepts. The area comes from this file name; entries have no area key.
+# Each entry: id (<area>.<name>), title, stories (guided story ids), phase (P0, P1, ...),
+#   keywords, notes (short, own words), sources, llms_txt (optional link; omit when none).
+# Each source: url (https, allowed host in index.yaml), title, kind, publisher, version,
+#   primary (at least one true per concept), checked (date the link was last verified).
+# Kinds: official-docs, api-reference, man-page, spec, project-repo.
 - id: realtime.asyncio-future-timeouts
   title: Futures, cancellation and timeouts in asyncio
   stories:
@@ -30,7 +36,6 @@
     version: Python 3.15.2 docs
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: realtime.asyncio-queue-bounded
   title: Bounded asyncio.Queue
   stories:
@@ -54,7 +59,6 @@
     version: Python 3.15.2 docs
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: realtime.asyncio-unix-connection
   title: asyncio.open_unix_connection
   stories:
@@ -79,7 +83,6 @@
     version: Python 3.15.2 docs
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: realtime.asyncpg-add-listener
   title: asyncpg add_listener
   stories:
@@ -102,7 +105,6 @@
     version: asyncpg docs, changelog to 0.32.0
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: realtime.caddy-flush-interval
   title: Caddy reverse_proxy flush_interval
   stories:
@@ -127,7 +129,6 @@
     version: unversioned (current docs)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: realtime.origin-check-websocket
   title: Origin check on the WebSocket upgrade
   stories:
@@ -160,7 +161,6 @@
     version: RFC 6455 (December 2011)
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: realtime.pg-listen
   title: PostgreSQL LISTEN
   stories:
@@ -184,7 +184,6 @@
     version: PostgreSQL 19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: realtime.pg-notify
   title: PostgreSQL NOTIFY
   stories:
@@ -209,7 +208,6 @@
     version: PostgreSQL 19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: realtime.pg-terminate-backend
   title: pg_terminate_backend
   stories:
@@ -233,7 +231,6 @@
     version: PostgreSQL 19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: realtime.pg-transaction-visibility
   title: Commit order and transaction visibility in PostgreSQL
   stories:
@@ -266,7 +263,6 @@
     version: PostgreSQL 19
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: realtime.starlette-websocket
   title: Starlette and FastAPI WebSocket endpoints
   stories:
@@ -298,7 +294,6 @@
     version: unversioned (current docs)
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: realtime.tcp-nodelay
   title: TCP_NODELAY
   stories:
@@ -321,7 +316,6 @@
     version: Linux man-pages 6.19 (2026-04-19)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: realtime.uuid-v7
   title: UUID version 7
   stories:
@@ -345,7 +339,6 @@
     version: RFC 9562 (May 2024)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: realtime.websocket-ping-pong
   title: WebSocket ping and pong control frames
   stories:
@@ -377,7 +370,6 @@
     version: unversioned (current)
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: realtime.backoff-full-jitter
   title: Exponential backoff with full jitter
   stories:
@@ -410,7 +402,6 @@
     version: AWS Builder Center
     primary: false
     checked: *id001
-  llms_txt: null
 - id: realtime.xterm-flow-control
   title: xterm.js flow control
   stories:
@@ -436,7 +427,6 @@
     version: docs guide
     primary: true
     checked: *id001
-  llms_txt: null
 - id: realtime.psycopg3-notifies
   title: psycopg 3 LISTEN/NOTIFY
   stories:
@@ -462,7 +452,6 @@
     version: psycopg 3.3 docs
     primary: true
     checked: *id001
-  llms_txt: null
 - id: realtime.outbox-pattern
   title: Transactional outbox
   stories:
@@ -487,4 +476,3 @@
     version: pattern page
     primary: true
     checked: *id001
-  llms_txt: null

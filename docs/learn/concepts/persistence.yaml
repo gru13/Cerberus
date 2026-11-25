@@ -1,3 +1,9 @@
+# Learning index: persistence concepts. The area comes from this file name; entries have no area key.
+# Each entry: id (<area>.<name>), title, stories (guided story ids), phase (P0, P1, ...),
+#   keywords, notes (short, own words), sources, llms_txt (optional link; omit when none).
+# Each source: url (https, allowed host in index.yaml), title, kind, publisher, version,
+#   primary (at least one true per concept), checked (date the link was last verified).
+# Kinds: official-docs, api-reference, man-page, spec, project-repo.
 - id: persistence.asyncio-tasks-timers
   title: asyncio tasks and timers
   stories:
@@ -20,7 +26,6 @@
     version: Python 3.15.2
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: persistence.durable-write-fsync
   title: 'Durable writes: fsync and atomic rename'
   stories:
@@ -51,7 +56,6 @@
     version: Linux man-pages 6.19
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: persistence.http-etag-if-match
   title: HTTP ETag and If-Match
   stories:
@@ -75,7 +79,6 @@
     version: RFC 9110 (June 2022)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: persistence.optimistic-compare-and-swap
   title: Optimistic concurrency with compare-and-swap
   stories:
@@ -99,7 +102,6 @@
     version: PostgreSQL 19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: persistence.pg-advisory-locks
   title: PostgreSQL advisory locks
   stories:
@@ -123,7 +125,6 @@
     version: PostgreSQL 19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: persistence.problem-json
   title: Problem Details for HTTP APIs
   stories:
@@ -145,7 +146,6 @@
     version: RFC 9457 (July 2023)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: persistence.procrastinate-retry
   title: Procrastinate retry strategy
   stories:
@@ -168,7 +168,6 @@
     version: stable (no version number shown)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: persistence.python-hashlib
   title: Python hashlib
   stories:
@@ -190,7 +189,6 @@
     version: Python 3.15.2
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: persistence.sha256-content-addressing
   title: SHA-256 and content addressing
   stories:
@@ -214,7 +212,6 @@
     version: FIPS 180-4 (August 2015)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: persistence.skip-locked
   title: SELECT FOR UPDATE SKIP LOCKED
   stories:
@@ -237,7 +234,6 @@
     version: PostgreSQL 19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: persistence.sqlalchemy-async
   title: SQLAlchemy asyncio extension
   stories:
@@ -260,7 +256,6 @@
     version: SQLAlchemy 2.0.58
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: persistence.sqlalchemy-for-update
   title: SQLAlchemy with_for_update
   stories:
@@ -290,7 +285,6 @@
     version: SQLAlchemy 2.0.58
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: persistence.trailing-debounce
   title: Trailing-edge debounce
   stories:
@@ -314,7 +308,6 @@
     version: Python 3.15.2
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: persistence.fencing-token
   title: Fencing tokens for leases
   stories:
@@ -339,4 +332,3 @@
     version: etcd v3.5 docs
     primary: true
     checked: 2026-11-25
-  llms_txt: null

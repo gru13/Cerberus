@@ -30,23 +30,26 @@
     },
     {
       "label": "learn: check",
-      "detail": "Check the learning index (docs/learn/index.yaml, concepts/*.yaml) offline (schema, ids, https, domains, primary sources).",
+      "detail": "Check the learning index offline (layout, schema, ids, https, domains, primary sources).",
       "type": "shell",
-      "command": "uv run python scripts/learn_index.py check",
+      "command": "uv run docs/learn/learn.py check",
+      "options": { "cwd": "${workspaceFolder}" },
       "problemMatcher": []
     },
     {
       "label": "learn: check-links",
       "detail": "Check the learning index offline rules, then request every source URL.",
       "type": "shell",
-      "command": "uv run python scripts/learn_index.py check --online",
+      "command": "uv run docs/learn/learn.py check --online",
+      "options": { "cwd": "${workspaceFolder}" },
       "problemMatcher": []
     },
     {
       "label": "learn: edit",
       "detail": "Start the learning index editor on http://127.0.0.1:8765.",
       "type": "shell",
-      "command": "uv run python scripts/learn_editor.py",
+      "command": "uv run docs/learn/learn.py edit",
+      "options": { "cwd": "${workspaceFolder}" },
       "isBackground": true,
       "problemMatcher": []
     },

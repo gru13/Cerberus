@@ -1,3 +1,9 @@
+# Learning index: security concepts. The area comes from this file name; entries have no area key.
+# Each entry: id (<area>.<name>), title, stories (guided story ids), phase (P0, P1, ...),
+#   keywords, notes (short, own words), sources, llms_txt (optional link; omit when none).
+# Each source: url (https, allowed host in index.yaml), title, kind, publisher, version,
+#   primary (at least one true per concept), checked (date the link was last verified).
+# Kinds: official-docs, api-reference, man-page, spec, project-repo.
 - id: security.alembic-migrations
   title: Alembic migrations
   stories:
@@ -21,7 +27,6 @@
     version: Alembic 1.20.1
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: security.asgi-middleware
   title: Pure ASGI middleware and scope types
   stories:
@@ -45,7 +50,6 @@
     version: version not shown (current docs)
     primary: true
     checked: &id002 2026-11-24
-  llms_txt: null
 - id: security.constant-time-compare
   title: Constant-time comparison
   stories:
@@ -76,7 +80,6 @@
     version: Python 3.15.2 docs
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: security.csrf-defenses
   title: CSRF defenses
   stories:
@@ -100,7 +103,6 @@
     version: undated (current)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: security.cswsh
   title: Cross-site WebSocket hijacking
   stories:
@@ -131,7 +133,6 @@
     version: RFC 6455 (Dec 2011)
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: security.dns-rebinding
   title: DNS rebinding and Host allow-list
   stories:
@@ -161,7 +162,6 @@
     version: version not shown (current docs)
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: security.docker-engine-api-create
   title: Docker Engine API container create
   stories:
@@ -176,6 +176,7 @@
     The spec defines Privileged, Binds, CapAdd, NetworkMode and PidMode.
     A body-checking proxy must read these fields.
     Paths carry a version prefix such as /v1.47/.
+    Gap: the v1.47 HTML reference is a stub, so the OpenAPI yaml is cited.
   sources:
   - url: https://docs.docker.com/reference/api/engine/version/v1.47.yaml
     title: Docker Engine API v1.47 OpenAPI spec
@@ -191,7 +192,6 @@
     version: API 1.47
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: security.docker-image-inspect
   title: docker image inspect
   stories:
@@ -215,7 +215,6 @@
     version: current (undated)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: security.docker-privileged-binds
   title: Privileged containers and host binds
   stories:
@@ -246,7 +245,6 @@
     version: undated (current)
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: security.docker-socket-proxy
   title: Docker socket proxy
   stories:
@@ -277,7 +275,6 @@
     version: undated (current)
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: security.dockerfile-multistage-digest
   title: Multi-stage builds and digest pinning
   stories:
@@ -308,7 +305,6 @@
     version: current (undated)
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: security.dockerfile-parse
   title: dockerfile-parse library
   stories:
@@ -331,7 +327,6 @@
     version: no release listed on repo page
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: security.dockerfile-reference
   title: Dockerfile reference
   stories:
@@ -356,7 +351,6 @@
     version: current (undated)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: security.dockerignore
   title: dockerignore
   stories:
@@ -379,7 +373,6 @@
     version: current (undated)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: security.hadolint
   title: Hadolint
   stories:
@@ -402,7 +395,6 @@
     version: no release listed on repo page
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: security.hmac-signed-tokens
   title: HMAC-signed tokens
   stories:
@@ -434,7 +426,6 @@
     version: RFC 2104 (Feb 1997)
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: security.hyper-unix-socket
   title: hyper over a Unix socket
   stories:
@@ -464,7 +455,6 @@
     version: hyper-util 0.1.21
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: security.jwt-jti
   title: JWT ID (jti) claim
   stories:
@@ -488,7 +478,6 @@
     version: RFC 7519 (May 2015)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: security.postgres-rls
   title: PostgreSQL row-level security
   stories:
@@ -512,7 +501,6 @@
     version: PostgreSQL 19 (current)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: security.python-contextvars
   title: contextvars and asyncio
   stories:
@@ -536,7 +524,6 @@
     version: Python 3.15.2 docs
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: security.python-secrets
   title: Python secrets module
   stories:
@@ -559,7 +546,6 @@
     version: Python 3.15.2 docs
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: security.samesite-cookies
   title: SameSite cookies and site vs origin
   stories:
@@ -590,7 +576,6 @@
     version: RFC 6454 (Dec 2011)
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: security.sec-fetch-site
   title: Sec-Fetch-Site fetch metadata
   stories:
@@ -620,7 +605,6 @@
     version: Working Draft, 21 September 2026
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: security.secret-scanning-tools
   title: Secret scanning tools
   stories:
@@ -650,7 +634,6 @@
     version: pre-commit example v1.5.0; releases not listed
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: security.sqlalchemy-loader-criteria
   title: with_loader_criteria
   stories:
@@ -673,7 +656,6 @@
     version: SQLAlchemy 2.0.58
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: security.sqlalchemy-orm-execute-hook
   title: SQLAlchemy do_orm_execute hook
   stories:
@@ -696,7 +678,6 @@
     version: SQLAlchemy 2.0.58
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: security.starlette-trustedhost
   title: Starlette TrustedHostMiddleware
   stories:
@@ -719,7 +700,6 @@
     version: version not shown (current docs)
     primary: true
     checked: *id002
-  llms_txt: null
 - id: security.token-hashing-at-rest
   title: Hashing tokens at rest
   stories:
@@ -750,4 +730,3 @@
     version: Python 3.15.2 docs
     primary: false
     checked: 2026-11-24
-  llms_txt: null

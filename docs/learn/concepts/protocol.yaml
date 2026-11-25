@@ -1,3 +1,9 @@
+# Learning index: protocol concepts. The area comes from this file name; entries have no area key.
+# Each entry: id (<area>.<name>), title, stories (guided story ids), phase (P0, P1, ...),
+#   keywords, notes (short, own words), sources, llms_txt (optional link; omit when none).
+# Each source: url (https, allowed host in index.yaml), title, kind, publisher, version,
+#   primary (at least one true per concept), checked (date the link was last verified).
+# Kinds: official-docs, api-reference, man-page, spec, project-repo.
 - id: protocol.base64-rfc4648
   title: Base64 encoding (RFC 4648)
   stories:
@@ -21,7 +27,6 @@
     version: RFC 4648, October 2006
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: protocol.datamodel-code-generator
   title: datamodel-code-generator
   stories:
@@ -45,7 +50,6 @@
     version: default branch, checked 2026-11-24 (version not shown)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: protocol.json-number-precision
   title: JSON number interoperability (RFC 8259 section 6)
   stories:
@@ -69,7 +73,6 @@
     version: RFC 8259, December 2017
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: protocol.json-schema-2020-12
   title: JSON Schema 2020-12 core
   stories:
@@ -93,7 +96,6 @@
     version: draft-bhutton-json-schema-01 (2020-12), 2022-06-16
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: protocol.jsonschema-crate
   title: jsonschema crate (Rust validator)
   stories:
@@ -117,7 +119,6 @@
     version: jsonschema 0.63.1
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: protocol.messagepack
   title: MessagePack format
   stories:
@@ -148,7 +149,6 @@
     version: rmp-serde 1.3.1
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: protocol.ndjson-framing
   title: NDJSON and length-delimited framing
   stories:
@@ -179,7 +179,6 @@
     version: tokio-util 0.7.20
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: protocol.protocol-semver
   title: Semantic Versioning for the protocol
   stories:
@@ -203,7 +202,6 @@
     version: 2.0.0
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: protocol.pydantic-discriminated-unions
   title: Pydantic discriminated unions
   stories:
@@ -227,7 +225,6 @@
     version: main branch (docs.pydantic.dev now redirects to pydantic.dev)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: protocol.schemars
   title: schemars (JSON Schema from Rust types)
   stories:
@@ -250,7 +247,6 @@
     version: schemars 1.2.3
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: protocol.serde-tagged-enums
   title: Serde enum representations
   stories:
@@ -281,7 +277,6 @@
     version: serde 1.0.229
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: protocol.tokio-tungstenite
   title: tokio-tungstenite
   stories:
@@ -305,7 +300,6 @@
     version: tokio-tungstenite 0.30.0
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: protocol.websocket-rfc6455
   title: WebSocket protocol (RFC 6455)
   stories:
@@ -329,4 +323,3 @@
     version: RFC 6455, December 2011
     primary: true
     checked: 2026-11-24
-  llms_txt: null

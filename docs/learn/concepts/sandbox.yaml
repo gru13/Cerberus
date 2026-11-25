@@ -1,3 +1,9 @@
+# Learning index: sandbox concepts. The area comes from this file name; entries have no area key.
+# Each entry: id (<area>.<name>), title, stories (guided story ids), phase (P0, P1, ...),
+#   keywords, notes (short, own words), sources, llms_txt (optional link; omit when none).
+# Each source: url (https, allowed host in index.yaml), title, kind, publisher, version,
+#   primary (at least one true per concept), checked (date the link was last verified).
+# Kinds: official-docs, api-reference, man-page, spec, project-repo.
 - id: sandbox.asyncio-timeout
   title: asyncio.timeout
   stories:
@@ -21,7 +27,6 @@
     version: Python 3.15 docs
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.caddy-admin-api
   title: Caddy admin API
   stories:
@@ -45,7 +50,6 @@
     version: Caddy 2.x docs, no version shown
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.caddy-forward-auth
   title: Caddy forward_auth
   stories:
@@ -69,7 +73,6 @@
     version: Caddy 2.x docs, no version shown
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.caddy-reverse-proxy
   title: Caddy reverse_proxy
   stories:
@@ -93,7 +96,6 @@
     version: Caddy 2.11.x docs
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.caddy-stream-close-delay
   title: Caddy stream_close_delay
   stories:
@@ -117,7 +119,6 @@
     version: Caddy 2.11.x docs
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.capabilities
   title: Linux capabilities
   stories:
@@ -142,7 +143,6 @@
     version: man-pages 6.19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.cgroup-v2-limits
   title: cgroup v2 resource limits
   stories:
@@ -167,7 +167,6 @@
     version: kernel docs (current)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.csp-frame-ancestors
   title: CSP frame-ancestors
   stories:
@@ -191,7 +190,6 @@
     version: CSP Level 3; MDN live docs
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.defusedxml
   title: defusedxml for untrusted XML
   stories:
@@ -222,7 +220,6 @@
     version: Python 3.15 docs
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.docker-embedded-dns
   title: Docker embedded DNS server
   stories:
@@ -246,7 +243,6 @@
     version: Docker Engine docs, no version shown
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.docker-internal-network
   title: Docker internal networks
   stories:
@@ -270,7 +266,6 @@
     version: Docker Engine docs, no version shown
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.docker-network-none
   title: Docker none network driver
   stories:
@@ -292,7 +287,6 @@
     version: Docker Engine docs, no version shown
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.docker-run-hardening-flags
   title: docker run hardening flags
   stories:
@@ -318,7 +312,6 @@
     version: Docker Engine docs (current)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.docker-sdk-engine
   title: Docker Engine API and SDKs
   stories:
@@ -342,7 +335,6 @@
     version: Docker Engine docs (current)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.docker-volume-copyup
   title: Docker volume copy-up
   stories:
@@ -367,7 +359,6 @@
     version: Docker Engine docs (current)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.execve-argv
   title: execve with an argv array
   stories:
@@ -399,7 +390,6 @@
     version: Rust 1.100.0
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.globset
   title: globset glob matching
   stories:
@@ -424,7 +414,6 @@
     version: globset 0.4.22
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.governor
   title: governor rate limiter
   stories:
@@ -448,7 +437,6 @@
     version: governor 0.10.4
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.grep-searcher
   title: grep-searcher crate
   stories:
@@ -473,7 +461,6 @@
     version: grep-searcher 0.1.18
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.iframe-sandbox
   title: iframe sandbox attribute
   stories:
@@ -497,7 +484,6 @@
     version: MDN live docs, no version shown
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.inode-timestamps
   title: Inode timestamps
   stories:
@@ -522,7 +508,6 @@
     version: man-pages 6.19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.inotify
   title: inotify and IN_Q_OVERFLOW
   stories:
@@ -546,7 +531,6 @@
     version: Linux man-pages 6.19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.jsonc-parsing
   title: Parsing JSON with comments
   stories:
@@ -570,7 +554,6 @@
     version: jsonc-parser 0.34.0
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.length-delimited-codec
   title: LengthDelimitedCodec framing
   stories:
@@ -594,7 +577,6 @@
     version: tokio-util 0.7.20
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.notify-crate
   title: notify crate and debouncer
   stories:
@@ -625,7 +607,6 @@
     version: notify-debouncer-full 0.8.0
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.openat2
   title: openat2 and RESOLVE_BENEATH
   stories:
@@ -649,7 +630,6 @@
     version: Linux man-pages 6.19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.pid1-zombie-reaping
   title: PID 1 duties and docker --init
   stories:
@@ -673,7 +653,6 @@
     version: Docker docs (current)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.portable-pty
   title: portable-pty crate
   stories:
@@ -697,7 +676,6 @@
     version: portable-pty 0.9.0
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.proc-net-tcp
   title: /proc/net/tcp socket table
   stories:
@@ -722,7 +700,6 @@
     version: kernel docs (current)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.proc-status-fields
   title: /proc/PID/status fields
   stories:
@@ -747,7 +724,6 @@
     version: man-pages 6.19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.process-groups-killpg
   title: Process groups and killpg
   stories:
@@ -772,7 +748,6 @@
     version: Linux man-pages 6.19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.procfs-crate
   title: procfs crate for port detection
   stories:
@@ -803,7 +778,6 @@
     version: procfs 0.18.0
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.procrastinate-queues-locks
   title: Procrastinate queues and locks
   stories:
@@ -828,7 +802,6 @@
     version: stable docs, no version shown
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.protected-links-sysctl
   title: fs.protected_hardlinks and protected_symlinks
   stories:
@@ -852,7 +825,6 @@
     version: Linux 7.4.0-rc4 docs
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.pty-session
   title: pseudoterminals (pty(7))
   stories:
@@ -876,7 +848,6 @@
     version: Linux man-pages 6.19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.pyc-files
   title: pyc cache files and source mtime
   stories:
@@ -907,7 +878,6 @@
     version: Final
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.python-pathspec
   title: pathspec gitignore matching
   stories:
@@ -932,7 +902,6 @@
     version: README, no version shown
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.python-tarfile
   title: tarfile extraction filters
   stories:
@@ -956,7 +925,6 @@
     version: Python 3.15.2
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.rename-atomic
   title: rename(2) atomic replace
   stories:
@@ -980,7 +948,6 @@
     version: Linux man-pages 6.19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.rustix
   title: rustix syscall bindings
   stories:
@@ -1005,7 +972,6 @@
     version: rustix 1.1.6
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.seccomp
   title: seccomp syscall filtering
   stories:
@@ -1036,7 +1002,6 @@
     version: Docker Engine docs (current)
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.setrlimit
   title: setrlimit resource limits
   stories:
@@ -1061,7 +1026,6 @@
     version: man-pages 6.19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.shell-command-capture
   title: Capturing command output
   stories:
@@ -1092,7 +1056,6 @@
     version: tokio 1.54.1
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.sock-diag
   title: sock_diag netlink socket query
   stories:
@@ -1116,7 +1079,6 @@
     version: man-pages 6.19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.sticky-bit-permissions
   title: Sticky bit and file permissions
   stories:
@@ -1140,7 +1102,6 @@
     version: man-pages 6.19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.thiserror
   title: thiserror derive macro
   stories:
@@ -1164,7 +1125,6 @@
     version: thiserror 2.0.21
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.tokio-asyncfd
   title: tokio AsyncFd
   stories:
@@ -1188,7 +1148,6 @@
     version: tokio 1.54.1
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.tokio-mpsc-bounded
   title: Bounded tokio mpsc channel
   stories:
@@ -1212,7 +1171,6 @@
     version: tokio 1.54.1
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.tokio-process
   title: tokio::process for agent tasks
   stories:
@@ -1236,7 +1194,6 @@
     version: tokio 1.54.1
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.tokio-select-cancel
   title: tokio select! and cancellation
   stories:
@@ -1260,7 +1217,6 @@
     version: tokio 1.54.1
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.tokio-spawn-blocking
   title: tokio spawn_blocking
   stories:
@@ -1284,7 +1240,6 @@
     version: tokio 1.54.1
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.tokio-unixlistener
   title: tokio UnixListener
   stories:
@@ -1308,7 +1263,6 @@
     version: tokio 1.54.1
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.tracing-json
   title: tracing-subscriber JSON output
   stories:
@@ -1332,7 +1286,6 @@
     version: tracing-subscriber 0.3.23
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.unix-socket-peercred
   title: SO_PEERCRED and unix(7) sockets
   stories:
@@ -1357,7 +1310,6 @@
     version: Linux man-pages 6.19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.userns-rootless
   title: User namespaces and rootless Docker
   stories:
@@ -1388,7 +1340,6 @@
     version: Docker Engine docs (current)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.utimensat
   title: utimensat sets file times
   stories:
@@ -1413,7 +1364,6 @@
     version: man-pages 6.19
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: sandbox.vscode-tasks
   title: VS Code tasks.json
   stories:
@@ -1440,7 +1390,6 @@
     version: docs updated 2026-11-18
     primary: true
     checked: &id001 2026-11-25
-  llms_txt: null
 - id: sandbox.gnu-patch-reverse
   title: patch -R (reversed patches)
   stories:
@@ -1466,7 +1415,6 @@
     version: diffutils manual
     primary: true
     checked: *id001
-  llms_txt: null
 - id: sandbox.junit-xml
   title: JUnit XML from pytest
   stories:
@@ -1493,4 +1441,3 @@
     version: pytest stable docs
     primary: true
     checked: *id001
-  llms_txt: null

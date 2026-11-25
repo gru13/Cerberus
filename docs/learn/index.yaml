@@ -1,3 +1,8 @@
+# Learning index: settings. Edit by hand or with `uv run docs/learn/learn.py edit`.
+# The concepts live in concepts/<area>.yaml, one file per area; this file has no concepts.
+# version: format version. stale_after_days: a source checked longer ago gives a warning.
+# allowed_domains: the only hosts a source or llms_txt link may use (https only).
+# Policy: official sources only; notes in our own words. Check: learn.py check.
 version: 1
 stale_after_days: 90
 allowed_domains:

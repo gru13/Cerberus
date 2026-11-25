@@ -1,3 +1,9 @@
+# Learning index: build concepts. The area comes from this file name; entries have no area key.
+# Each entry: id (<area>.<name>), title, stories (guided story ids), phase (P0, P1, ...),
+#   keywords, notes (short, own words), sources, llms_txt (optional link; omit when none).
+# Each source: url (https, allowed host in index.yaml), title, kind, publisher, version,
+#   primary (at least one true per concept), checked (date the link was last verified).
+# Kinds: official-docs, api-reference, man-page, spec, project-repo.
 - id: build.cargo-release-profile
   title: Cargo release profile
   stories:
@@ -22,7 +28,6 @@
     version: The Cargo Book (current)
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: build.cargo-zigbuild
   title: cargo-zigbuild
   stories:
@@ -46,7 +51,6 @@
     version: README, default branch
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: build.cross-rs
   title: cross (cross-rs)
   stories:
@@ -70,7 +74,6 @@
     version: README, MSRV 1.85.0
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: build.mimalloc
   title: mimalloc allocator
   stories:
@@ -94,7 +97,6 @@
     version: mimalloc 0.1.52
     primary: true
     checked: 2026-11-24
-  llms_txt: null
 - id: build.reproducible-builds
   title: Reproducible Rust builds
   stories:
@@ -125,7 +127,6 @@
     version: The Cargo Book (current)
     primary: false
     checked: 2026-11-24
-  llms_txt: null
 - id: build.rust-musl-targets
   title: Rust musl targets
   stories:
@@ -149,4 +150,3 @@
     version: rustc book, musl 1.2.5 listed
     primary: true
     checked: 2026-11-24
-  llms_txt: null
