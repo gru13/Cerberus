@@ -47,9 +47,9 @@
     title: datamodel-code-generator repository
     kind: project-repo
     publisher: koxudaxi (project maintainer)
-    version: default branch, checked 2026-11-24 (version not shown)
+    version: 0.102.0 (PyPI)
     primary: true
-    checked: 2026-11-24
+    checked: 2026-11-25
 - id: protocol.json-number-precision
   title: JSON number interoperability (RFC 8259 section 6)
   stories:

@@ -66,20 +66,20 @@
     Use it to check signatures and token hashes.
     The secrets module re-exports the same function.
   sources:
-  - url: https://docs.python.org/3/library/hmac.html
+  - url: https://docs.python.org/3.13/library/hmac.html
     title: hmac - Keyed-Hashing for Message Authentication
     kind: official-docs
     publisher: Python Software Foundation
-    version: Python 3.15.2 docs
+    version: Python 3.13 docs
     primary: true
-    checked: &id001 2026-11-24
-  - url: https://docs.python.org/3/library/secrets.html
+    checked: &id001 2026-11-25
+  - url: https://docs.python.org/3.13/library/secrets.html
     title: secrets - Generate secure random numbers
     kind: official-docs
     publisher: Python Software Foundation
-    version: Python 3.15.2 docs
+    version: Python 3.13 docs
     primary: false
-    checked: 2026-11-24
+    checked: *id001
 - id: security.csrf-defenses
   title: CSRF defenses
   stories:
@@ -265,9 +265,9 @@
     title: Tecnativa/docker-socket-proxy
     kind: project-repo
     publisher: Tecnativa
-    version: no release listed; images :lts, :latest, :3.4; API 1.27-1.51
+    version: v1.0.0
     primary: true
-    checked: 2026-11-24
+    checked: *id001
   - url: https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html
     title: Docker Security Cheat Sheet
     kind: official-docs
@@ -324,9 +324,9 @@
     title: containerbuildsystem/dockerfile-parse
     kind: project-repo
     publisher: containerbuildsystem
-    version: no release listed on repo page
+    version: 2.0.1 (PyPI)
     primary: true
-    checked: 2026-11-24
+    checked: *id001
 - id: security.dockerfile-reference
   title: Dockerfile reference
   stories:
@@ -392,9 +392,9 @@
     title: hadolint/hadolint
     kind: project-repo
     publisher: Hadolint project
-    version: no release listed on repo page
+    version: v2.15.1
     primary: true
-    checked: 2026-11-24
+    checked: *id001
 - id: security.hmac-signed-tokens
   title: HMAC-signed tokens
   stories:
@@ -412,11 +412,11 @@
     Pair with a jti and an atomic consume for single use.
     Use a digest name explicitly; digestmod is required.
   sources:
-  - url: https://docs.python.org/3/library/hmac.html
+  - url: https://docs.python.org/3.13/library/hmac.html
     title: hmac - Keyed-Hashing for Message Authentication
     kind: official-docs
     publisher: Python Software Foundation
-    version: Python 3.15.2 docs
+    version: Python 3.13 docs
     primary: true
     checked: *id001
   - url: https://www.rfc-editor.org/rfc/rfc2104
@@ -517,13 +517,13 @@
     A background job has no request context, so set it explicitly.
     Fail closed when the variable is unset.
   sources:
-  - url: https://docs.python.org/3/library/contextvars.html
+  - url: https://docs.python.org/3.13/library/contextvars.html
     title: contextvars - Context Variables
     kind: official-docs
     publisher: Python Software Foundation
-    version: Python 3.15.2 docs
+    version: Python 3.13 docs
     primary: true
-    checked: 2026-11-24
+    checked: *id001
 - id: security.python-secrets
   title: Python secrets module
   stories:
@@ -539,13 +539,13 @@
     Do not use the random module for tokens.
     It also offers compare_digest.
   sources:
-  - url: https://docs.python.org/3/library/secrets.html
+  - url: https://docs.python.org/3.13/library/secrets.html
     title: secrets - Generate secure random numbers
     kind: official-docs
     publisher: Python Software Foundation
-    version: Python 3.15.2 docs
+    version: Python 3.13 docs
     primary: true
-    checked: 2026-11-24
+    checked: *id001
 - id: security.samesite-cookies
   title: SameSite cookies and site vs origin
   stories:
@@ -624,16 +624,16 @@
     title: gitleaks/gitleaks
     kind: project-repo
     publisher: Gitleaks project
-    version: no release listed on repo page
+    version: v8.30.1
     primary: true
-    checked: 2026-11-24
+    checked: *id001
   - url: https://github.com/Yelp/detect-secrets
     title: Yelp/detect-secrets
     kind: project-repo
     publisher: Yelp
-    version: pre-commit example v1.5.0; releases not listed
+    version: 1.5.0 (PyPI)
     primary: false
-    checked: 2026-11-24
+    checked: *id001
 - id: security.sqlalchemy-loader-criteria
   title: with_loader_criteria
   stories:
@@ -723,10 +723,10 @@
     version: undated (current)
     primary: true
     checked: 2026-11-24
-  - url: https://docs.python.org/3/library/secrets.html
+  - url: https://docs.python.org/3.13/library/secrets.html
     title: secrets - Generate secure random numbers
     kind: official-docs
     publisher: Python Software Foundation
-    version: Python 3.15.2 docs
+    version: Python 3.13 docs
     primary: false
-    checked: 2026-11-24
+    checked: *id001
