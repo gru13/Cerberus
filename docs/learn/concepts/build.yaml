@@ -48,9 +48,9 @@
     title: cargo-zigbuild repository README
     kind: project-repo
     publisher: rust-cross project
-    version: README, default branch
+    version: 0.24.1 (crates.io)
     primary: true
-    checked: 2026-11-24
+    checked: &id001 2026-11-25
 - id: build.cross-rs
   title: cross (cross-rs)
   stories:
@@ -71,9 +71,9 @@
     title: cross repository README
     kind: project-repo
     publisher: cross-rs project
-    version: README, MSRV 1.85.0
+    version: 0.2.5 (crates.io)
     primary: true
-    checked: 2026-11-24
+    checked: *id001
 - id: build.mimalloc
   title: mimalloc allocator
   stories:
