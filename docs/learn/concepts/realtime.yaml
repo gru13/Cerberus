@@ -1,0 +1,478 @@
+# Learning index: realtime concepts. The area comes from this file name; entries have no area key.
+# Each entry: id (<area>.<name>), title, stories (guided story ids), phase (P0, P1, ...),
+#   keywords, notes (short, own words), sources, llms_txt (optional link; omit when none).
+# Each source: url (https, allowed host in index.yaml), title, kind, publisher, version,
+#   primary (at least one true per concept), checked (date the link was last verified).
+# Kinds: official-docs, api-reference, man-page, spec, project-repo.
+- id: realtime.asyncio-future-timeouts
+  title: Futures, cancellation and timeouts in asyncio
+  stories:
+  - 8.4.2
+  phase: P1
+  keywords:
+  - Future
+  - set_exception
+  - cancel
+  - asyncio.timeout
+  - wait_for
+  - pending requests
+  notes: |
+    A request map holds one Future per request id; the reader task resolves them.
+    On disconnect, call set_exception on each pending Future so no caller hangs.
+    Check cancelled() before set_result, or an InvalidStateError can occur.
+    asyncio.timeout bounds a block; wait_for bounds one awaitable and cancels it.
+  sources:
+  - url: https://docs.python.org/3/library/asyncio-future.html
+    title: asyncio Future
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.python.org/3/library/asyncio-task.html
+    title: Coroutines and Tasks (timeout, wait_for)
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: false
+    checked: 2026-11-24
+- id: realtime.asyncio-queue-bounded
+  title: Bounded asyncio.Queue
+  stories:
+  - 8.4.1
+  phase: P1
+  keywords:
+  - maxsize
+  - QueueFull
+  - put_nowait
+  - backpressure
+  - slow consumer
+  notes: |
+    With maxsize above zero, await put() waits until a slot is free.
+    put_nowait raises QueueFull instead, which lets the server detect a slow consumer.
+    On QueueFull, drop the client or force a resync so memory stays flat.
+  sources:
+  - url: https://docs.python.org/3/library/asyncio-queue.html
+    title: asyncio Queues
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: true
+    checked: 2026-11-24
+- id: realtime.asyncio-unix-connection
+  title: asyncio.open_unix_connection
+  stories:
+  - 8.4.2
+  phase: P1
+  keywords:
+  - Unix socket
+  - StreamReader
+  - StreamWriter
+  - limit
+  - sun_path
+  notes: |
+    The coroutine returns a (reader, writer) pair for a Unix domain socket.
+    The limit argument sets the reader buffer size; the default is 64 KiB.
+    It is available on Unix only.
+    Socket path length limits come from the OS, not asyncio (see unix(7)).
+  sources:
+  - url: https://docs.python.org/3/library/asyncio-stream.html
+    title: asyncio Streams
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: true
+    checked: 2026-11-24
+- id: realtime.asyncpg-add-listener
+  title: asyncpg add_listener
+  stories:
+  - 8.4.4
+  phase: P1
+  keywords:
+  - asyncpg
+  - add_listener
+  - notification callback
+  - pool
+  notes: |
+    add_listener(channel, callback) registers a callback on one connection.
+    The callback gets connection, pid, channel and payload.
+    Releasing a connection to a pool removes its listeners, so use a dedicated connection.
+  sources:
+  - url: https://magicstack.github.io/asyncpg/current/api/index.html
+    title: asyncpg API Reference (Connection.add_listener)
+    kind: api-reference
+    publisher: MagicStack
+    version: asyncpg docs, changelog to 0.32.0
+    primary: true
+    checked: 2026-11-24
+- id: realtime.caddy-flush-interval
+  title: Caddy reverse_proxy flush_interval
+  stories:
+  - 8.4.3
+  phase: P1
+  keywords:
+  - flush_interval
+  - '-1'
+  - buffering
+  - stream_close_delay
+  - stream_timeout
+  notes: |
+    A negative flush_interval (usually -1) turns off response buffering.
+    Caddy then flushes after every write, which suits streaming and terminals.
+    The same page covers stream_timeout and stream_close_delay for config reloads.
+    The page does not describe flush_interval for WebSockets; test it.
+  sources:
+  - url: https://caddyserver.com/docs/caddyfile/directives/reverse_proxy
+    title: reverse_proxy (Caddyfile directive)
+    kind: official-docs
+    publisher: Caddy
+    version: unversioned (current docs)
+    primary: true
+    checked: 2026-11-24
+- id: realtime.origin-check-websocket
+  title: Origin check on the WebSocket upgrade
+  stories:
+  - 8.4.1
+  - 8.1.5
+  phase: P0
+  keywords:
+  - CSWSH
+  - Origin header
+  - cross-site WebSocket hijacking
+  - '403'
+  - allowlist
+  notes: |
+    Browsers send cookies on the upgrade, so any site can open a socket as the user.
+    The server must compare Origin to an explicit allowlist and refuse with 403.
+    Avoid wildcards and substring matching; compare whole origins.
+    Origin does not stop non-browser clients, so keep real auth as well.
+  sources:
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/WebSocket_Security_Cheat_Sheet.html
+    title: WebSocket Security Cheat Sheet
+    kind: official-docs
+    publisher: OWASP Cheat Sheet Series
+    version: unversioned (current)
+    primary: true
+    checked: 2026-11-24
+  - url: https://www.rfc-editor.org/rfc/rfc6455.html#section-10.2
+    title: RFC 6455 section 10.2, Origin Considerations
+    kind: spec
+    publisher: IETF
+    version: RFC 6455 (December 2011)
+    primary: false
+    checked: 2026-11-24
+- id: realtime.pg-listen
+  title: PostgreSQL LISTEN
+  stories:
+  - 8.4.4
+  phase: P1
+  keywords:
+  - LISTEN
+  - UNLISTEN
+  - session scope
+  - channel
+  notes: |
+    LISTEN registers the current session on a channel.
+    Registration ends with the session, so a new connection must listen again.
+    Events sent while no session listens are not kept; catch up by id.
+    LISTEN takes effect at commit of its transaction.
+  sources:
+  - url: https://www.postgresql.org/docs/current/sql-listen.html
+    title: LISTEN
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19
+    primary: true
+    checked: 2026-11-24
+- id: realtime.pg-notify
+  title: PostgreSQL NOTIFY
+  stories:
+  - 8.4.4
+  phase: P1
+  keywords:
+  - NOTIFY
+  - pg_notify
+  - payload limit
+  - queue
+  - commit delivery
+  notes: |
+    Notifications deliver only at commit; a rollback discards them.
+    The payload must be under 8000 bytes by default; send an id and fetch the row.
+    The queue is shared and finite; a full queue makes NOTIFY commits fail.
+    Check pg_notification_queue_usage() to watch it.
+  sources:
+  - url: https://www.postgresql.org/docs/current/sql-notify.html
+    title: NOTIFY
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19
+    primary: true
+    checked: 2026-11-24
+- id: realtime.pg-terminate-backend
+  title: pg_terminate_backend
+  stories:
+  - 8.4.4
+  phase: P1
+  keywords:
+  - pg_terminate_backend
+  - pg_stat_activity
+  - fault injection
+  - pg_signal_backend
+  notes: |
+    The function ends the session of a given backend pid.
+    It needs superuser or the pg_signal_backend role, or membership of the target role.
+    Use it in tests to kill the listener connection and check reconnect and catch-up.
+    An optional timeout waits until the process exits.
+  sources:
+  - url: https://www.postgresql.org/docs/current/functions-admin.html
+    title: System Administration Functions (pg_terminate_backend)
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19
+    primary: true
+    checked: 2026-11-24
+- id: realtime.pg-transaction-visibility
+  title: Commit order and transaction visibility in PostgreSQL
+  stories:
+  - 8.4.1
+  phase: P1
+  keywords:
+  - xid8
+  - pg_current_xact_id
+  - pg_snapshot_xmin
+  - snapshot
+  - safe horizon
+  - MVCC
+  notes: |
+    A row is visible only after its transaction commits, in any id order.
+    A reader that saw id N+1 can miss id N if N commits later.
+    pg_current_xact_id gives a 64-bit transaction id; xmin of a snapshot marks a safe horizon.
+    Read only events from transactions older than that horizon to avoid gaps.
+  sources:
+  - url: https://www.postgresql.org/docs/current/functions-info.html
+    title: System Information Functions (pg_current_xact_id, snapshots)
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19
+    primary: true
+    checked: 2026-11-24
+  - url: https://www.postgresql.org/docs/current/mvcc.html
+    title: Concurrency Control (MVCC)
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19
+    primary: false
+    checked: 2026-11-24
+- id: realtime.starlette-websocket
+  title: Starlette and FastAPI WebSocket endpoints
+  stories:
+  - 8.4.1
+  phase: P1
+  keywords:
+  - WebSocket
+  - accept
+  - WebSocketDisconnect
+  - receive
+  - send
+  notes: |
+    The WebSocket class gives accept, send, receive and close for one connection.
+    A client close raises WebSocketDisconnect on receive, so catch it to clean up.
+    FastAPI re-exports the Starlette class and adds route decorators.
+    A per-process connection list does not scale across processes; a bus is needed.
+  sources:
+  - url: https://starlette.dev/websockets/
+    title: WebSockets - Starlette
+    kind: official-docs
+    publisher: Starlette
+    version: unversioned (current docs)
+    primary: true
+    checked: 2026-11-24
+  - url: https://fastapi.tiangolo.com/advanced/websockets/
+    title: WebSockets - FastAPI
+    kind: official-docs
+    publisher: FastAPI
+    version: unversioned (current docs)
+    primary: false
+    checked: 2026-11-24
+- id: realtime.tcp-nodelay
+  title: TCP_NODELAY
+  stories:
+  - 8.4.3
+  phase: P1
+  keywords:
+  - Nagle
+  - TCP_NODELAY
+  - latency
+  - small writes
+  notes: |
+    The option turns off Nagle's algorithm so small writes go out at once.
+    Interactive streams such as terminals need this for low keystroke latency.
+    Set it with setsockopt at the IPPROTO_TCP level.
+  sources:
+  - url: https://man7.org/linux/man-pages/man7/tcp.7.html
+    title: tcp(7)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19 (2026-04-19)
+    primary: true
+    checked: 2026-11-24
+- id: realtime.uuid-v7
+  title: UUID version 7
+  stories:
+  - 8.4.1
+  phase: P1
+  keywords:
+  - UUIDv7
+  - time-ordered id
+  - monotonic
+  - RFC 9562
+  notes: |
+    UUIDv7 puts a 48-bit millisecond timestamp first, then random bits.
+    Ids sort by creation time, which helps index locality.
+    Creation order is not commit order, so do not use it alone for resume.
+    Same-millisecond ids need a counter or sub-millisecond bits for monotonic order.
+  sources:
+  - url: https://www.rfc-editor.org/rfc/rfc9562.html
+    title: Universally Unique IDentifiers (UUIDs)
+    kind: spec
+    publisher: IETF
+    version: RFC 9562 (May 2024)
+    primary: true
+    checked: 2026-11-24
+- id: realtime.websocket-ping-pong
+  title: WebSocket ping and pong control frames
+  stories:
+  - 8.4.1
+  phase: P1
+  keywords:
+  - heartbeat
+  - ping
+  - pong
+  - half-open TCP
+  - control frame
+  notes: |
+    Ping and pong are control frames; a pong must echo the ping payload.
+    Either side may ping at any time to test that the peer is alive.
+    A missing pong within a deadline means a dead or half-open link; close it.
+    Browsers cannot send protocol pings, so an app-level message may be needed.
+  sources:
+  - url: https://www.rfc-editor.org/rfc/rfc6455.html
+    title: The WebSocket Protocol (sections 5.5.2 and 5.5.3)
+    kind: spec
+    publisher: IETF
+    version: RFC 6455 (December 2011)
+    primary: true
+    checked: 2026-11-24
+  - url: https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers
+    title: Writing WebSocket servers
+    kind: official-docs
+    publisher: MDN Web Docs
+    version: unversioned (current)
+    primary: false
+    checked: 2026-11-24
+- id: realtime.backoff-full-jitter
+  title: Exponential backoff with full jitter
+  stories:
+  - 8.4.2
+  phase: P1
+  keywords:
+  - backoff
+  - jitter
+  - full jitter
+  - retry
+  - reconnect
+  - thundering herd
+  notes: |
+    Plain exponential backoff makes many clients retry at the same moments.
+    Full jitter sleeps a random time between 0 and min(cap, base * 2^attempt).
+    This spreads the retries and lowers the total load on the server.
+    Always set a cap and a maximum number of attempts.
+  sources:
+  - url: https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/
+    title: Exponential Backoff and Jitter
+    kind: official-docs
+    publisher: Amazon Web Services (Architecture Blog)
+    version: 2015, updated 2023
+    primary: true
+    checked: &id001 2026-11-25
+  - url: https://builder.aws.com/content/3EumjoZascWd1oZiEgL8ORlv3qE/timeouts-retries-and-backoff-with-jitter
+    title: Timeouts, retries, and backoff with jitter
+    kind: official-docs
+    publisher: Amazon Builders' Library
+    version: AWS Builder Center
+    primary: false
+    checked: *id001
+- id: realtime.xterm-flow-control
+  title: xterm.js flow control
+  stories:
+  - 8.4.3
+  phase: P1
+  keywords:
+  - xterm.js
+  - flow control
+  - watermark
+  - ACK
+  - backpressure
+  - write callback
+  notes: |
+    term.write buffers data and draws it later; a fast producer can fill the buffer.
+    xterm.js drops data above a fixed buffer limit of about 50 MB.
+    Use high and low watermarks: pause the source above HIGH, resume below LOW.
+    Over a WebSocket the client sends ACK messages so the server knows when to pause.
+  sources:
+  - url: https://xtermjs.org/docs/guides/flowcontrol/
+    title: Flow control
+    kind: official-docs
+    publisher: xterm.js project
+    version: docs guide
+    primary: true
+    checked: *id001
+- id: realtime.psycopg3-notifies
+  title: psycopg 3 LISTEN/NOTIFY
+  stories:
+  - 8.4.4
+  phase: P1
+  keywords:
+  - psycopg
+  - notifies
+  - LISTEN
+  - NOTIFY
+  - autocommit
+  - AsyncConnection
+  notes: |
+    Connection.notifies() is a generator that yields each notification.
+    The timeout and stop_after parameters end the generator.
+    Keep the listening connection in autocommit mode; a notify arrives only after commit.
+    Use a dedicated connection for LISTEN, not one from the pool.
+  sources:
+  - url: https://www.psycopg.org/psycopg3/docs/advanced/async.html
+    title: 'Concurrent operations: Asynchronous notifications'
+    kind: api-reference
+    publisher: Psycopg project
+    version: psycopg 3.3 docs
+    primary: true
+    checked: *id001
+- id: realtime.outbox-pattern
+  title: Transactional outbox
+  stories:
+  - 8.4.4
+  phase: P1
+  keywords:
+  - outbox
+  - transactional outbox
+  - message relay
+  - at-least-once
+  - idempotent
+  notes: |
+    Write the event row to an outbox table in the same transaction as the data change.
+    A relay reads the outbox and publishes; an event exists only if the transaction commits.
+    The relay can publish an event twice, so consumers must be idempotent.
+    With Postgres, NOTIFY carries only the id; subscribers fetch the row.
+  sources:
+  - url: https://microservices.io/patterns/data/transactional-outbox.html
+    title: 'Pattern: Transactional outbox'
+    kind: official-docs
+    publisher: microservices.io (Chris Richardson)
+    version: pattern page
+    primary: true
+    checked: *id001

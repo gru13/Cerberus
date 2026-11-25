@@ -1,0 +1,732 @@
+# Learning index: security concepts. The area comes from this file name; entries have no area key.
+# Each entry: id (<area>.<name>), title, stories (guided story ids), phase (P0, P1, ...),
+#   keywords, notes (short, own words), sources, llms_txt (optional link; omit when none).
+# Each source: url (https, allowed host in index.yaml), title, kind, publisher, version,
+#   primary (at least one true per concept), checked (date the link was last verified).
+# Kinds: official-docs, api-reference, man-page, spec, project-repo.
+- id: security.alembic-migrations
+  title: Alembic migrations
+  stories:
+  - 8.2.2
+  phase: P0
+  keywords:
+  - alembic
+  - revision
+  - alembic_version
+  - migration
+  notes: |
+    Alembic runs versioned revision scripts against the database.
+    It keeps its own alembic_version table, which has no org_id.
+    Keep that table on the allow-list in the schema test.
+    Migrations also create the RLS policies and roles.
+  sources:
+  - url: https://alembic.sqlalchemy.org/en/latest/tutorial.html
+    title: Tutorial - Alembic
+    kind: official-docs
+    publisher: SQLAlchemy project (Alembic)
+    version: Alembic 1.20.1
+    primary: true
+    checked: 2026-11-24
+- id: security.asgi-middleware
+  title: Pure ASGI middleware and scope types
+  stories:
+  - 8.1.5
+  phase: P0
+  keywords:
+  - asgi
+  - scope type
+  - websocket scope
+  - middleware
+  notes: |
+    A pure ASGI middleware sees http and websocket scopes in one place.
+    Check scope["type"] to run logic for one kind only.
+    This lets one Origin or CSRF check cover WebSocket handshakes.
+    The guide notes CORSMiddleware does not block these.
+  sources:
+  - url: https://starlette.dev/middleware/
+    title: Middleware - Starlette
+    kind: official-docs
+    publisher: Starlette project
+    version: version not shown (current docs)
+    primary: true
+    checked: &id002 2026-11-24
+- id: security.constant-time-compare
+  title: Constant-time comparison
+  stories:
+  - 8.7.4
+  - 4.3.3
+  phase: P1
+  keywords:
+  - compare_digest
+  - timing attack
+  - constant time
+  notes: |
+    Plain == can leak how many leading bytes match.
+    hmac.compare_digest compares in a way meant to resist timing attacks.
+    Use it to check signatures and token hashes.
+    The secrets module re-exports the same function.
+  sources:
+  - url: https://docs.python.org/3/library/hmac.html
+    title: hmac - Keyed-Hashing for Message Authentication
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: true
+    checked: &id001 2026-11-24
+  - url: https://docs.python.org/3/library/secrets.html
+    title: secrets - Generate secure random numbers
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: false
+    checked: 2026-11-24
+- id: security.csrf-defenses
+  title: CSRF defenses
+  stories:
+  - 8.1.5
+  phase: P0
+  keywords:
+  - csrf
+  - double-submit cookie
+  - synchronizer token
+  - origin check
+  notes: |
+    Cookie-authenticated writes need a CSRF defense even with SameSite set.
+    The sheet prefers Sec-Fetch-Site first, with an Origin check as fallback.
+    It prefers signed double-submit over the naive form.
+    A missing or null Origin must not count as same-origin.
+  sources:
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html
+    title: Cross-Site Request Forgery Prevention Cheat Sheet
+    kind: official-docs
+    publisher: OWASP Cheat Sheet Series
+    version: undated (current)
+    primary: true
+    checked: 2026-11-24
+- id: security.cswsh
+  title: Cross-site WebSocket hijacking
+  stories:
+  - 8.1.5
+  - 8.4.1
+  phase: P0
+  keywords:
+  - cswsh
+  - websocket origin
+  - handshake
+  notes: |
+    Browsers attach cookies to WebSocket handshakes from any site.
+    A hostile page can then open an authenticated socket.
+    The server must validate Origin on every handshake and reject with 403.
+    RFC 6455 says a server that skips the check accepts all origins.
+  sources:
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/WebSocket_Security_Cheat_Sheet.html
+    title: WebSocket Security Cheat Sheet
+    kind: official-docs
+    publisher: OWASP Cheat Sheet Series
+    version: undated (current)
+    primary: true
+    checked: 2026-11-24
+  - url: https://www.rfc-editor.org/rfc/rfc6455
+    title: 'RFC 6455: The WebSocket Protocol'
+    kind: spec
+    publisher: IETF
+    version: RFC 6455 (Dec 2011)
+    primary: false
+    checked: 2026-11-24
+- id: security.dns-rebinding
+  title: DNS rebinding and Host allow-list
+  stories:
+  - 8.1.5
+  phase: P0
+  keywords:
+  - dns rebinding
+  - host header
+  - loopback
+  notes: |
+    A hostile site can re-point its DNS name at 127.0.0.1 and then call a local API from the browser.
+    Domain checks done once at lookup time do not stop this.
+    The fix is to validate the Host header on every request against a fixed list.
+    The SSRF sheet states the limit of name-only allow-lists.
+  sources:
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html
+    title: Server-Side Request Forgery Prevention Cheat Sheet
+    kind: official-docs
+    publisher: OWASP Cheat Sheet Series
+    version: undated (current)
+    primary: true
+    checked: 2026-11-24
+  - url: https://starlette.dev/middleware/
+    title: Middleware - Starlette (TrustedHostMiddleware)
+    kind: official-docs
+    publisher: Starlette project
+    version: version not shown (current docs)
+    primary: false
+    checked: 2026-11-24
+- id: security.docker-engine-api-create
+  title: Docker Engine API container create
+  stories:
+  - 8.10.2
+  phase: P0
+  keywords:
+  - containers/create
+  - hostconfig
+  - api version prefix
+  notes: |
+    The create call takes a HostConfig body with the risky fields.
+    The spec defines Privileged, Binds, CapAdd, NetworkMode and PidMode.
+    A body-checking proxy must read these fields.
+    Paths carry a version prefix such as /v1.47/.
+    Gap: the v1.47 HTML reference is a stub, so the OpenAPI yaml is cited.
+  sources:
+  - url: https://docs.docker.com/reference/api/engine/version/v1.47.yaml
+    title: Docker Engine API v1.47 OpenAPI spec
+    kind: api-reference
+    publisher: Docker Inc.
+    version: API 1.47
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.docker.com/reference/api/engine/version/v1.47/
+    title: Docker Engine API v1.47 reference
+    kind: api-reference
+    publisher: Docker Inc.
+    version: API 1.47
+    primary: false
+    checked: 2026-11-24
+- id: security.docker-image-inspect
+  title: docker image inspect
+  stories:
+  - 2.2.3
+  - 8.10.4
+  phase: P0
+  keywords:
+  - image inspect
+  - format
+  - image size
+  notes: |
+    The command prints detailed JSON for one or more images.
+    Use --format with a Go template to pick fields.
+    The page does not name a Size field; check the output yourself.
+    Use it for the image size limit.
+  sources:
+  - url: https://docs.docker.com/reference/cli/docker/image/inspect/
+    title: docker image inspect
+    kind: man-page
+    publisher: Docker Inc.
+    version: current (undated)
+    primary: true
+    checked: 2026-11-24
+- id: security.docker-privileged-binds
+  title: Privileged containers and host binds
+  stories:
+  - 8.10.2
+  phase: P0
+  keywords:
+  - privileged
+  - binds
+  - host mount
+  - capabilities
+  notes: |
+    Mounting the host root into a container lets it change the host filesystem freely.
+    Privileged adds all kernel capabilities.
+    Validate every create request if an API makes containers.
+    Drop all capabilities and add back only needed ones.
+  sources:
+  - url: https://docs.docker.com/engine/security/
+    title: Docker Engine security
+    kind: official-docs
+    publisher: Docker Inc.
+    version: current (undated)
+    primary: true
+    checked: 2026-11-24
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html
+    title: Docker Security Cheat Sheet
+    kind: official-docs
+    publisher: OWASP Cheat Sheet Series
+    version: undated (current)
+    primary: false
+    checked: 2026-11-24
+- id: security.docker-socket-proxy
+  title: Docker socket proxy
+  stories:
+  - 8.10.2
+  phase: P0
+  keywords:
+  - docker.sock
+  - socket proxy
+  - haproxy
+  - '403'
+  notes: |
+    The Tecnativa proxy exposes only chosen API sections through environment switches.
+    Blocked requests get 403.
+    It filters by section, not by request body.
+    The docker.sock grants root-equivalent control, per OWASP.
+  sources:
+  - url: https://github.com/Tecnativa/docker-socket-proxy
+    title: Tecnativa/docker-socket-proxy
+    kind: project-repo
+    publisher: Tecnativa
+    version: no release listed; images :lts, :latest, :3.4; API 1.27-1.51
+    primary: true
+    checked: 2026-11-24
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html
+    title: Docker Security Cheat Sheet
+    kind: official-docs
+    publisher: OWASP Cheat Sheet Series
+    version: undated (current)
+    primary: false
+    checked: 2026-11-24
+- id: security.dockerfile-multistage-digest
+  title: Multi-stage builds and digest pinning
+  stories:
+  - 2.2.3
+  phase: P0
+  keywords:
+  - multi-stage
+  - digest pin
+  - base image
+  - final stage
+  notes: |
+    Tags are mutable; a digest fixes the exact image.
+    Pinning stops automatic security fixes, so plan digest updates.
+    Multi-stage builds keep build tools out of the final image.
+    Check every FROM and the final USER.
+  sources:
+  - url: https://docs.docker.com/build/building/best-practices/
+    title: Building best practices
+    kind: official-docs
+    publisher: Docker Inc.
+    version: current (undated)
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.docker.com/build/building/multi-stage/
+    title: Multi-stage builds
+    kind: official-docs
+    publisher: Docker Inc.
+    version: current (undated)
+    primary: false
+    checked: 2026-11-24
+- id: security.dockerfile-parse
+  title: dockerfile-parse library
+  stories:
+  - 2.2.3
+  phase: P0
+  keywords:
+  - dockerfile-parse
+  - dockerfile ast
+  - python
+  notes: |
+    A Python library that parses Dockerfile files into instructions.
+    Use it to walk each FROM, ARG, ENV and USER.
+    The page shows no release number; pin the PyPI version yourself.
+    Hadolint is an optional extra linter.
+  sources:
+  - url: https://github.com/containerbuildsystem/dockerfile-parse
+    title: containerbuildsystem/dockerfile-parse
+    kind: project-repo
+    publisher: containerbuildsystem
+    version: no release listed on repo page
+    primary: true
+    checked: 2026-11-24
+- id: security.dockerfile-reference
+  title: Dockerfile reference
+  stories:
+  - 2.2.3
+  phase: P0
+  keywords:
+  - from
+  - arg
+  - user
+  - add
+  - env
+  notes: |
+    The reference defines every instruction the validator must parse.
+    FROM can use ARG values and names stages.
+    USER sets the default user for later steps and runtime.
+    ADD accepts URLs, and ENV values persist in the image.
+  sources:
+  - url: https://docs.docker.com/reference/dockerfile/
+    title: Dockerfile reference
+    kind: official-docs
+    publisher: Docker Inc.
+    version: current (undated)
+    primary: true
+    checked: 2026-11-24
+- id: security.dockerignore
+  title: dockerignore
+  stories:
+  - 2.2.3
+  phase: P0
+  keywords:
+  - dockerignore
+  - build context
+  - .git
+  notes: |
+    The file sits in the build context root.
+    Matching paths are removed before the context goes to the builder.
+    Syntax is glob-like, with ! for exceptions; the last match wins.
+    A rule should exclude .git.
+  sources:
+  - url: https://docs.docker.com/build/concepts/context/
+    title: Build context (.dockerignore)
+    kind: official-docs
+    publisher: Docker Inc.
+    version: current (undated)
+    primary: true
+    checked: 2026-11-24
+- id: security.hadolint
+  title: Hadolint
+  stories:
+  - 2.2.3
+  phase: P0
+  keywords:
+  - hadolint
+  - dockerfile linter
+  - shellcheck
+  notes: |
+    Hadolint lints Dockerfiles against best practices.
+    It also checks shell code inside RUN steps.
+    Use it as an extra linter beside the custom rules.
+    It is written in Haskell and runs as a binary or container.
+  sources:
+  - url: https://github.com/hadolint/hadolint
+    title: hadolint/hadolint
+    kind: project-repo
+    publisher: Hadolint project
+    version: no release listed on repo page
+    primary: true
+    checked: 2026-11-24
+- id: security.hmac-signed-tokens
+  title: HMAC-signed tokens
+  stories:
+  - 8.7.4
+  - 4.3.3
+  phase: P1
+  keywords:
+  - hmac
+  - signed token
+  - expiry
+  - single use
+  notes: |
+    HMAC binds a message to a secret key, so the server can verify its own tokens.
+    Put run id, user id and expiry in the signed message.
+    Pair with a jti and an atomic consume for single use.
+    Use a digest name explicitly; digestmod is required.
+  sources:
+  - url: https://docs.python.org/3/library/hmac.html
+    title: hmac - Keyed-Hashing for Message Authentication
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: true
+    checked: *id001
+  - url: https://www.rfc-editor.org/rfc/rfc2104
+    title: 'RFC 2104: HMAC'
+    kind: spec
+    publisher: IETF
+    version: RFC 2104 (Feb 1997)
+    primary: false
+    checked: 2026-11-24
+- id: security.hyper-unix-socket
+  title: hyper over a Unix socket
+  stories:
+  - 8.10.2
+  phase: P0
+  keywords:
+  - hyperlocal
+  - hyper-util
+  - unix domain socket
+  notes: |
+    hyperlocal links hyper to Unix domain sockets for clients and servers.
+    hyper-util holds helper pieces and is less stable than hyper.
+    This is the base for a Rust proxy to the Docker socket.
+    Check crate versions against your hyper major version.
+  sources:
+  - url: https://docs.rs/hyperlocal/latest/hyperlocal/
+    title: hyperlocal
+    kind: api-reference
+    publisher: docs.rs (hyperlocal crate)
+    version: hyperlocal 0.9.1
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.rs/hyper-util/latest/hyper_util/
+    title: hyper-util
+    kind: api-reference
+    publisher: docs.rs (hyper-util crate)
+    version: hyper-util 0.1.21
+    primary: false
+    checked: 2026-11-24
+- id: security.jwt-jti
+  title: JWT ID (jti) claim
+  stories:
+  - 8.7.4
+  phase: P1
+  keywords:
+  - jti
+  - replay
+  - jwt
+  - registered claim
+  notes: |
+    jti is an optional registered claim that gives a token a unique id.
+    It can help stop a token from being replayed.
+    Store used jti values and consume each one once.
+    Ids must make accidental duplicates extremely unlikely.
+  sources:
+  - url: https://www.rfc-editor.org/rfc/rfc7519
+    title: 'RFC 7519: JSON Web Token (JWT)'
+    kind: spec
+    publisher: IETF
+    version: RFC 7519 (May 2015)
+    primary: true
+    checked: 2026-11-24
+- id: security.postgres-rls
+  title: PostgreSQL row-level security
+  stories:
+  - 8.2.2
+  phase: P0
+  keywords:
+  - rls
+  - force row level security
+  - policy
+  - table owner
+  notes: |
+    Policies filter rows per role, as a second layer under app filters.
+    Table owners bypass policies unless FORCE ROW LEVEL SECURITY is set.
+    Use an app role that is not the owner.
+    A per-transaction setting can carry the org id.
+  sources:
+  - url: https://www.postgresql.org/docs/current/ddl-rowsecurity.html
+    title: Row Security Policies
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19 (current)
+    primary: true
+    checked: 2026-11-24
+- id: security.python-contextvars
+  title: contextvars and asyncio
+  stories:
+  - 8.2.2
+  phase: P0
+  keywords:
+  - contextvar
+  - copy_context
+  - asyncio task
+  - tenant context
+  notes: |
+    ContextVar holds per-request state such as the current tenant.
+    asyncio supports it natively; tasks copy the context when created.
+    A background job has no request context, so set it explicitly.
+    Fail closed when the variable is unset.
+  sources:
+  - url: https://docs.python.org/3/library/contextvars.html
+    title: contextvars - Context Variables
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: true
+    checked: 2026-11-24
+- id: security.python-secrets
+  title: Python secrets module
+  stories:
+  - 8.7.4
+  phase: P1
+  keywords:
+  - secrets
+  - token_urlsafe
+  - csprng
+  notes: |
+    secrets draws from the OS source of randomness and suits tokens.
+    token_urlsafe(n) returns n random bytes in URL-safe base64.
+    Do not use the random module for tokens.
+    It also offers compare_digest.
+  sources:
+  - url: https://docs.python.org/3/library/secrets.html
+    title: secrets - Generate secure random numbers
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: true
+    checked: 2026-11-24
+- id: security.samesite-cookies
+  title: SameSite cookies and site vs origin
+  stories:
+  - 8.1.5
+  phase: P0
+  keywords:
+  - samesite
+  - strict
+  - site vs origin
+  - localhost
+  notes: |
+    Strict sends the cookie only on same-site requests; Lax also allows top-level safe navigations.
+    Site means scheme plus registrable domain; ports and subdomains do not change it.
+    Origin also needs host and port to match.
+    So preview subdomains can be same-site with the app, which needs a test.
+  sources:
+  - url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie
+    title: Set-Cookie header (SameSite)
+    kind: official-docs
+    publisher: MDN Web Docs
+    version: current (undated)
+    primary: true
+    checked: 2026-11-24
+  - url: https://www.rfc-editor.org/rfc/rfc6454
+    title: 'RFC 6454: The Web Origin Concept'
+    kind: spec
+    publisher: IETF
+    version: RFC 6454 (Dec 2011)
+    primary: false
+    checked: 2026-11-24
+- id: security.sec-fetch-site
+  title: Sec-Fetch-Site fetch metadata
+  stories:
+  - 8.1.5
+  phase: P0
+  keywords:
+  - sec-fetch-site
+  - fetch metadata
+  - same-site
+  notes: |
+    The browser adds this request header with one of four values.
+    The values are cross-site, same-site, same-origin and none.
+    A server can reject writes that are not same-origin.
+    Older browsers omit it, so keep an Origin fallback.
+  sources:
+  - url: https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Fetch-Site
+    title: Sec-Fetch-Site header
+    kind: official-docs
+    publisher: MDN Web Docs
+    version: current (undated)
+    primary: true
+    checked: 2026-11-24
+  - url: https://www.w3.org/TR/fetch-metadata/
+    title: Fetch Metadata Request Headers
+    kind: spec
+    publisher: W3C
+    version: Working Draft, 21 September 2026
+    primary: false
+    checked: 2026-11-24
+- id: security.secret-scanning-tools
+  title: Secret scanning tools
+  stories:
+  - 2.2.3
+  phase: P0
+  keywords:
+  - gitleaks
+  - detect-secrets
+  - secret scan
+  notes: |
+    Gitleaks scans repos, files and stdin for keys and tokens.
+    detect-secrets uses a baseline of known findings and blocks new ones.
+    Scan project files and image layers.
+    The gitleaks README says future releases are security patches only.
+  sources:
+  - url: https://github.com/gitleaks/gitleaks
+    title: gitleaks/gitleaks
+    kind: project-repo
+    publisher: Gitleaks project
+    version: no release listed on repo page
+    primary: true
+    checked: 2026-11-24
+  - url: https://github.com/Yelp/detect-secrets
+    title: Yelp/detect-secrets
+    kind: project-repo
+    publisher: Yelp
+    version: pre-commit example v1.5.0; releases not listed
+    primary: false
+    checked: 2026-11-24
+- id: security.sqlalchemy-loader-criteria
+  title: with_loader_criteria
+  stories:
+  - 8.2.2
+  phase: P0
+  keywords:
+  - with_loader_criteria
+  - global filter
+  - relationship loading
+  notes: |
+    It adds a filter for one entity everywhere it appears in a statement.
+    This includes joins, subqueries and relationship loads.
+    Use it inside do_orm_execute to scope by org_id.
+    Identity-map hits from session.get can bypass it.
+  sources:
+  - url: https://docs.sqlalchemy.org/en/20/orm/queryguide/api.html#sqlalchemy.orm.with_loader_criteria
+    title: 'ORM API Features for Querying: with_loader_criteria'
+    kind: api-reference
+    publisher: SQLAlchemy project
+    version: SQLAlchemy 2.0.58
+    primary: true
+    checked: 2026-11-24
+- id: security.sqlalchemy-orm-execute-hook
+  title: SQLAlchemy do_orm_execute hook
+  stories:
+  - 8.2.2
+  phase: P0
+  keywords:
+  - do_orm_execute
+  - session events
+  - tenant filter
+  notes: |
+    This session event runs for ORM statements sent through Session.execute.
+    A handler can add criteria to every statement.
+    It does not see raw Core text() SQL sent outside the ORM path.
+    Combine it with with_loader_criteria.
+  sources:
+  - url: https://docs.sqlalchemy.org/en/20/orm/events.html#sqlalchemy.orm.SessionEvents.do_orm_execute
+    title: 'ORM Events: SessionEvents.do_orm_execute'
+    kind: api-reference
+    publisher: SQLAlchemy project
+    version: SQLAlchemy 2.0.58
+    primary: true
+    checked: 2026-11-24
+- id: security.starlette-trustedhost
+  title: Starlette TrustedHostMiddleware
+  stories:
+  - 8.1.5
+  phase: P0
+  keywords:
+  - trustedhostmiddleware
+  - allowed_hosts
+  - host header
+  notes: |
+    The middleware checks the Host header against allowed_hosts.
+    A failed check returns 400.
+    A wildcard entry allows every host, so avoid it.
+    IPv6 hosts use bracket notation.
+  sources:
+  - url: https://starlette.dev/middleware/
+    title: Middleware - Starlette
+    kind: official-docs
+    publisher: Starlette project
+    version: version not shown (current docs)
+    primary: true
+    checked: *id002
+- id: security.token-hashing-at-rest
+  title: Hashing tokens at rest
+  stories:
+  - 8.7.4
+  phase: P1
+  keywords:
+  - token hash
+  - sha-256
+  - lookup by hash
+  - entropy
+  notes: |
+    Random high-entropy tokens need only a fast hash such as SHA-256, not bcrypt.
+    Store the hash and look up by hash.
+    Never store the raw token next to its hash.
+    Hashing does not help if the token itself leaks.
+  sources:
+  - url: https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html
+    title: Session Management Cheat Sheet
+    kind: official-docs
+    publisher: OWASP Cheat Sheet Series
+    version: undated (current)
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.python.org/3/library/secrets.html
+    title: secrets - Generate secure random numbers
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2 docs
+    primary: false
+    checked: 2026-11-24

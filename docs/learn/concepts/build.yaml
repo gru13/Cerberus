@@ -1,0 +1,152 @@
+# Learning index: build concepts. The area comes from this file name; entries have no area key.
+# Each entry: id (<area>.<name>), title, stories (guided story ids), phase (P0, P1, ...),
+#   keywords, notes (short, own words), sources, llms_txt (optional link; omit when none).
+# Each source: url (https, allowed host in index.yaml), title, kind, publisher, version,
+#   primary (at least one true per concept), checked (date the link was last verified).
+# Kinds: official-docs, api-reference, man-page, spec, project-repo.
+- id: build.cargo-release-profile
+  title: Cargo release profile
+  stories:
+  - 8.10.4
+  phase: P1
+  keywords:
+  - lto
+  - panic abort
+  - strip
+  - codegen-units
+  - opt-level
+  notes: |
+    The release profile controls size and speed of the agent binary.
+    lto true or thin links across crates; codegen-units 1 helps optimization.
+    panic abort drops unwinding code.
+    strip symbols shrinks the file; the default is none.
+  sources:
+  - url: https://doc.rust-lang.org/cargo/reference/profiles.html
+    title: Profiles
+    kind: official-docs
+    publisher: The Rust Project
+    version: The Cargo Book (current)
+    primary: true
+    checked: 2026-11-24
+- id: build.cargo-zigbuild
+  title: cargo-zigbuild
+  stories:
+  - 8.10.4
+  phase: P1
+  keywords:
+  - zig
+  - linker
+  - cross compile
+  - musl target
+  notes: |
+    cargo-zigbuild uses Zig as the linker, so no container is needed.
+    For a fully static binary, choose a musl target.
+    A glibc version can be set as a target suffix.
+    It is the alternative to cross.
+  sources:
+  - url: https://github.com/rust-cross/cargo-zigbuild
+    title: cargo-zigbuild repository README
+    kind: project-repo
+    publisher: rust-cross project
+    version: README, default branch
+    primary: true
+    checked: 2026-11-24
+- id: build.cross-rs
+  title: cross (cross-rs)
+  stories:
+  - 8.10.4
+  phase: P1
+  keywords:
+  - cross
+  - docker
+  - podman
+  - cross compile
+  notes: |
+    cross wraps cargo and builds inside a container with the target toolchain.
+    It needs Docker 20.10+ or Podman 3.4+.
+    Use the same flags as cargo, for example cross build --target.
+    Config lives in Cross.toml or Cargo.toml metadata.
+  sources:
+  - url: https://github.com/cross-rs/cross
+    title: cross repository README
+    kind: project-repo
+    publisher: cross-rs project
+    version: README, MSRV 1.85.0
+    primary: true
+    checked: 2026-11-24
+- id: build.mimalloc
+  title: mimalloc allocator
+  stories:
+  - 8.10.4
+  phase: P1
+  keywords:
+  - mimalloc
+  - global_allocator
+  - musl malloc
+  - allocator
+  notes: |
+    The musl default allocator can be slow under heavy threads.
+    The mimalloc crate replaces it through #[global_allocator].
+    The optional secure feature adds hardening for a speed cost.
+    Measure before you adopt it.
+  sources:
+  - url: https://docs.rs/mimalloc/latest/mimalloc/
+    title: mimalloc crate documentation
+    kind: api-reference
+    publisher: docs.rs
+    version: mimalloc 0.1.52
+    primary: true
+    checked: 2026-11-24
+- id: build.reproducible-builds
+  title: Reproducible Rust builds
+  stories:
+  - 8.10.4
+  phase: P1
+  keywords:
+  - remap-path-prefix
+  - reproducible
+  - Cargo.lock
+  - checksum
+  notes: |
+    Same inputs should give the same binary hash.
+    rustc --remap-path-prefix removes build paths from output.
+    Pin toolchain and dependencies; build with --locked.
+    Publish a checksum and verify it before injecting the binary.
+  sources:
+  - url: https://doc.rust-lang.org/rustc/command-line-arguments.html
+    title: Command-line arguments (rustc)
+    kind: official-docs
+    publisher: The Rust Project
+    version: rustc book (current)
+    primary: true
+    checked: 2026-11-24
+  - url: https://doc.rust-lang.org/cargo/reference/profiles.html
+    title: Profiles
+    kind: official-docs
+    publisher: The Rust Project
+    version: The Cargo Book (current)
+    primary: false
+    checked: 2026-11-24
+- id: build.rust-musl-targets
+  title: Rust musl targets
+  stories:
+  - 8.10.4
+  phase: P1
+  keywords:
+  - musl
+  - static linking
+  - x86_64-unknown-linux-musl
+  - aarch64-unknown-linux-musl
+  notes: |
+    The musl targets produce static Linux binaries that need no libc in the image.
+    Both x86_64 and aarch64 musl are Tier 2 with host tools.
+    The platform page lists musl 1.2.5.
+    Install them with rustup target add.
+  sources:
+  - url: https://doc.rust-lang.org/rustc/platform-support.html
+    title: Platform Support
+    kind: official-docs
+    publisher: The Rust Project
+    version: rustc book, musl 1.2.5 listed
+    primary: true
+    checked: 2026-11-24

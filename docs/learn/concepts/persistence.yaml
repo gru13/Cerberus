@@ -1,0 +1,334 @@
+# Learning index: persistence concepts. The area comes from this file name; entries have no area key.
+# Each entry: id (<area>.<name>), title, stories (guided story ids), phase (P0, P1, ...),
+#   keywords, notes (short, own words), sources, llms_txt (optional link; omit when none).
+# Each source: url (https, allowed host in index.yaml), title, kind, publisher, version,
+#   primary (at least one true per concept), checked (date the link was last verified).
+# Kinds: official-docs, api-reference, man-page, spec, project-repo.
+- id: persistence.asyncio-tasks-timers
+  title: asyncio tasks and timers
+  stories:
+  - 8.8.2
+  phase: P1
+  keywords:
+  - create_task
+  - TaskGroup
+  - timers
+  - task reference
+  notes: |
+    create_task schedules a coroutine as a Task.
+    Keep a reference to each task, or the loop may drop it early.
+    Cancel pending timers and tasks on shutdown.
+  sources:
+  - url: https://docs.python.org/3/library/asyncio-task.html
+    title: Coroutines and Tasks
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2
+    primary: true
+    checked: 2026-11-24
+- id: persistence.durable-write-fsync
+  title: 'Durable writes: fsync and atomic rename'
+  stories:
+  - 8.8.1
+  phase: P1
+  keywords:
+  - fsync
+  - rename
+  - durability
+  - directory fsync
+  notes: |
+    Write a temp file, fsync it, rename it, then fsync the directory.
+    fsync on a file does not make its directory entry durable.
+    rename replaces the target in one atomic step.
+    The save response waits until this sequence ends.
+  sources:
+  - url: https://man7.org/linux/man-pages/man2/fsync.2.html
+    title: fsync(2)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19
+    primary: true
+    checked: 2026-11-24
+  - url: https://man7.org/linux/man-pages/man2/rename.2.html
+    title: rename(2)
+    kind: man-page
+    publisher: Linux man-pages project
+    version: Linux man-pages 6.19
+    primary: false
+    checked: 2026-11-24
+- id: persistence.http-etag-if-match
+  title: HTTP ETag and If-Match
+  stories:
+  - 8.8.3
+  phase: P1
+  keywords:
+  - ETag
+  - If-Match
+  - '412'
+  - '409'
+  - precondition
+  notes: |
+    An ETag names one version of a resource.
+    If-Match makes a write apply only when the ETag still matches.
+    A failed precondition returns 412; this project plans 409 with server version.
+  sources:
+  - url: https://www.rfc-editor.org/rfc/rfc9110.html
+    title: 'RFC 9110: HTTP Semantics'
+    kind: spec
+    publisher: IETF
+    version: RFC 9110 (June 2022)
+    primary: true
+    checked: 2026-11-24
+- id: persistence.optimistic-compare-and-swap
+  title: Optimistic concurrency with compare-and-swap
+  stories:
+  - 8.8.3
+  phase: P1
+  keywords:
+  - compare-and-swap
+  - base_hash
+  - UPDATE WHERE
+  - read committed
+  notes: |
+    UPDATE ... WHERE hash = base changes the row only if no one else did.
+    Under Read Committed a waiting UPDATE re-checks its WHERE after the other commit.
+    Zero rows updated means a conflict.
+    Same new hash as the server has means replay, not conflict.
+  sources:
+  - url: https://www.postgresql.org/docs/current/transaction-iso.html
+    title: Transaction Isolation
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19
+    primary: true
+    checked: 2026-11-24
+- id: persistence.pg-advisory-locks
+  title: PostgreSQL advisory locks
+  stories:
+  - 8.5.2
+  - 8.8.4
+  phase: P1
+  keywords:
+  - advisory lock
+  - pg_advisory_xact_lock
+  - mutual exclusion
+  notes: |
+    Application-defined locks that the server does not enforce itself.
+    Session level locks last until release or disconnect.
+    Transaction level locks end at commit or rollback, which is safer.
+    Pick a stable key scheme, such as a hash of run id.
+  sources:
+  - url: https://www.postgresql.org/docs/current/explicit-locking.html
+    title: Explicit Locking (advisory locks)
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19
+    primary: true
+    checked: 2026-11-24
+- id: persistence.problem-json
+  title: Problem Details for HTTP APIs
+  stories:
+  - 8.8.3
+  phase: P1
+  keywords:
+  - application/problem+json
+  - RFC 9457
+  - error format
+  notes: |
+    A standard JSON shape for API errors: type, title, status, detail, instance.
+    Extra members can carry data, such as the server version.
+    RFC 9457 replaces RFC 7807.
+  sources:
+  - url: https://www.rfc-editor.org/rfc/rfc9457.html
+    title: 'RFC 9457: Problem Details for HTTP APIs'
+    kind: spec
+    publisher: IETF
+    version: RFC 9457 (July 2023)
+    primary: true
+    checked: 2026-11-24
+- id: persistence.procrastinate-retry
+  title: Procrastinate retry strategy
+  stories:
+  - 8.5.2
+  phase: P1
+  keywords:
+  - RetryStrategy
+  - max attempts
+  - backoff
+  notes: |
+    A task can retry a set number of times or use a RetryStrategy object.
+    Custom retry logic can decide per exception.
+    Failed jobs can also be retried by hand.
+    Do not build a second lease system beside this one.
+  sources:
+  - url: https://procrastinate.readthedocs.io/en/stable/howto/advanced/retry.html
+    title: Define a retry strategy on a task
+    kind: official-docs
+    publisher: Procrastinate project
+    version: stable (no version number shown)
+    primary: true
+    checked: 2026-11-24
+- id: persistence.python-hashlib
+  title: Python hashlib
+  stories:
+  - 8.8.1
+  phase: P1
+  keywords:
+  - hashlib
+  - sha256
+  - file_digest
+  notes: |
+    hashlib.sha256 gives a hash object with update and hexdigest.
+    file_digest hashes a binary file object (Python 3.11+).
+    Hash large files in chunks and use a thread for blocking I/O.
+  sources:
+  - url: https://docs.python.org/3/library/hashlib.html
+    title: hashlib - Secure hashes and message digests
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2
+    primary: true
+    checked: 2026-11-24
+- id: persistence.sha256-content-addressing
+  title: SHA-256 and content addressing
+  stories:
+  - 8.8.1
+  phase: P1
+  keywords:
+  - SHA-256
+  - content addressing
+  - dedupe
+  - blob store
+  notes: |
+    SHA-256 is a standard hash that gives a fixed-size digest.
+    The digest of the bytes names the blob, so equal files share one blob.
+    Same files give the same hash, which makes snapshots deterministic.
+    Hash the raw bytes, not decoded text.
+  sources:
+  - url: https://csrc.nist.gov/pubs/fips/180-4/upd1/final
+    title: FIPS 180-4, Secure Hash Standard (SHS)
+    kind: spec
+    publisher: NIST
+    version: FIPS 180-4 (August 2015)
+    primary: true
+    checked: 2026-11-24
+- id: persistence.skip-locked
+  title: SELECT FOR UPDATE SKIP LOCKED
+  stories:
+  - 8.5.2
+  phase: P1
+  keywords:
+  - SKIP LOCKED
+  - job queue
+  - reaper
+  notes: |
+    Rows that another transaction holds locked are skipped, not waited on.
+    Several workers can claim different rows without blocking each other.
+    The result is not a consistent view, so use it for queues only.
+    A reaper can use it to requeue expired leases safely.
+  sources:
+  - url: https://www.postgresql.org/docs/current/sql-select.html
+    title: SELECT, locking clause
+    kind: official-docs
+    publisher: PostgreSQL Global Development Group
+    version: PostgreSQL 19
+    primary: true
+    checked: 2026-11-24
+- id: persistence.sqlalchemy-async
+  title: SQLAlchemy asyncio extension
+  stories:
+  - 8.8.1
+  - 8.8.3
+  phase: P1
+  keywords:
+  - AsyncSession
+  - create_async_engine
+  - asyncpg
+  notes: |
+    Core and ORM work through AsyncEngine and AsyncSession.
+    Lazy loading does not work in async code, so load data explicitly.
+    One AsyncSession must not be shared between concurrent tasks.
+  sources:
+  - url: https://docs.sqlalchemy.org/en/20/orm/extensions/asyncio.html
+    title: Asynchronous I/O (asyncio)
+    kind: official-docs
+    publisher: SQLAlchemy project
+    version: SQLAlchemy 2.0.58
+    primary: true
+    checked: 2026-11-24
+- id: persistence.sqlalchemy-for-update
+  title: SQLAlchemy with_for_update
+  stories:
+  - 8.8.1
+  - 8.8.3
+  phase: P1
+  keywords:
+  - with_for_update
+  - row lock
+  - skip_locked
+  notes: |
+    with_for_update adds FOR UPDATE to a SELECT.
+    Options such as of, nowait and skip_locked change the lock behavior.
+    Use it to serialize writers per (run, path) row.
+  sources:
+  - url: https://docs.sqlalchemy.org/en/20/core/selectable.html#sqlalchemy.sql.expression.GenerativeSelect.with_for_update
+    title: GenerativeSelect.with_for_update
+    kind: api-reference
+    publisher: SQLAlchemy project
+    version: SQLAlchemy 2.0.58
+    primary: true
+    checked: 2026-11-24
+  - url: https://docs.sqlalchemy.org/en/20/orm/queryguide/query.html
+    title: Legacy Query API
+    kind: api-reference
+    publisher: SQLAlchemy project
+    version: SQLAlchemy 2.0.58
+    primary: false
+    checked: 2026-11-24
+- id: persistence.trailing-debounce
+  title: Trailing-edge debounce
+  stories:
+  - 8.8.2
+  phase: P1
+  keywords:
+  - debounce
+  - coalescing
+  - call_later
+  - per-path timer
+  notes: |
+    Each new event for a path cancels the old timer and starts a new one.
+    The fetch runs once, after the path is quiet.
+    Keep one timer per path.
+    Implement it with loop.call_later and TimerHandle.cancel.
+  sources:
+  - url: https://docs.python.org/3/library/asyncio-eventloop.html
+    title: 'Event Loop: call_later'
+    kind: official-docs
+    publisher: Python Software Foundation
+    version: Python 3.15.2
+    primary: true
+    checked: 2026-11-24
+- id: persistence.fencing-token
+  title: Fencing tokens for leases
+  stories:
+  - 8.5.2
+  phase: P1
+  keywords:
+  - fencing token
+  - lease
+  - zombie worker
+  - revision
+  - compare and swap
+  notes: |
+    A lease uses time, so a slow worker can still act after its lease ends.
+    A lease alone does not give mutual exclusion.
+    A fencing token is a number that grows with each new holder.
+    The resource rejects a write that carries an older token than one it has seen.
+  sources:
+  - url: https://etcd.io/docs/v3.5/learning/why/
+    title: 'etcd versus other key-value stores: Notes on lock and lease'
+    kind: official-docs
+    publisher: etcd project (CNCF)
+    version: etcd v3.5 docs
+    primary: true
+    checked: 2026-11-25

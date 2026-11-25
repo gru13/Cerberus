@@ -29,6 +29,31 @@
       "problemMatcher": []
     },
     {
+      "label": "learn: check",
+      "detail": "Check the learning index offline (layout, schema, ids, https, domains, primary sources).",
+      "type": "shell",
+      "command": "uv run docs/learn/learn.py check",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "learn: check-links",
+      "detail": "Check the learning index offline rules, then request every source URL.",
+      "type": "shell",
+      "command": "uv run docs/learn/learn.py check --online",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "learn: edit",
+      "detail": "Start the learning index editor on http://127.0.0.1:8765.",
+      "type": "shell",
+      "command": "uv run docs/learn/learn.py edit",
+      "options": { "cwd": "${workspaceFolder}" },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
       "label": "api: lint",
       "detail": "Ruff lint.",
       "type": "shell",
@@ -95,9 +120,9 @@
     },
     {
       "label": "api: check",
-      "detail": "All CI checks in order: lint, format-check, typecheck, style-check, test.",
+      "detail": "All CI checks in order: lint, format-check, typecheck, style-check, learn-check, test.",
       "dependsOrder": "sequence",
-      "dependsOn": ["api: lint", "api: format-check", "api: typecheck", "api: style-check", "api: test"],
+      "dependsOn": ["api: lint", "api: format-check", "api: typecheck", "api: style-check", "learn: check", "api: test"],
       "group": { "kind": "build", "isDefault": true },
       "problemMatcher": []
     }
